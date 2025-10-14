@@ -1,6 +1,7 @@
 import express, { json } from "express";
-import cors from 'cors';
+import cors from "cors";
 import dotenv from "dotenv";
+import { categoryRouter } from "./routes/category.routes";
 
 dotenv.config();
 
@@ -28,8 +29,11 @@ app.use(cors(corsOptions));
 
 const PORT = process.env.PORT || 8080;
 
-app.get('/', (req, res) => res.send('Prueba api node'))
+// 👇 2️⃣ Montá tus rutas acá
+app.use("/categorias", categoryRouter);
 
-app.listen(PORT, ()=>{
-  console.log("Api funcionando en el puerto 8080")
-}) 
+app.get("/", (req, res) => res.send("Prueba api node"));
+
+app.listen(PORT, () => {
+  console.log("Api funcionando en el puerto", PORT);
+});

@@ -1,7 +1,6 @@
 {
   "name": "tpi-desarrollo",
   "version": "1.0.0",
-  "type": "module",
   "description": "Api para sistema del tpi de desarrollo de software",
   "main": "index.js",
   "scripts": {
