@@ -1,7 +1,6 @@
 import { DataSource } from "typeorm";
 import dotenv from 'dotenv';
 import dns from "dns";
-import { Product } from "../models/products.js";
 
 dns.setDefaultResultOrder("ipv4first");
 dotenv.config();
@@ -13,9 +12,10 @@ export const AppDataSource = new DataSource({
   username: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
-  ssl: {
+  /*ssl: {
     rejectUnauthorized: false, 
-  },
+  }, */
+ 
   /* 
     La linea de synchronize se usa para sincronizar la base de datos de forma automatica
     cada vez que se haga un cambio en el sistema.
@@ -27,7 +27,7 @@ export const AppDataSource = new DataSource({
   */ 
   synchronize: true, 
   logging: true,
-  entities: [], //<-- Aca van las entidades o modelos
+  entities: ["src/models/**/*.ts"], //<-- Aca van las entidades o modelos
   migrations: ["src/migrations/*.ts"],
   subscribers: [],
 });

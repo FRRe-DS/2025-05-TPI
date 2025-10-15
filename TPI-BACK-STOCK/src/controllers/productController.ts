@@ -1,50 +1,44 @@
-import type { Request, Response } from "express";
-
+import type { Request, Response } from 'express';
 import { ProductService } from "../services/productServices.js";
 
-export class ProductController{
+const productServices = new ProductService();
 
-  private productService = new ProductService();
 
-  findProducts( req:Request, res: Response ){
+export const getAllProductos = async (req: Request, res: Response) => {
+  const productos = await productServices.findAllProducts();
+  res.status(200).json(productos);
+};
 
-    const products = this.productService.findAllProducts()
+export const getProductosById = async (req: Request, res: Response) => {
+  const id = parseInt(req.params.id, 10);
+  const producto = await productServices.findProductById(id)
 
-    if(!products) res.status(400).json({message: "Productos no encontrados"})
+  if(producto){
+    res.status(200).json({producto})
+  } else {
+    res.status(404).json({message: 'Producto no encontrado'});
+  };
+};
 
-    res.status(200).json(products);
+export const createProducto = async (req: Request, res: Response) => {
+  const { name, description, price, availableStock, categoryIds } = req.body;
 
+  if (
+    !name ||
+    !description ||
+    price === undefined ||
+    availableStock === undefined
+  ) {
+    return res.status(400).json({ 
+      message: 'Faltan campos requeridos. Asegúrate de enviar name, description, price y stock.' 
+    });
+  
   }
-
-  findProductById( req:Request, res: Response ){
-    
-    //www.algo.com/products/15
-
-    const id  = Number(req.params.id);
-
-    const product = this.productService.findProductById(id);
-
-    if(!product) res.status(400).json({message: "Producto no encontrado, id invalida"});
-
-    if(product){
-      if(product.description == "") res.status(400).json({message: "Falto este dato: descripcion "});
-      res.status(200).json(product);
-    }
+  try {
+    const nuevoProducto = await productServices.createProduct({ name, description, price, availableStock, categoryIds });
+    res.status(201).json(nuevoProducto);
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : "Error desconocido";
+    res.status(500).json({ message: "Error al crear el producto", error: errorMessage });
   }
-
-  createProduct( req:Request, res: Response ){
-    
-    //www.algo.com/products/createProduc
-
-    const productToPost = req.body;
-
-    //createProductService(productToPost)
-
-    if(!productToPost) res.status(400).json({message: "Producto no encontrado, id invalida"});
-
-    if(productToPost){
-      if(productToPost.description == "") res.status(400).json({message: "Falto este dato: descripcion "});
-      res.status(200).json(productToPost);
-    }
-  }
-}
+};

@@ -1,6 +1,19 @@
 import express, { json } from "express";
 import cors from 'cors';
 import dotenv from "dotenv";
+import productosRouter from './routes/productosRoutes.js'
+import { AppDataSource } from "./config/appDataSource.js";
+
+
+AppDataSource.initialize()
+  .then(() => {
+    console.log("Conexion a la base de datos establecida")
+  
+    app.listen(PORT, ()=>{
+      console.log("Api funcionando en el puerto 8080")
+    }) 
+  })
+  .catch((error) => console.log("Error al conectar a la base de datos: ", error))
 
 dotenv.config();
 
@@ -25,11 +38,9 @@ const corsOptions: cors.CorsOptions = {
 
 app.use(json());
 app.use(cors(corsOptions));
-
 const PORT = process.env.PORT || 8080;
 
 app.get('/', (req, res) => res.send('Prueba api node'))
+app.use('/productos', productosRouter);
 
-app.listen(PORT, ()=>{
-  console.log("Api funcionando en el puerto 8080")
-}) 
+
