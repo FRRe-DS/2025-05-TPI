@@ -1,7 +1,7 @@
 import { DataSource } from "typeorm";
 import dotenv from 'dotenv';
 import dns from "dns";
-import { Product } from "../models/products.js";
+import { Product } from "../models/products.entity.js";
 
 dns.setDefaultResultOrder("ipv4first");
 dotenv.config();
