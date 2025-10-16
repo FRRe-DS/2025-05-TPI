@@ -1,7 +1,10 @@
 import { DataSource } from "typeorm";
 import dotenv from 'dotenv';
 import dns from "dns";
-import { Product } from "../models/products.js";
+import { Product } from "../models/Product.entity";
+import { Category } from "../models/Category.entity.js";
+import { Reservation } from "../models/Reservation.entity.js";
+import { ReservationItem } from "../models/ReservationItem.entity.js";
 
 dns.setDefaultResultOrder("ipv4first");
 dotenv.config();
@@ -27,7 +30,7 @@ export const AppDataSource = new DataSource({
   */ 
   synchronize: true, 
   logging: true,
-  entities: [], //<-- Aca van las entidades o modelos
+  entities: [Product, Category, Reservation, ReservationItem], //<-- Aca van las entidades o modelos
   migrations: ["src/migrations/*.ts"],
   subscribers: [],
 });

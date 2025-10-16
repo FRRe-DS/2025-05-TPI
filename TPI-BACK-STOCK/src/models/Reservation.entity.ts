@@ -1,34 +1,42 @@
-// src/entities/Reservation.entity.ts
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, OneToMany } from "typeorm";
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+  OneToMany,
+} from "typeorm";
 import { ReservationItem } from "./ReservationItem.entity";
 
-enum ReservationStatus {
-    PENDING = 'PENDING',
-    CONFIRMED = 'CONFIRMED',
-    CANCELLED = 'CANCELLED'
-}
-
-@Entity('reservations')
+@Entity("reservations")
 export class Reservation {
-    @PrimaryGeneratedColumn()
-    id!: number;
+  @PrimaryGeneratedColumn()
+  id!: number;
 
-    @Column({ name: 'user_id', type: 'int' })
-    userId!: number;
+  @Column({ name: "id_compra", type: "varchar", length: 255 })
+  idCompra!: string;
 
-    @Column({ 
-        type: 'enum', 
-        enum: ReservationStatus, 
-        default: ReservationStatus.PENDING 
-    })
-    status!: ReservationStatus;
+  @Column({ name: "usuario_id", type: "int" })
+  usuarioId!: number;
 
-    @CreateDateColumn({ name: 'reservation_date' })
-    reservationDate!: Date;
+  @Column({
+    type: "varchar",
+    length: 50,
+    default: "confirmado",
+  })
+  estado!: string; // confirmado, pendiente, cancelado
 
-    @Column({ name: 'total_quantity', type: 'int' })
-    totalQuantity!: number;
+  @Column({ name: "expires_at", type: "timestamp" })
+  expiresAt!: Date;
 
-    @OneToMany(() => ReservationItem, (reservationItem:ReservationItem) => reservationItem.reservation)
-    items!: ReservationItem[];
+  @CreateDateColumn({ name: "fecha_creacion" })
+  fechaCreacion!: Date;
+
+  @UpdateDateColumn({ name: "fecha_actualizacion" })
+  fechaActualizacion!: Date;
+
+  @OneToMany(() => ReservationItem, (item: ReservationItem) => item.reservation, {
+    cascade: true,
+  })
+  items!: ReservationItem[];
 }
