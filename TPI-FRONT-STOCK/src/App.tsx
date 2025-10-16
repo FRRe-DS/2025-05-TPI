@@ -1,10 +1,7 @@
-function App() {
+import ProductsPage from "./pages/products/ProductsPage";
 
-  return (
-    <>
-      <h1> FRONT INIT </h1>
-    </>
-  )
+function App() {
+  return <ProductsPage />;
 }
 
-export default App
+export default App;
