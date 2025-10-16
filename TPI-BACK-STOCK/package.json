@@ -1,11 +1,10 @@
 {
   "name": "tpi-desarrollo",
   "version": "1.0.0",
-  "type": "module",
   "description": "Api para sistema del tpi de desarrollo de software",
   "main": "index.js",
   "scripts": {
-    "dev": "node --watch --loader ts-node/esm src/app.ts",
+    "dev": "ts-node-dev --respawn --transpile-only src/app.ts",
     "build": "tsc",
     "start": "node dist/app.js"
   },

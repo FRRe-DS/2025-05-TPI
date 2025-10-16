@@ -1,6 +1,8 @@
-// src/models/ReservationItem.entity.ts
-
+// src/entities/ReservationItem.entity.ts
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from "typeorm";
+import { Product } from "./Product.entity";
+import { Reservation } from "./Reservation.entity";
+
 
 @Entity('reservation_items')
 export class ReservationItem {
@@ -16,11 +18,11 @@ export class ReservationItem {
     @Column({ name: 'reserved_quantity', type: 'int' })
     reservedQuantity!: number;
 
-    @ManyToOne('Reservation', (reservation: import("./Reservation.entity.js").Reservation) => reservation.items)
+    @ManyToOne(() => Reservation, (reservation:Reservation) => reservation.items)
     @JoinColumn({ name: 'reservation_id' })
-    reservation!: import("./Reservation.entity.js").Reservation;
+    reservation!: Reservation;
 
-    @ManyToOne('Product', (product: import("./Product.entity.js").Product) => product.reservationItems)
+    @ManyToOne(() => Product, (product:Product) => product.reservationItems)
     @JoinColumn({ name: 'product_id' })
-    product!: import("./Product.entity.js").Product;
+    product!: Product;
 }

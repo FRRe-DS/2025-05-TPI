@@ -1,15 +1,15 @@
 {
   "compilerOptions": {
     "target": "ES2020",
-    "module": "NodeNext",
+    "module": "commonjs",
     "rootDir": "src",
     "outDir": "dist",
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
+    "emitDecoratorMetadata": true
   },
-  "include": ["src/**/*"],
+  "include": ["src/*/"],
   "exclude": ["node_modules", "dist"]
 }

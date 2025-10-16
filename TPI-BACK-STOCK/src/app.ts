@@ -1,8 +1,8 @@
 import express, { json } from "express";
 import cors from 'cors';
 import dotenv from "dotenv";
-import productosRouter from './routes/productosRoutes.js'
-import { AppDataSource } from "./config/appDataSource.js";
+import productosRouter from './routes/productosRoutes'
+import { AppDataSource } from "./config/appDataSource";
 
 
 AppDataSource.initialize()

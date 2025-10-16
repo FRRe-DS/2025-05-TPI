@@ -1,7 +1,7 @@
 import { In, Repository } from "typeorm";
-import { AppDataSource } from "../config/appDataSource.js";
-import { Product } from "../models/Product.entity.js";
-import { Category } from "../models/Category.entity.js";
+import { AppDataSource } from "../config/appDataSource";
+import { Product } from "../models/Product.entity";
+import { Category } from "../models/Category.entity";
 
 export type CreateProductDTO = {
   name: string;

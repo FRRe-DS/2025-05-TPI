@@ -1,4 +1,7 @@
+// src/entities/Product.entity.ts
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, ManyToMany, JoinTable, OneToMany } from "typeorm";
+import { Category } from "./Category.entity";
+import { ReservationItem } from "./ReservationItem.entity";
 
 @Entity("products")
 export class Product {
@@ -16,11 +19,11 @@ export class Product {
 
     @Column({ name: 'available_stock', type: 'int', default: 0 })
     availableStock!: number;
-    
+
     @CreateDateColumn({ name: 'created_at' })
     createdAt!: Date;
 
-    @ManyToMany('Category', (category: import("./Category.entity.js").Category) => category.products)
+    @ManyToMany(() => Category, (category:Category) => category.products)
     @JoinTable({
         name: 'product_category',
         joinColumn: { 
@@ -32,8 +35,8 @@ export class Product {
             referencedColumnName: 'id' 
         }
     })
-    categories!: import("./Category.entity.js").Category[];
+    categories!: Category[];
 
-    @OneToMany('ReservationItem', (reservationItem: import("./ReservationItem.entity.js").ReservationItem) => reservationItem.product)
-    reservationItems!: import("./ReservationItem.entity.js").ReservationItem[];
+    @OneToMany(() => ReservationItem, (reservationItem:ReservationItem) => reservationItem.product)
+    reservationItems!: ReservationItem[];
 }

@@ -1,6 +1,8 @@
+// src/entities/Reservation.entity.ts
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, OneToMany } from "typeorm";
+import { ReservationItem } from "./ReservationItem.entity";
 
-export enum ReservationStatus {
+enum ReservationStatus {
     PENDING = 'PENDING',
     CONFIRMED = 'CONFIRMED',
     CANCELLED = 'CANCELLED'
@@ -8,7 +10,7 @@ export enum ReservationStatus {
 
 @Entity('reservations')
 export class Reservation {
-    @PrimaryGeneratedColumn() 
+    @PrimaryGeneratedColumn()
     id!: number;
 
     @Column({ name: 'user_id', type: 'int' })
@@ -27,6 +29,6 @@ export class Reservation {
     @Column({ name: 'total_quantity', type: 'int' })
     totalQuantity!: number;
 
-    @OneToMany('ReservationItem', (reservationItem: import("./ReservationItem.entity.js").ReservationItem) => reservationItem.reservation)
-    items!: import("./ReservationItem.entity.js").ReservationItem[];
+    @OneToMany(() => ReservationItem, (reservationItem:ReservationItem) => reservationItem.reservation)
+    items!: ReservationItem[];
 }
