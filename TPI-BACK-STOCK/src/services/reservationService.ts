@@ -1,15 +1,15 @@
-import { AppDataSource } from "../config/appDataSource";
+import { appDataSource } from "../config/appDataSource";
 import { Reservation } from "../models/Reservation.entity";
 import { ReservationItem } from "../models/ReservationItem.entity";
 import { Product } from "../models/Product.entity";
-import { ReservaInput } from "../types/reservation";
+import { ReservaInput, GetReservationsFilters } from "../types/reservation";
 
-const reservationRepository = AppDataSource.getRepository(Reservation);
-const reservationItemRepository = AppDataSource.getRepository(ReservationItem);
-const productRepository = AppDataSource.getRepository(Product);
+const reservationRepository = appDataSource.getRepository(Reservation);
+const reservationItemRepository = appDataSource.getRepository(ReservationItem);
+const productRepository = appDataSource.getRepository(Product);
 
 export const createReservation = async (data: ReservaInput) => {
-  const queryRunner = AppDataSource.createQueryRunner();
+  const queryRunner = appDataSource.createQueryRunner();
   await queryRunner.connect();
   await queryRunner.startTransaction();
 
@@ -90,7 +90,7 @@ export const getReservationById = async (idReserva: number, usuarioId: number) =
     expiresAt: reservation.expiresAt,
     fechaCreacion: reservation.fechaCreacion,
     fechaActualizacion: reservation.fechaActualizacion,
-    productos: reservation.items.map((item) => ({
+    productos: reservation.items.map((item: ReservationItem) => ({
       idProducto: item.product.id,
       nombre: item.product.nombre,
       cantidad: item.cantidad,
@@ -99,12 +99,7 @@ export const getReservationById = async (idReserva: number, usuarioId: number) =
   };
 };
 
-export const getUserReservations = async (filters: {
-  usuarioId: number;
-  estado?: string;
-  page?: number;
-  limit?: number;
-}) => {
+export const getUserReservations = async (filters: GetReservationsFilters) => {
   const { usuarioId, estado, page = 1, limit = 10 } = filters;
 
   const query = reservationRepository
@@ -123,7 +118,7 @@ export const getUserReservations = async (filters: {
     .orderBy("reservation.fechaCreacion", "DESC")
     .getMany();
 
-  return reservations.map((reservation) => ({
+  return reservations.map((reservation: Reservation) => ({
     idReserva: reservation.id,
     idCompra: reservation.idCompra,
     usuarioId: reservation.usuarioId,
@@ -131,7 +126,7 @@ export const getUserReservations = async (filters: {
     expiresAt: reservation.expiresAt,
     fechaCreacion: reservation.fechaCreacion,
     fechaActualizacion: reservation.fechaActualizacion,
-    productos: reservation.items.map((item) => ({
+    productos: reservation.items.map((item: ReservationItem) => ({
       idProducto: item.product.id,
       nombre: item.product.nombre,
       cantidad: item.cantidad,
@@ -166,7 +161,7 @@ export const updateReservationStatus = async (
     expiresAt: reservation.expiresAt,
     fechaCreacion: reservation.fechaCreacion,
     fechaActualizacion: reservation.fechaActualizacion,
-    productos: reservation.items.map((item) => ({
+    productos: reservation.items.map((item: ReservationItem) => ({
       idProducto: item.product.id,
       nombre: item.product.nombre,
       cantidad: item.cantidad,
@@ -176,22 +171,26 @@ export const updateReservationStatus = async (
 };
 
 export const cancelReservation = async (idReserva: number, motivo: string) => {
-  const queryRunner = AppDataSource.createQueryRunner();
+  const queryRunner = appDataSource.createQueryRunner();
   await queryRunner.connect();
   await queryRunner.startTransaction();
 
   try {
-    const reservation = await queryRunner.manager.findOne(Reservation, {
-      where: { id: idReserva },
-      relations: ["items", "items.product"],
-      lock: { mode: "pessimistic_write" },
-    });
+    // Buscar la reserva con sus items usando INNER JOIN para evitar el error de LEFT JOIN con lock
+    const reservation = await queryRunner.manager
+      .createQueryBuilder(Reservation, "reservation")
+      .innerJoinAndSelect("reservation.items", "items")
+      .innerJoinAndSelect("items.product", "product")
+      .where("reservation.id = :idReserva", { idReserva })
+      .setLock("pessimistic_write")
+      .getOne();
 
     if (!reservation) {
+      await queryRunner.rollbackTransaction();
       return null;
     }
 
-    // Liberar stock
+    // Liberar stock de cada producto
     for (const item of reservation.items) {
       const product = await queryRunner.manager.findOne(Product, {
         where: { id: item.product.id },
@@ -204,7 +203,7 @@ export const cancelReservation = async (idReserva: number, motivo: string) => {
       }
     }
 
-    // Actualizar estado de la reserva
+    // Actualizar estado de la reserva a cancelado
     reservation.estado = "cancelado";
     reservation.fechaActualizacion = new Date();
     await queryRunner.manager.save(reservation);

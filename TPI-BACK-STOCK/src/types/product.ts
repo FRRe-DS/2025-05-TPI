@@ -1,43 +1,31 @@
-export interface productImage {
-  id?: number;
-  url: string;
-  productId?: number;
-  esPrincipal: boolean; // Según la API, debe indicar si es la imagen principal
-}
-
-export interface Category {
-  id: number;
-  nombre: string;
-  descripcion?: string;
-}
+import { Category } from "../models/Category.entity";
 
 export interface Product {
   id: number;
-  nombre: string;
-  descripcion?: string;
-  precio: number;
-  stockDisponible: number;
-  pesoKg?: number;
-  imagenes?: productImage[];
-  categorias?: Category[];
+  name: string;
+  description?: string;
+  price: number;
+  initialStock: number;
+  availableStock: number;
+  unitOfMeasurement?: string;
+  categories?: Category[];
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 export interface ProductInput {
-  nombre: string;
-  descripcion?: string;
-  precio: number;
-  stockInicial: number;
-  pesoKg?: number;
-  imagenes?: productImage[];
-  categoriaIds?: number[];
+  name: string;
+  description?: string;
+  price: number;
+  initialStock: number;
+  availableStock: number;
+  unitOfMeasurement?: string;
+  categoryIds?: number[];
 }
 
-export interface ProductUpdate {
-  nombre?: string;
-  descripcion?: string;
-  precio?: number;
-  stockInicial?: number;
-  pesoKg?: number;
-  imagenes?: productImage[];
-  categoriaIds?: number[];
+export interface ProductFilters {
+  page?: number;
+  limit?: number;
+  search?: string;
+  categoryId?: number;
 }

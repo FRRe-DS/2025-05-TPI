@@ -68,7 +68,7 @@ export const getReservationByIdHandler = async (req: Request, res: Response) => 
 export const getUserReservationsHandler = async (req: Request, res: Response) => {
   try {
     const usuarioId = req.query.usuarioId ? parseInt(req.query.usuarioId as string) : undefined;
-    const estado = req.query.estado as string | undefined;
+    const estadoQuery = req.query.estado as string | undefined;
     const page = req.query.page ? parseInt(req.query.page as string) : 1;
     const limit = req.query.limit ? parseInt(req.query.limit as string) : 10;
 
@@ -77,6 +77,18 @@ export const getUserReservationsHandler = async (req: Request, res: Response) =>
         code: "MISSING_USER_ID",
         message: "El parámetro usuarioId es requerido",
       });
+    }
+
+    const validStates = ["confirmado", "pendiente", "cancelado"] as const;
+    let estado: 'confirmado' | 'pendiente' | 'cancelado' | undefined = undefined;
+    if (estadoQuery) {
+      if (!validStates.includes(estadoQuery as any)) {
+        return res.status(400).json({
+          code: "INVALID_STATE",
+          message: "Estado inválido. Debe ser: confirmado, pendiente o cancelado",
+        });
+      }
+      estado = estadoQuery as 'confirmado' | 'pendiente' | 'cancelado';
     }
 
     const reservations = await getUserReservations({

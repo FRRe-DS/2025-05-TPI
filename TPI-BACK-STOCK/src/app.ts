@@ -1,35 +1,37 @@
-import express, { json } from "express";
-import cors from 'cors';
-import dotenv from "dotenv";
-
-dotenv.config();
+import express from "express";
+import { appDataSource } from "./config/appDataSource";
+import productRoutes from "./routes/productRoutes";
+import reservationRoutes from "./routes/reservationRoutes";
 
 const app = express();
+app.use(express.json());
 
-const allowedOrigins = [
-  'http://localhost:3000',
-  'http://localhost:5173'
-];
+// Inicializar base de datos
+appDataSource.initialize()
+  .then(() => {
+    console.log("✅ Base de datos conectada");
+  })
+  .catch((error) => console.log("❌ Error conectando a la base de datos:", error));
 
-/*
-  Configuracion para orgigenes y permisos 
-  (Acepta cualquier peticion que venga las urls establecidas y con el header de credenciales)
-*/
-const corsOptions: cors.CorsOptions = {
-  // Solo permite las URLs definidas en el arreglo allowedOrigins
-  origin: allowedOrigins,
-  
-  // Es vital permitir credenciales si usas headers de Autorización (JWT)
-  //credentials: true, 
-};
+// Rutas
+app.use("/v1/productos", productRoutes);
+app.use("/v1/reservas", reservationRoutes);
 
-app.use(json());
-app.use(cors(corsOptions));
+// Ruta raíz
+app.get("/", (req, res) => {
+  res.json({
+    message: "API de Gestión de Stock - TPI Desarrollo de Software",
+    version: "1.0.0",
+    endpoints: {
+      productos: "/v1/productos",
+      reservas: "/v1/reservas"
+    }
+  });
+});
 
 const PORT = process.env.PORT || 8080;
+app.listen(PORT, () => {
+  console.log(`🚀 Servidor corriendo en puerto ${PORT}`);
+});
 
-app.get('/', (req, res) => res.send('Prueba api node'))
-
-app.listen(PORT, ()=>{
-  console.log("Api funcionando en el puerto 8080")
-}) 
+export default app;

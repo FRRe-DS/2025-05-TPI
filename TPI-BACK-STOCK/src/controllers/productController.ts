@@ -27,7 +27,7 @@ export class ProductController {
   getProductById = (req: Request, res: Response): void => {
     try {
       const id = parseInt(req.params.productoId);
-      const product = this.productService.findProductById(id);
+      const product = this.productService.getProductById(id);
 
       if (!product) {
         res.status(404).json({ error: 'Producto no encontrado' });

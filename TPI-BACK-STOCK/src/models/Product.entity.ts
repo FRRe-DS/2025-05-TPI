@@ -38,7 +38,7 @@ export class Product {
     joinColumn: { name: "productId", referencedColumnName: "id" },
     inverseJoinColumn: { name: "categoryId", referencedColumnName: "id" },
   })
-  categorias!: Category[];
+  categories!: Category[];
 
   @CreateDateColumn()
   fechaCreacion!: Date;
