@@ -1,10 +1,7 @@
-function App() {
+import ReservationTestPage from "./pages/reservations/ReservationTestPage";
 
-  return (
-    <>
-      <h1> FRONT INIT </h1>
-    </>
-  )
+function App() {
+  return <ReservationTestPage />;
 }
 
-export default App
+export default App;
