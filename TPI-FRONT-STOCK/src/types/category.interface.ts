@@ -1,17 +1,21 @@
-// src/interfaces/category.interface.ts
-// src/interfaces/category.interface.ts
-import type { IProduct } from "./product.interface";
-
+/**
+ * Categoría de producto.
+*/
 export interface ICategory {
-    id: number;
-    name: string;
-    products?: IProduct[];
+  id: number;
+  nombre: string;
+  descripcion: string | null;
 }
 
-export interface ICreateCategory {
-    name: string;
+/**
+ * Estructra para crear una categoria.
+*/
+export interface ICategoryInput {
+  nombre: string; 
+  descripcion?: string | null;
 }
 
-export interface IUpdateCategory {
-    name?: string;
-}
+/**
+ * Tipo para actualizar un producto
+*/
+export type IUpdateCategory = Partial<ICategoryInput>;
