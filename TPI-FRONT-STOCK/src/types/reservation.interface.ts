@@ -1,5 +1,6 @@
 // src/interfaces/reservation.interface.ts
-import type { IReservationItem } from "./reservation-item.interface";
+
+import type { IReservationProduct, IReservationProductInput } from ".";
 
 enum ReservationStatus {
     PENDING = 'PENDING',
@@ -8,19 +9,49 @@ enum ReservationStatus {
 }
 
 export interface IReservation {
-    id: number;
-    userId: number;
+  id: number;
+  idPurchase: string;
+  userId: number;
+  status: ReservationStatus;
+  reservationDate: Date;
+  expiredAt: Date;
+  updatedAt: Date;
+  totalQuantity: number;
+  products: IReservationProduct[];
+}
+
+export interface IReservationInput {
+  idPurchase: string; 
+  userId: number; 
+  products: IReservationProductInput[]; 
+}
+
+export interface IReservaOutput {
+  id: number;
+  idPurchase: string;
+  userId: number;
+  status: ReservationStatus;
+  expiredAt: Date; 
+  reservationDate: Date;
+}
+
+export interface IReservationUpdate {
+    userId: number; 
     status: ReservationStatus;
-    reservationDate: Date;
-    totalQuantity: number;
-    items: IReservationItem[];
 }
 
-export interface ICreateReservation {
-    userId: number;
-    items: ICreateReservationItem[];
+export interface IReservationCanceled {
+  reason: string; 
 }
 
-export interface IUpdateReservation {
-    status?: ReservationStatus;
+export interface IReleaseInput {
+  idReservation: number; 
+  userId: number;
+  reason: string; 
+}
+
+export interface IReleaseOutput {
+  message: string;
+  idReservation: number;
+  status: 'liberado';
 }
