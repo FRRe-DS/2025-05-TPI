@@ -7,20 +7,14 @@ dotenv.config();
 
 const app = express();
 
-const allowedOrigins = [
-  'http://localhost:3000',
-  'http://localhost:5173'
-];
-
 /*
   Configuracion para orgigenes y permisos 
   (Acepta cualquier peticion que venga las urls establecidas y con el header de credenciales)
 */
 const corsOptions = {
   origin: [
-    "http://localhost:5173",
-    "https://mammasoul.com",
-    "https://www.mammasoul.com"
+    'http://localhost:3000',
+  'http://localhost:5173'
   ],
   optionsSuccessStatus: 200 
 }
