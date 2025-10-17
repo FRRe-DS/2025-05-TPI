@@ -1,8 +1,14 @@
-function App() {
+import type { ReactNode } from "react"
+
+interface AppProps{
+  children: ReactNode;
+}
+
+function App({children}: AppProps) {
 
   return (
     <>
-      <h1> FRONT INIT </h1>
+      {children}
     </>
   )
 }

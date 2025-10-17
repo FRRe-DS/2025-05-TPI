@@ -1,37 +1,51 @@
-import express from "express";
-import { appDataSource } from "./config/appDataSource";
-import productRoutes from "./routes/productRoutes";
-import reservationRoutes from "./routes/reservationRoutes";
+import express, { json } from "express";
+import cors from 'cors';
+import dotenv from "dotenv";
+import { AppDataSource } from "./config/appDataSource";
+
+dotenv.config();
 
 const app = express();
 app.use(express.json());
 
-// Inicializar base de datos
-appDataSource.initialize()
-  .then(() => {
-    console.log("✅ Base de datos conectada");
-  })
-  .catch((error) => console.log("❌ Error conectando a la base de datos:", error));
+/*
+  Configuracion para orgigenes y permisos 
+  (Acepta cualquier peticion que venga las urls establecidas y con el header de credenciales)
+*/
+const corsOptions = {
+  origin: [
+    'http://localhost:3000',
+  'http://localhost:5173'
+  ],
+  optionsSuccessStatus: 200 
+}
 
-// Rutas
-app.use("/v1/productos", productRoutes);
-app.use("/v1/reservas", reservationRoutes);
-
-// Ruta raíz
-app.get("/", (req, res) => {
-  res.json({
-    message: "API de Gestión de Stock - TPI Desarrollo de Software",
-    version: "1.0.0",
-    endpoints: {
-      productos: "/v1/productos",
-      reservas: "/v1/reservas"
-    }
-  });
-});
+app.use(cors(corsOptions));
+app.use(json());
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
   console.log(`🚀 Servidor corriendo en puerto ${PORT}`);
 });
 
-export default app;
+const initApp = async () => {
+  try {
+
+    // Conexion a base de datos
+    await AppDataSource.initialize();
+    console.log("Conexion establecida")
+
+    // Rutas
+    app.get('/', (req, res) => res.send('Prueba api node'));
+
+    // Iniciar servidor
+    app.listen(process.env.PORT || 8080, () => {
+      console.log('API funcionando en el puerto ' + process.env.PORT);
+    });
+  } catch (error) {
+    console.error("❌ Error initializing app:", error);
+    process.exit(1);
+  }
+};
+
+initApp();
