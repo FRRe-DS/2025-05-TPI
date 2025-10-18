@@ -1,4 +1,3 @@
-export * from "./category.interface"
-export * from "./embeddables.interface"
-export * from "./product.interface"
+// Solo exportar tipos relacionados con reservas
 export * from "./reservation.interface"
+export * from "./reservationItem.interface"
