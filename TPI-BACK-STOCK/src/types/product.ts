@@ -1,4 +1,4 @@
-import { Category } from "../models/Category.entity";
+import { Category } from "../models/entities/Category.entity";
 
 export interface Product {
   id: number;

@@ -1,24 +1,24 @@
-import { appDataSource } from "../config/appDataSource";
-import { Reservation } from "../models/Reservation.entity";
-import { ReservationItem } from "../models/ReservationItem.entity";
-import { Product } from "../models/Product.entity";
+import { AppDataSource} from "../config/appDataSource";
+import { Reservation } from "../models/entities";
+import { ReservationItem } from "../models/entities";
+import { Product } from "../models/entities";
 import { ReservaInput, GetReservationsFilters } from "../types/reservation";
 
-const reservationRepository = appDataSource.getRepository(Reservation);
-const reservationItemRepository = appDataSource.getRepository(ReservationItem);
-const productRepository = appDataSource.getRepository(Product);
+const reservationRepository = AppDataSource.getRepository(Reservation);
+const reservationItemRepository = AppDataSource.getRepository(ReservationItem);
+const productRepository = AppDataSource.getRepository(Product);
 
 export const createReservation = async (data: ReservaInput) => {
-  const queryRunner = appDataSource.createQueryRunner();
+  const queryRunner = AppDataSource.createQueryRunner();
   await queryRunner.connect();
   await queryRunner.startTransaction();
 
   try {
     // Crear la reserva
     const reservation = new Reservation();
-    reservation.idCompra = data.idCompra;
-    reservation.usuarioId = data.usuarioId;
-    reservation.estado = "confirmado";
+    reservation.purchaseId = data.idCompra;
+    reservation.userId = data.usuarioId;
+    reservation.state = "confirmado";
     reservation.expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 horas
 
     const savedReservation = await queryRunner.manager.save(reservation);
@@ -34,22 +34,22 @@ export const createReservation = async (data: ReservaInput) => {
         throw new Error(`Producto no encontrado: ${item.idProducto}`);
       }
 
-      if (product.stockDisponible < item.cantidad) {
+      if (product.availableStock < item.cantidad) {
         throw new Error(
-          `Stock insuficiente para el producto ${product.nombre}. Disponible: ${product.stockDisponible}, Solicitado: ${item.cantidad}`
+          `Stock insuficiente para el producto ${product.name}. Disponible: ${product.availableStock}, Solicitado: ${item.cantidad}`
         );
       }
 
       // Reducir stock
-      product.stockDisponible -= item.cantidad;
+      product.availableStock -= item.cantidad;
       await queryRunner.manager.save(product);
 
       // Crear item de reserva
       const reservationItem = new ReservationItem();
       reservationItem.reservation = savedReservation;
       reservationItem.product = product;
-      reservationItem.cantidad = item.cantidad;
-      reservationItem.precioUnitario = product.precio;
+      reservationItem.quantity = item.cantidad;
+      reservationItem.unitPriceAtReservation = product.price;
 
       await queryRunner.manager.save(reservationItem);
     }
@@ -58,11 +58,11 @@ export const createReservation = async (data: ReservaInput) => {
 
     return {
       idReserva: savedReservation.id,
-      idCompra: savedReservation.idCompra,
-      usuarioId: savedReservation.usuarioId,
-      estado: savedReservation.estado,
+      idCompra: savedReservation.purchaseId,
+      usuarioId: savedReservation.userId,
+      estado: savedReservation.state,
       expiresAt: savedReservation.expiresAt,
-      fechaCreacion: savedReservation.fechaCreacion,
+      fechaCreacion: savedReservation.createdAt,
     };
   } catch (error) {
     await queryRunner.rollbackTransaction();
@@ -74,7 +74,7 @@ export const createReservation = async (data: ReservaInput) => {
 
 export const getReservationById = async (idReserva: number, usuarioId: number) => {
   const reservation = await reservationRepository.findOne({
-    where: { id: idReserva, usuarioId },
+    where: { id: idReserva, userId: usuarioId },
     relations: ["items", "items.product"],
   });
 
@@ -84,17 +84,17 @@ export const getReservationById = async (idReserva: number, usuarioId: number) =
 
   return {
     idReserva: reservation.id,
-    idCompra: reservation.idCompra,
-    usuarioId: reservation.usuarioId,
-    estado: reservation.estado,
+    idCompra: reservation.purchaseId,
+    usuarioId: reservation.userId,
+    estado: reservation.state,
     expiresAt: reservation.expiresAt,
-    fechaCreacion: reservation.fechaCreacion,
-    fechaActualizacion: reservation.fechaActualizacion,
+    fechaCreacion: reservation.createdAt,
+    fechaActualizacion: reservation.updatedAt,
     productos: reservation.items.map((item: ReservationItem) => ({
       idProducto: item.product.id,
-      nombre: item.product.nombre,
-      cantidad: item.cantidad,
-      precioUnitario: item.precioUnitario,
+      nombre: item.product.name,
+      cantidad: item.quantity,
+      precioUnitario: item.unitPriceAtReservation,
     })),
   };
 };
@@ -106,31 +106,31 @@ export const getUserReservations = async (filters: GetReservationsFilters) => {
     .createQueryBuilder("reservation")
     .leftJoinAndSelect("reservation.items", "items")
     .leftJoinAndSelect("items.product", "product")
-    .where("reservation.usuarioId = :usuarioId", { usuarioId });
+    .where("reservation.userId = :usuarioId", { usuarioId });
 
   if (estado) {
-    query.andWhere("reservation.estado = :estado", { estado });
+    query.andWhere("reservation.state = :estado", { estado });
   }
 
   const reservations = await query
     .skip((page - 1) * limit)
     .take(limit)
-    .orderBy("reservation.fechaCreacion", "DESC")
+    .orderBy("reservation.createdAt", "DESC")
     .getMany();
 
   return reservations.map((reservation: Reservation) => ({
     idReserva: reservation.id,
-    idCompra: reservation.idCompra,
-    usuarioId: reservation.usuarioId,
-    estado: reservation.estado,
+    idCompra: reservation.purchaseId,
+    usuarioId: reservation.userId,
+    estado: reservation.state,
     expiresAt: reservation.expiresAt,
-    fechaCreacion: reservation.fechaCreacion,
-    fechaActualizacion: reservation.fechaActualizacion,
+    fechaCreacion: reservation.createdAt,
+    fechaActualizacion: reservation.updatedAt,
     productos: reservation.items.map((item: ReservationItem) => ({
       idProducto: item.product.id,
-      nombre: item.product.nombre,
-      cantidad: item.cantidad,
-      precioUnitario: item.precioUnitario,
+      nombre: item.product.name,
+      cantidad: item.quantity,
+      precioUnitario: item.unitPriceAtReservation,
     })),
   }));
 };
@@ -141,7 +141,7 @@ export const updateReservationStatus = async (
   estado: string
 ) => {
   const reservation = await reservationRepository.findOne({
-    where: { id: idReserva, usuarioId },
+    where: { id: idReserva, userId: usuarioId },
     relations: ["items", "items.product"],
   });
 
@@ -149,34 +149,32 @@ export const updateReservationStatus = async (
     return null;
   }
 
-  reservation.estado = estado;
-  reservation.fechaActualizacion = new Date();
+  reservation.state = estado;
   await reservationRepository.save(reservation);
 
   return {
     idReserva: reservation.id,
-    idCompra: reservation.idCompra,
-    usuarioId: reservation.usuarioId,
-    estado: reservation.estado,
+    idCompra: reservation.purchaseId,
+    usuarioId: reservation.userId,
+    estado: reservation.state,
     expiresAt: reservation.expiresAt,
-    fechaCreacion: reservation.fechaCreacion,
-    fechaActualizacion: reservation.fechaActualizacion,
+    fechaCreacion: reservation.createdAt,
+    fechaActualizacion: reservation.updatedAt,
     productos: reservation.items.map((item: ReservationItem) => ({
       idProducto: item.product.id,
-      nombre: item.product.nombre,
-      cantidad: item.cantidad,
-      precioUnitario: item.precioUnitario,
+      nombre: item.product.name,
+      cantidad: item.quantity,
+      precioUnitario: item.unitPriceAtReservation,
     })),
   };
 };
 
 export const cancelReservation = async (idReserva: number, motivo: string) => {
-  const queryRunner = appDataSource.createQueryRunner();
+  const queryRunner = AppDataSource.createQueryRunner();
   await queryRunner.connect();
   await queryRunner.startTransaction();
 
   try {
-    // Buscar la reserva con sus items usando INNER JOIN para evitar el error de LEFT JOIN con lock
     const reservation = await queryRunner.manager
       .createQueryBuilder(Reservation, "reservation")
       .innerJoinAndSelect("reservation.items", "items")
@@ -198,14 +196,13 @@ export const cancelReservation = async (idReserva: number, motivo: string) => {
       });
 
       if (product) {
-        product.stockDisponible += item.cantidad;
+        product.availableStock += item.quantity;
         await queryRunner.manager.save(product);
       }
     }
 
     // Actualizar estado de la reserva a cancelado
-    reservation.estado = "cancelado";
-    reservation.fechaActualizacion = new Date();
+    reservation.state = "cancelado";
     await queryRunner.manager.save(reservation);
 
     await queryRunner.commitTransaction();

@@ -1,5 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
-import { Product } from '.';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
+import { Product } from './Product.entity';
 
 @Entity('product_images')
 export class ProductImage {
@@ -9,13 +9,13 @@ export class ProductImage {
     @Column({ length: 500 })
     url!: string;
 
-    @Column('boolean', { name: 'is_main', default: false })
-    isMain!: boolean;
+    @Column({ length: 255, nullable: true })
+    alt?: string;
 
-    // RELATION ManyToOne to Product.
+    @Column({ name: 'is_primary', default: false })
+    isPrimary!: boolean;
+
     @ManyToOne(() => Product, (product: Product) => product.images, { onDelete: 'CASCADE' })
+    @JoinColumn({ name: 'product_id' })
     product!: Product;
-
-    @Column({ name: 'product_id' })
-    productId!: number; 
 }

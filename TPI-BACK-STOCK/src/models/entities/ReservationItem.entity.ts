@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
 import { Reservation, Product } from './';
 
 @Entity('reservation_items')
@@ -16,15 +16,11 @@ export class ReservationItem {
 
     // ManyToOne to Reservation
     @ManyToOne(() => Reservation, reservation => reservation.items)
+    @JoinColumn({ name: 'reservation_id' })
     reservation!: Reservation;
-
-    @Column({ name: 'reservation_id' })
-    reservationId!: number;
 
     // ManyToOne to Product
     @ManyToOne(() => Product, product => product.reservationItems)
+    @JoinColumn({ name: 'product_id' })
     product!: Product;
-
-    @Column({ name: 'product_id' })
-    productId!: number;
 }
