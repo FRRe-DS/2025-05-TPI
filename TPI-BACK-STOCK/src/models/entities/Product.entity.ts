@@ -1,15 +1,14 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToMany, JoinTable } from 'typeorm';
-import { ProductImage } from './';
-import { ReservationItem } from './';
-import { Category } from './';
-import { Dimension } from '../embeddable';
-import { WarehouseLocation } from '../embeddable';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable, OneToMany } from 'typeorm';
+import { Category } from './Category.entity';
+import { ProductImage } from './productImages.entity';
+import { ReservationItem } from './ReservationItem.entity';
 
 @Entity('products')
 export class Product {
-  @PrimaryGeneratedColumn()
-  id!: number;
+    @PrimaryGeneratedColumn()
+    id!: number;
 
+<<<<<<< HEAD
   @Column({ name: 'name',  type: 'varchar', length: 200 })
   name!: string;
 
@@ -24,28 +23,45 @@ export class Product {
 
   @Column({ name: 'weight_kg', type:'decimal', precision: 6, scale: 2 })
   weightKg!: number;
+=======
+    @Column({ length: 255 , type: 'varchar' })
+    name!: string;
 
-  @Column(() => Dimension)
-  dimensions!: Dimension;
+    @Column('text', { nullable: true })
+    description?: string;
 
-  @Column(() => WarehouseLocation)
-  location!: WarehouseLocation; 
+    @Column('decimal', { precision: 10, scale: 2 })
+    price!: number;
 
+    @Column({ name: 'initial_stock', type: 'int', default: 0 })
+    initialStock!: number;
 
-  // ManyToMany with Category. Creates the join table 'product_category'.
-  @ManyToMany(() => Category, (category: Category) => category.products)
-  @JoinTable({
-      name: "product_category", 
-      joinColumn: { name: "product_id", referencedColumnName: "id" },
-      inverseJoinColumn: { name: "category_id", referencedColumnName: "id" }
-  })
-  categories!: Category[];
+    @Column({ name: 'available_stock', type: 'int', default: 0 })
+    availableStock!: number;
+>>>>>>> 460d5b58158ed05419bfff66e97e2f23ee495e02
 
-  // OneToMany with Product Images
-  @OneToMany(() => ProductImage, (image: ProductImage) => image.product, { cascade: ['insert', 'update'] })
-  images!: ProductImage[];
+    @Column({ name: 'unit_of_measurement', length: 100, nullable: true })
+    unitOfMeasurement?: string;
 
-  // OneToMany with Reservation Items
-  @OneToMany(() => ReservationItem, (item: ReservationItem) => item.product)
-  reservationItems!: ReservationItem[];
+    @Column('timestamp', { name: 'created_at', default: () => 'CURRENT_TIMESTAMP' })
+    createdAt!: Date;
+
+    @Column('timestamp', { name: 'updated_at', default: () => 'CURRENT_TIMESTAMP' })
+    updatedAt!: Date;
+
+    // RELATION: Many to many with categories
+    @ManyToMany(() => Category, (category: Category) => category.products)
+    @JoinTable({
+        name: 'product_categories',
+        joinColumn: { name: 'productId', referencedColumnName: 'id' },
+        inverseJoinColumn: { name: 'categoryId', referencedColumnName: 'id' }
+    })
+    categories!: Category[];
+
+    // RELATION: One product has many images
+    @OneToMany(() => ProductImage, (image: ProductImage) => image.product, { cascade: true })
+    images!: ProductImage[];
+
+    @OneToMany(() => ReservationItem, (item: ReservationItem) => item.product)
+    reservationItems!: ReservationItem[];
 }
