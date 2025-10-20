@@ -7,7 +7,7 @@ export class Category {
   @PrimaryGeneratedColumn()
   id!: number;
 
-  @Column({ type: 'varchar', length: 100, unique: true })
+  @Column({ name: 'name' ,type: 'varchar', length: 100, unique: true })
   name!: string;
   @Column('text', { nullable: true })
   description!: string | null;

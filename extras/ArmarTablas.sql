@@ -35,8 +35,8 @@ INSERT INTO categories (name, description) VALUES
 -- -----------------------------------------------------------
 INSERT INTO products (
     name, description, unit_price, available_stock, weight_kg, 
-    length_cm, width_cm, height_cm, 
-    warehouse_id, aisle, shelf, level
+    "dimensionsLength_cm", "dimensionsWidth_cm", "dimensionsHeight_cm", 
+    "locationWarehouse_id", "locationAisle", "locationShelf", "locationLevel"
 ) VALUES
 -- ID 1: Laptop (Electronics, Clearance)
 ('Laptop Pro X', 'Portátil potente M3.', 1499.99, 50, 1.85, 35.5, 24.5, 1.7, 1, 'A', 'R3', 2), 
@@ -122,10 +122,26 @@ INSERT INTO reservations (purchase_id, user_id, state, created_at, expires_at) V
     NOW() + INTERVAL '1 day' 
 );
 
--- 7. CARGA DE ÍTEMS DE RESERVA
--- -----------------------------------------------------------
-INSERT INTO reservation_items (reservation_id, product_id, quantity, unit_price_at_reservation) VALUES
--- Reserva de 5 Laptops
-((SELECT id FROM reservations WHERE purchase_id = 'COMPRA-PORTAL-001'), (SELECT id FROM products WHERE name = 'Laptop Pro X'), 5, 1499.99),
--- Reserva de 2 Sillas
-((SELECT id FROM reservations WHERE purchase_id = 'COMPRA-PORTAL-001'), (SELECT id FROM products WHERE name = 'Silla Ergonómica Mesh'), 2, 149.00);
+INSERT INTO reservation_items (reservation_id, product_id, quantity, unit_price, name)
+SELECT 
+    (SELECT id FROM reservations WHERE purchase_id = 'COMPRA-PORTAL-001'), -- ID de la reserva (FK)
+    p.id,                                                                -- ID del Producto (FK)
+    item.cantidad,                                                       -- Cantidad
+    item.precio,                                                         -- Precio 'congelado' (unit_price_at_reservation)
+    item.nombre_producto                                                 -- Nombre del producto (para la columna 'name')
+FROM (
+    -- Genera las filas de datos
+    VALUES
+        ('Laptop Pro X', 5, 1499.99),
+        ('Silla Ergonómica Mesh', 2, 149.00)
+) AS item(nombre_producto, cantidad, precio) 
+JOIN products AS p 
+    ON p.name = item.nombre_producto;
+
+
+
+
+
+
+
+

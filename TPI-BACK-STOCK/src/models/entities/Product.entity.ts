@@ -10,19 +10,19 @@ export class Product {
   @PrimaryGeneratedColumn()
   id!: number;
 
-  @Column({ length: 200 })
+  @Column({ name: 'name',  type: 'varchar', length: 200 })
   name!: string;
 
-  @Column('text')
+  @Column({name:'description', type:'varchar'})
   description!: string;
 
-  @Column('decimal', { name: 'unit_price', precision: 10, scale: 2 })
+  @Column({ name: 'unit_price', type:'decimal', precision: 10, scale: 2 })
   unitPrice!: number; 
 
-  @Column('int', { name: 'available_stock' })
+  @Column({ name: 'available_stock', type:'integer' })
   availableStock!: number;
 
-  @Column('decimal', { name: 'weight_kg', precision: 6, scale: 2 })
+  @Column({ name: 'weight_kg', type:'decimal', precision: 6, scale: 2 })
   weightKg!: number;
 
   @Column(() => Dimension)

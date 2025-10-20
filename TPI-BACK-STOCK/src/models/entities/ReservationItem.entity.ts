@@ -5,11 +5,17 @@ import { Reservation, Product } from './';
 export class ReservationItem {
     @PrimaryGeneratedColumn()
     id!: number;
+
+    @Column({ name: 'product_id' })
+    productId!: number;
     
-    @Column('int')
+    @Column({name: 'name', type: 'varchar'})
+    name!: string;
+
+    @Column({name: 'quantity'})
     quantity!: number;
 
-    @Column('decimal', { name: 'unit_price_at_reservation', precision: 10, scale: 2 })
+    @Column({ name: 'unit_price', type: 'decimal',  precision: 10, scale: 2 })
     unitPriceAtReservation!: number; // Price "frozen" at the time of reservation
 
     // RELATIONS
@@ -24,7 +30,4 @@ export class ReservationItem {
     // ManyToOne to Product
     @ManyToOne(() => Product, product => product.reservationItems)
     product!: Product;
-
-    @Column({ name: 'product_id' })
-    productId!: number;
 }

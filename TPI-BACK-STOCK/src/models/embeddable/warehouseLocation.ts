@@ -1,16 +1,14 @@
 import { Column } from 'typeorm';
-
-// This object will be embedded into the Product entity
 export class WarehouseLocation {
-  @Column({ name: 'warehouse_id' })
-  warehouseId!: number;
+  @Column({ name: 'warehouse_id', type:'integer' })
+  warehouseId!: number; 
 
-  @Column({ length: 50 })
+  @Column({ name: 'aisle', type:'varchar' })
   aisle!: string; 
 
-  @Column({ length: 50 })
+  @Column({ name: 'shelf', type:'varchar' })
   shelf!: string;
 
-  @Column('int')
+  @Column({ name: 'level', type:'integer' })
   level!: number;
 }

@@ -20,7 +20,7 @@ export const AppDataSource = new DataSource({
   },*/ 
   synchronize: !isProduction, 
   logging: true,
-  entities: [Product, Category, Reservation, ReservationItem], //<-- Aca van las entidades o modelos
+  entities: [Product, Category, Reservation, ReservationItem, ProductImage], //<-- Aca van las entidades o modelos
   migrations: ["src/migrations/*.ts"],
   subscribers: [],
 });

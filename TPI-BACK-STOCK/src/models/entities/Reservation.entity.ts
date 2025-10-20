@@ -1,24 +1,30 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import { ReservationItem } from './';
 
+export enum ReservationState {
+    CONFIRMED = 'CONFIRMED',
+    PENDING = 'PENDING',
+    CANCELED = 'CANCELED'
+}
+
 @Entity('reservations')
 export class Reservation {
     @PrimaryGeneratedColumn()
     id!: number;
 
-    @Column({ name: 'purchase_id', length: 50, unique: true })
+    @Column({ name: 'purchase_id', type: 'varchar', length: 50, unique: true })
     purchaseId!: string; // ID of the purchase in the Shopping Portal
 
-    @Column({ name: 'user_id', length: 50 })
-    userId!: string; // ID of the buyer
+    @Column({ name: 'user_id', type: 'integer'})
+    userId!: number; // ID of the buyer
 
-    @Column({ length: 50 })
-    state!: string; // 'PENDING', 'CANCELLED', 'RETRIEVED', etc.
+    @Column({ name: 'state', type: 'enum', enum: ReservationState, default: ReservationState.PENDING})
+    state!: ReservationState; 
 
-    @Column('timestamp', { name: 'created_at' })
+    @Column({ name: 'created_at', type: 'timestamp', default: () => 'CURRENT_TIMESTAMP'})
     createdAt!: Date;
 
-    @Column('timestamp', { name: 'expires_at' })
+    @Column({ name: 'expires_at', type: 'timestamp' })
     expiresAt!: Date; // For timeout logic
 
     // RELATION: One reservation has many items.
