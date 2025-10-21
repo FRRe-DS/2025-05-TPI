@@ -1,14 +1,13 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable, OneToMany } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable, OneToMany, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 import { Category } from './Category.entity';
 import { ProductImage } from './productImages.entity';
 import { ReservationItem } from './ReservationItem.entity';
 
 @Entity('products')
 export class Product {
-    @PrimaryGeneratedColumn()
-    id!: number;
+  @PrimaryGeneratedColumn()
+  id!: number;
 
-<<<<<<< HEAD
   @Column({ name: 'name',  type: 'varchar', length: 200 })
   name!: string;
 
@@ -23,45 +22,29 @@ export class Product {
 
   @Column({ name: 'weight_kg', type:'decimal', precision: 6, scale: 2 })
   weightKg!: number;
-=======
-    @Column({ length: 255 , type: 'varchar' })
-    name!: string;
 
-    @Column('text', { nullable: true })
-    description?: string;
+  @Column({ name: 'unit_of_measurement', length: 100, nullable: true })
+  unitOfMeasurement?: string;
 
-    @Column('decimal', { precision: 10, scale: 2 })
-    price!: number;
+  @CreateDateColumn({ name: 'created_at' })
+  createdAt!: Date;
 
-    @Column({ name: 'initial_stock', type: 'int', default: 0 })
-    initialStock!: number;
+  @UpdateDateColumn({ name: 'updated_at' })
+  updatedAt!: Date;
 
-    @Column({ name: 'available_stock', type: 'int', default: 0 })
-    availableStock!: number;
->>>>>>> 460d5b58158ed05419bfff66e97e2f23ee495e02
+  // RELATION: Many to many with categories
+  @ManyToMany(() => Category, (category: Category) => category.products)
+  @JoinTable({
+    name: 'product_categories',
+    joinColumn: { name: 'productId', referencedColumnName: 'id' },
+    inverseJoinColumn: { name: 'categoryId', referencedColumnName: 'id' }
+  })
+  categories!: Category[];
 
-    @Column({ name: 'unit_of_measurement', length: 100, nullable: true })
-    unitOfMeasurement?: string;
+  // RELATION: One product has many images
+  @OneToMany(() => ProductImage, (image: ProductImage) => image.product, { cascade: true })
+  images!: ProductImage[];
 
-    @Column('timestamp', { name: 'created_at', default: () => 'CURRENT_TIMESTAMP' })
-    createdAt!: Date;
-
-    @Column('timestamp', { name: 'updated_at', default: () => 'CURRENT_TIMESTAMP' })
-    updatedAt!: Date;
-
-    // RELATION: Many to many with categories
-    @ManyToMany(() => Category, (category: Category) => category.products)
-    @JoinTable({
-        name: 'product_categories',
-        joinColumn: { name: 'productId', referencedColumnName: 'id' },
-        inverseJoinColumn: { name: 'categoryId', referencedColumnName: 'id' }
-    })
-    categories!: Category[];
-
-    // RELATION: One product has many images
-    @OneToMany(() => ProductImage, (image: ProductImage) => image.product, { cascade: true })
-    images!: ProductImage[];
-
-    @OneToMany(() => ReservationItem, (item: ReservationItem) => item.product)
-    reservationItems!: ReservationItem[];
+  @OneToMany(() => ReservationItem, (item: ReservationItem) => item.product)
+  reservationItems!: ReservationItem[];
 }

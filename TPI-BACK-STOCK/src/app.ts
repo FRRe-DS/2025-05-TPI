@@ -36,6 +36,7 @@ const initApp = async () => {
     app.get('/', (req, res) => res.send('Prueba api node'));
     app.use("/v1/productos", productRoutes);
     app.use("/v1/reservas", reservationRoutes);
+    
 
     // Iniciar servidor
     const PORT = process.env.PORT || 8080;

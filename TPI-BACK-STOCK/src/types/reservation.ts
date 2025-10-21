@@ -1,3 +1,10 @@
+export enum ReservationState {
+  CONFIRMED = 'CONFIRMED',
+  PENDING = 'PENDING',
+  CANCELED = 'CANCELED'
+}
+
+
 export interface ProductoReserva {
   idProducto: number;
   cantidad: number;

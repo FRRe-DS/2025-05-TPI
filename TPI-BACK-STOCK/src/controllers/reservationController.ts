@@ -1,179 +1,101 @@
-import { Request, Response } from "express";
-import {
-  createReservation,
-  getReservationById,
-  getUserReservations,
-  updateReservationStatus,
-  cancelReservation,
-} from "../services/reservationService";
-import { ReservaInput, ActualizarReservaInput, CancelacionReservaInput } from "../types/reservation";
+// src/controllers/ReservationController.ts
 
-export const createReservationHandler = async (req: Request, res: Response) => {
-  try {
-    const data: ReservaInput = req.body;
-    const reservation = await createReservation(data);
-    res.status(201).json(reservation);
-  } catch (error: any) {
-    if (error.message.includes("Stock insuficiente")) {
-      return res.status(400).json({
-        code: "INSUFFICIENT_STOCK",
-        message: error.message,
-      });
-    }
-    if (error.message.includes("Producto no encontrado")) {
-      return res.status(404).json({
-        code: "PRODUCT_NOT_FOUND",
-        message: error.message,
-      });
-    }
-    res.status(500).json({
-      code: "INTERNAL_ERROR",
-      message: "Error al crear la reserva",
-      details: error.message,
-    });
+import { Request, Response, NextFunction } from 'express';
+import { ReservationService } from '../services';
+import { ReservationState } from '../types/reservation'; 
+
+// --- Definición de Errores (Asumiendo que existen) ---
+class ResourceNotFoundError extends Error {} 
+
+
+export class ReservationController {
+    
+  private reservationService: ReservationService;
+
+  constructor(reservationService: ReservationService) {
+    this.reservationService = reservationService;
   }
-};
 
-export const getReservationByIdHandler = async (req: Request, res: Response) => {
-  try {
-    const idReserva = parseInt(req.params.idReserva);
-    const usuarioId = req.query.usuarioId ? parseInt(req.query.usuarioId as string) : undefined;
-
-    if (!usuarioId) {
-      return res.status(400).json({
-        code: "MISSING_USER_ID",
-        message: "El parámetro usuarioId es requerido",
-      });
+  getReservationsByUserId = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      //const usuarioId = req.user.id; 
+      const usuarioId = 12; // Temporal para pruebas
+      const reservations = await this.reservationService.getReservationsByUserId(usuarioId);
+      
+      // 200 OK
+      res.status(200).json(reservations);
+    } catch (error) {
+      // Se asume que cualquier error aquí es un 500 del servidor/DB
+      next(error); 
     }
-
-    const reservation = await getReservationById(idReserva, usuarioId);
-
-    if (!reservation) {
-      return res.status(404).json({
-        code: "RESERVATION_NOT_FOUND",
-        message: "Reserva no encontrada",
-      });
-    }
-
-    res.status(200).json(reservation);
-  } catch (error: any) {
-    res.status(500).json({
-      code: "INTERNAL_ERROR",
-      message: "Error al obtener la reserva",
-      details: error.message,
-    });
   }
-};
 
-export const getUserReservationsHandler = async (req: Request, res: Response) => {
-  try {
-    const usuarioId = req.query.usuarioId ? parseInt(req.query.usuarioId as string) : undefined;
-    const estadoQuery = req.query.estado as string | undefined;
-    const page = req.query.page ? parseInt(req.query.page as string) : 1;
-    const limit = req.query.limit ? parseInt(req.query.limit as string) : 10;
+  
+  getReservationById = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const idReserva = parseInt(req.params.id, 10);
+      //const usuarioId = req.user.id; 
+      const usuarioId = 12; // Temporal para pruebas
 
-    if (!usuarioId) {
-      return res.status(400).json({
-        code: "MISSING_USER_ID",
-        message: "El parámetro usuarioId es requerido",
-      });
-    }
+      // Se espera que el service lance ResourceNotFoundError si no encuentra la reserva
+      const reservation = await this.reservationService.getReservationById(idReserva, usuarioId);
 
-    const validStates = ["confirmado", "pendiente", "cancelado"] as const;
-    let estado: 'confirmado' | 'pendiente' | 'cancelado' | undefined = undefined;
-    if (estadoQuery) {
-      if (!validStates.includes(estadoQuery as any)) {
-        return res.status(400).json({
-          code: "INVALID_STATE",
-          message: "Estado inválido. Debe ser: confirmado, pendiente o cancelado",
-        });
+      res.status(200).json(reservation);
+    } catch (error) {
+      if (error instanceof ResourceNotFoundError) {
+          res.status(404).json({ message: error.message });
+      } else {
+          next(error); 
       }
-      estado = estadoQuery as 'confirmado' | 'pendiente' | 'cancelado';
     }
-
-    const reservations = await getUserReservations({
-      usuarioId,
-      estado,
-      page,
-      limit,
-    });
-
-    res.status(200).json(reservations);
-  } catch (error: any) {
-    res.status(500).json({
-      code: "INTERNAL_ERROR",
-      message: "Error al obtener las reservas",
-      details: error.message,
-    });
   }
-};
 
-export const updateReservationHandler = async (req: Request, res: Response) => {
-  try {
-    const idReserva = parseInt(req.params.idReserva);
-    const { usuarioId, estado }: ActualizarReservaInput = req.body;
+  updateReservationStatus = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const idReserva = parseInt(req.params.id, 10);
+      //const usuarioId = req.user.id; 
+      const usuarioId = 12; // Temporal para pruebas
 
-    if (!usuarioId || !estado) {
-      return res.status(400).json({
-        code: "INVALID_DATA",
-        message: "Los campos usuarioId y estado son requeridos",
-      });
+      const estado: ReservationState = req.body.estado as ReservationState; 
+
+      if (!estado) {
+        res.status(400).json({ message: "El campo 'estado' es requerido." });
+        return;
+      }
+
+      const updatedReservation = await this.reservationService.updateReservationStatus(
+        idReserva, 
+        usuarioId, 
+        estado
+      );
+
+      res.status(200).json(updatedReservation);
+
+    } catch (error) {
+      if (error instanceof ResourceNotFoundError) {
+        res.status(404).json({ message: error.message });
+      } else {
+        next(error);
+      }
     }
-
-    const validStates = ["confirmado", "pendiente", "cancelado"];
-    if (!validStates.includes(estado)) {
-      return res.status(400).json({
-        code: "INVALID_STATE",
-        message: "Estado inválido. Debe ser: confirmado, pendiente o cancelado",
-      });
-    }
-
-    const reservation = await updateReservationStatus(idReserva, usuarioId, estado);
-
-    if (!reservation) {
-      return res.status(404).json({
-        code: "RESERVATION_NOT_FOUND",
-        message: "Reserva no encontrada",
-      });
-    }
-
-    res.status(200).json(reservation);
-  } catch (error: any) {
-    res.status(500).json({
-      code: "INTERNAL_ERROR",
-      message: "Error al actualizar la reserva",
-      details: error.message,
-    });
   }
-};
 
-export const cancelReservationHandler = async (req: Request, res: Response) => {
-  try {
-    const idReserva = parseInt(req.params.idReserva);
-    const { motivo }: CancelacionReservaInput = req.body;
+  cancelReservation = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const idReserva = parseInt(req.params.id, 10);
+      
+      const result: boolean = await this.reservationService.cancelReservation(idReserva);
 
-    if (!motivo) {
-      return res.status(400).json({
-        code: "MISSING_REASON",
-        message: "El motivo de cancelación es requerido",
-      });
+      if (result) {
+        res.status(200).json({ 
+          message: `Reserva ${idReserva} cancelada y stock liberado exitosamente.`,
+          idReserva: idReserva
+        });
+      } else {
+        res.status(409).json({ message: `No se pudo cancelar la reserva ${idReserva}. Verifique si la reserva es cancelable o si ya fue cancelada.` });
+      }
+    } catch (error) {
+      next(error); 
     }
-
-    const result = await cancelReservation(idReserva, motivo);
-
-    if (!result) {
-      return res.status(404).json({
-        code: "RESERVATION_NOT_FOUND",
-        message: "Reserva no encontrada",
-      });
-    }
-
-    res.status(204).send();
-  } catch (error: any) {
-    res.status(500).json({
-      code: "INTERNAL_ERROR",
-      message: "Error al cancelar la reserva",
-      details: error.message,
-    });
   }
-};
+}
