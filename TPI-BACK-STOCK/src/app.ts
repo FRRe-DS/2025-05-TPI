@@ -1,7 +1,8 @@
 import express, { json } from "express";
-import cors from 'cors';
+import cors from "cors";
 import dotenv from "dotenv";
 import { AppDataSource } from "./config/appDataSource";
+import { categoryRouter } from "./routes/category.routes";
 
 dotenv.config();
 
@@ -14,7 +15,7 @@ const app = express();
 const corsOptions = {
   origin: [
     'http://localhost:3000',
-  'http://localhost:5173'
+    'http://localhost:5173'
   ],
   optionsSuccessStatus: 200 
 }
@@ -33,6 +34,7 @@ const initApp = async () => {
 
     // Rutas
     app.get('/', (req, res) => res.send('Prueba api node'));
+    app.use("/categorias", categoryRouter);
 
     // Iniciar servidor
     app.listen(process.env.PORT || 8080, () => {
@@ -45,3 +47,4 @@ const initApp = async () => {
 };
 
 initApp();
+
