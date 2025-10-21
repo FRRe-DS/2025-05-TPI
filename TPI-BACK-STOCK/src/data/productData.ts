@@ -1,5 +1,5 @@
-import type { Product } from "../models/products.js";
-import type { productImage } from "../types/product.js";
+import type { Product } from "../models/products";
+import type { productImage } from "../types/product";
 
 export const productsData = [
   {
