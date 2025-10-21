@@ -2,6 +2,8 @@ import express, { json } from "express";
 import cors from 'cors';
 import dotenv from "dotenv";
 import { AppDataSource } from "./config/appDataSource";
+import reservationRoutes from "./routes/reservation.routes";
+
 
 dotenv.config();
 
@@ -33,6 +35,7 @@ const initApp = async () => {
 
     // Rutas
     app.get('/', (req, res) => res.send('Prueba api node'));
+    app.use("/v1/reservas", reservationRoutes);
 
     // Iniciar servidor
     app.listen(process.env.PORT || 8080, () => {
