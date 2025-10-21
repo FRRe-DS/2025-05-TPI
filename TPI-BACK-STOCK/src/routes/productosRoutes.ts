@@ -1,10 +1,16 @@
-import {Router} from 'express';
-import {getAllProductos, getProductosById, createProducto} from '../controllers/productController'
+// src/routes/productosRoutes.ts
+
+import { Router } from 'express';
+import { container } from '../container/container';
 
 const router = Router();
 
-router.get('/', getAllProductos);
-router.get('/:id', getProductosById);
-router.post('/', createProducto)
+const productController = container.getProductController();
+
+// --- DEFINICIÓN DE RUTAS ---
+// 3. Usar los métodos de esa instancia del controlador
+router.get('/', productController.getAllProducts);
+router.get('/:id', productController.getProductById);
+router.post('/', productController.createProduct);
 
 export default router;

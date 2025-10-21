@@ -1,75 +1,94 @@
-import { In, Repository } from "typeorm";
-import { AppDataSource } from "../config/appDataSource";
-import { Product } from "../models/Product.entity";
-import { Category } from "../models/Category.entity";
+// src/services/productServices.ts
 
+import { ProductRepository } from "../repository/productsRepository";
+import { CategoryRepository } from "../repository/categoryRepository";
+import { Product } from "../models/entities/Product.entity";
+import { Category } from "../models/entities/Category.entity";
+
+// Asumo que estos embeddables están en esta ruta
+import { Dimension } from "../models/embeddable/dimension";
+import { WarehouseLocation } from "../models/embeddable/warehouseLocation";
+
+/**
+ * Define la estructura de datos para crear un producto.
+ * (Alineado con Product.entity.ts)
+ */
 export type CreateProductDTO = {
   name: string;
-  price: number;
-  description?: string;
-  availableStock?: number;
-  categoryIds?: number[]; 
+  description: string;
+  unitPrice: number;
+  availableStock: number;
+  weightKg: number;
+  dimensions: Dimension;
+  location: WarehouseLocation;
+  categoryIds?: number[];
 };
 
 export class ProductService {
   
-  private productRepository: Repository<Product>;
-  private categoryRepository: Repository<Category>;
+  private productRepository: ProductRepository;
+  private categoryRepository: CategoryRepository;
 
-  constructor() {
-    this.productRepository = AppDataSource.getRepository(Product);
-    this.categoryRepository = AppDataSource.getRepository(Category);
+  /**
+   * Inyección de Dependencias:
+   * El servicio recibe los repositorios que necesita para trabajar.
+   * Ya no importa 'AppDataSource'.
+   */
+  constructor(productRepo: ProductRepository, categoryRepo: CategoryRepository) {
+    this.productRepository = productRepo;
+    this.categoryRepository = categoryRepo;
   }
 
   /**
-   * Busca y devuelve todos los productos, incluyendo sus categorías asociadas.
+   * Llama al repositorio para buscar todos los productos.
    */
   async findAllProducts(): Promise<Product[]> {
-    // Usamos la opción 'relations' para que TypeORM traiga también las categorías.
-    return this.productRepository.find({
-      relations: ['categories']
-    });
+    return this.productRepository.findAllProducts();
   }
 
-  /**
-   * Busca un producto por su ID, incluyendo sus categorías.
-   * @param id El ID del producto a buscar.
-   */
+  /**   
+   * Llama al repositorio para buscar un producto por ID.
+  */
   async findProductById(id: number): Promise<Product | null> {
-    return this.productRepository.findOne({
-      where: { id: id },
-      relations: ['categories']
-    });
+    return this.productRepository.findById(id);
   }
 
+     
+
+
   /**
-   * Crea un nuevo producto y lo asocia con las categorías especificadas.
+   * Orquesta la lógica de negocio para crear un nuevo producto.
    * @param productData Los datos para crear el nuevo producto.
    */
   async createProduct(productData: CreateProductDTO): Promise<Product> {
     
-    // 1. Crear la instancia del producto con los datos básicos
-    const newProduct = this.productRepository.create({
-      name: productData.name,
-      price: productData.price,
-      description: productData.description,
-      availableStock: productData.availableStock || 0,
-    });
-
-    // 2. Manejar la relación con Categorías
+    // 1. Lógica de Negocio: Validar Categorías
+    let categories: Category[] = [];
     if (productData.categoryIds && productData.categoryIds.length > 0) {
-      const categories = await this.categoryRepository.findBy({
-        id: In(productData.categoryIds)
-      });
-      // Si no se encuentran todas las categorías, lanzar un error
+      // El servicio usa el CategoryRepository para buscar las categorías
+      categories = await this.categoryRepository.findByIds(productData.categoryIds);
+      
+      // Lógica de negocio: asegurarse de que todas las categorías solicitadas existan
       if (categories.length !== productData.categoryIds.length) {
           throw new Error("Una o más categorías no fueron encontradas.");
       }
-      // Asignamos las entidades de categoría encontradas al nuevo producto
-      newProduct.categories = categories;
     }
 
-    // 3. Guardar el nuevo producto con sus relaciones en la base de datos
+    // 2. Llama al ProductRepository para preparar la entidad
+    const newProduct = this.productRepository.create({
+      name: productData.name,
+      description: productData.description,
+      unitPrice: productData.unitPrice,
+      availableStock: productData.availableStock || 0,
+      weightKg: productData.weightKg || 0,
+      dimensions: productData.dimensions,
+      location: productData.location
+    });
+
+    // 3. Asigna las relaciones validadas
+    newProduct.categories = categories;
+
+    // 4. Llama al ProductRepository para guardar la entidad final
     await this.productRepository.save(newProduct);
     
     return newProduct;
