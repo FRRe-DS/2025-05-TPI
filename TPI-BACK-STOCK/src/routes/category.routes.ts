@@ -1,17 +1,14 @@
 import { Router } from "express";
-import {
-  createCategory,
-  listCategories,
-  deleteCategory,
-} from "../controllers/category.controller";
+import { container } from "../container/container"
 
 export const categoryRouter = Router();
+const categoryController = container.categoryController;
 
 // POST /categorias
-categoryRouter.post("/", createCategory);
+categoryRouter.post("/", categoryController.createCategory);
 
 // GET /categorias
-categoryRouter.get("/", listCategories);
+categoryRouter.get("/", categoryController.listCategories);
 
 // DELETE /categorias/:id
-categoryRouter.delete("/:id", deleteCategory);
+categoryRouter.delete("/:id", categoryController.deleteCategory);
