@@ -1,7 +1,7 @@
 // src/controllers/productController.ts
 
 import { Request, Response } from 'express';
-import { ProductService, CreateProductDTO } from "../services/productServices"; //
+import { ProductService, CreateProductDTO } from "../services/product.service"; //
 
 export class ProductController {
   

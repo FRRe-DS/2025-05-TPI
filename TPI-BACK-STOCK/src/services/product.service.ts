@@ -1,7 +1,7 @@
 // src/services/productServices.ts
 
-import { ProductRepository } from "../repository/productsRepository";
-import { CategoryRepository } from "../repository/categoryRepository";
+import { ProductRepository } from "../repository/products.repository";
+import { CategoryRepository } from "../repository/category.repository";
 import { Product, Category, Dimension, WarehouseLocation } from "../models";
 
 export type CreateProductDTO = {

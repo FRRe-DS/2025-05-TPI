@@ -27,13 +27,14 @@ export class CategoryRepository {
   findAll(): Promise<Category[]> {
     return this.repository.find();
   }
-
   
-  findByIds(ids: number[]): Promise<Category[]> {
-    return this.repository.findBy({ id: In(ids) } as FindOptionsWhere<Category>);
-  }
-
   delete(id: number) {
     return this.repository.delete(id);
+  }
+
+  async findByIds(ids: number[]): Promise<Category[]> {
+    return this.repository.findBy({
+      id: In(ids)
+    });
   }
 }
