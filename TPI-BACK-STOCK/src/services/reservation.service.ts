@@ -101,4 +101,21 @@ export class ReservationService {
       throw error;
     }
   }
+  
+  async createReservation(data: ReservaInput): Promise<Partial<Reservation>> {
+    try {
+      const savedReservation = await this.reservationRepository.createReservation(data);
+  
+      return savedReservation;
+    } catch(error) {
+      console.error("Error al crear la reserva:", error);
+      
+      if (error instanceof Error && error.message.includes("PRODUCT_STOCK_ERROR")) {
+        
+        throw new Error(`Conflicto de Stock: No se pudo completar la reserva debido a stock insuficiente. Detalles: ${error.message}`);
+      }
+    
+      throw error; 
+    }
+  }
 }

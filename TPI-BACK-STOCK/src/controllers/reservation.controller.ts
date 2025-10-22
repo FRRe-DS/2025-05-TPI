@@ -98,4 +98,20 @@ export class ReservationController {
       next(error); 
     }
   }
+
+  createReservation = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const data = req.body;
+    
+      const usuarioId = 12; // Temporal: Reemplazar con req.user.id
+      data.userId = usuarioId; 
+      
+      const newReservation = await this.reservationService.createReservation(data);
+
+      res.status(201).json(newReservation);
+
+    } catch (error) {
+      next(error); 
+    }
+  }
 }
