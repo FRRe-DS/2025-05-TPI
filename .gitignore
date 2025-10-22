@@ -1,0 +1,7 @@
+
+# Ignore env del front
+TPI-FRONT-STOCK/.env
+
+# Evitar nombres reservados Windows
+NUL
+
