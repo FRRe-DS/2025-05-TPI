@@ -2,7 +2,7 @@ import { Router } from "express";
 import { ProductController } from "../controllers/productController";
 import { ProductService } from "../services/productServices";
 
-const productRouter = Router();
+export const productRouter = Router();
 
 // Crear instancia del servicio y controlador
 const productService = new ProductService();
@@ -22,5 +22,3 @@ productRouter.patch("/:productoId", productController.updateProduct);
 
 // DELETE /v1/productos/:productoId - Eliminar un producto
 productRouter.delete("/:productoId", productController.deleteProduct);
-
-export default productRouter;
