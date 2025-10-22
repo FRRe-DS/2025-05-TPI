@@ -1,11 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany , CreateDateColumn, UpdateDateColumn } from 'typeorm';
 import { ReservationItem } from './';
-
-export enum ReservationState {
-    CONFIRMED = 'CONFIRMED',
-    PENDING = 'PENDING',
-    CANCELED = 'CANCELED'
-}
+import { ReservationState } from '../../types/reservation';
 
 @Entity('reservations')
 export class Reservation {
@@ -21,11 +16,14 @@ export class Reservation {
     @Column({ name: 'state', type: 'enum', enum: ReservationState, default: ReservationState.PENDING})
     state!: ReservationState; 
 
-    @Column({ name: 'created_at', type: 'timestamp', default: () => 'CURRENT_TIMESTAMP'})
+    @CreateDateColumn({ name: 'created_at' })
     createdAt!: Date;
 
+    @UpdateDateColumn({ name: 'updated_at' })
+    updatedAt!: Date;
+
     @Column({ name: 'expires_at', type: 'timestamp' })
-    expiresAt!: Date; // For timeout logic
+    expiresAt!: Date;
 
     // RELATION: One reservation has many items.
     @OneToMany(() => ReservationItem, (item: ReservationItem) => item.reservation, { cascade: true }) 

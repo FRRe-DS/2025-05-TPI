@@ -2,11 +2,12 @@ import express, { json } from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import { AppDataSource } from "./config/appDataSource";
-import { categoryRouter } from "./routes/category.routes";
+import { categoryRouter, productRouter, reservationRouter } from "./routes";
 
 dotenv.config();
 
 const app = express();
+app.use(express.json());
 
 /*
   Configuracion para orgigenes y permisos 
@@ -23,22 +24,26 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(json());
 
-const PORT = process.env.PORT || 8080;
-
 const initApp = async () => {
   try {
 
     // Conexion a base de datos
     await AppDataSource.initialize();
-    console.log("Conexion establecida")
+    console.log("✅ Conexion establecida")
 
     // Rutas
     app.get('/', (req, res) => res.send('Prueba api node'));
     app.use("/categorias", categoryRouter);
+    app.use("/v1/productos", productRouter);
+    app.use("/v1/reservas", reservationRouter);
+    
 
     // Iniciar servidor
-    app.listen(process.env.PORT || 8080, () => {
-      console.log('API funcionando en el puerto ' + process.env.PORT);
+    const PORT = process.env.PORT || 8080;
+    app.listen(PORT, () => {
+      console.log(`🚀 Servidor corriendo en puerto ${PORT}`);
+      console.log(`📍 Productos: http://localhost:${PORT}/v1/productos`);
+      console.log(`📍 Reservas: http://localhost:${PORT}/v1/reservas`);
     });
   } catch (error) {
     console.error("❌ Error initializing app:", error);
@@ -47,4 +52,3 @@ const initApp = async () => {
 };
 
 initApp();
-

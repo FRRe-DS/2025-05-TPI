@@ -1,9 +1,7 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToMany, JoinTable } from 'typeorm';
-import { ProductImage } from './';
-import { ReservationItem } from './';
-import { Category } from './';
-import { Dimension } from '../embeddable';
-import { WarehouseLocation } from '../embeddable';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable, OneToMany, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Category } from './Category.entity';
+import { ProductImage } from './productImages.entity';
+import { ReservationItem } from './ReservationItem.entity';
 
 @Entity('products')
 export class Product {
@@ -25,27 +23,28 @@ export class Product {
   @Column({ name: 'weight_kg', type:'decimal', precision: 6, scale: 2 })
   weightKg!: number;
 
-  @Column(() => Dimension)
-  dimensions!: Dimension;
+  @Column({ name: 'unit_of_measurement', length: 100, nullable: true })
+  unitOfMeasurement?: string;
 
-  @Column(() => WarehouseLocation)
-  location!: WarehouseLocation; 
+  @CreateDateColumn({ name: 'created_at' })
+  createdAt!: Date;
 
+  @UpdateDateColumn({ name: 'updated_at' })
+  updatedAt!: Date;
 
-  // ManyToMany with Category. Creates the join table 'product_category'.
+  // RELATION: Many to many with categories
   @ManyToMany(() => Category, (category: Category) => category.products)
   @JoinTable({
-      name: "product_category", 
-      joinColumn: { name: "product_id", referencedColumnName: "id" },
-      inverseJoinColumn: { name: "category_id", referencedColumnName: "id" }
+    name: 'product_categories',
+    joinColumn: { name: 'productId', referencedColumnName: 'id' },
+    inverseJoinColumn: { name: 'categoryId', referencedColumnName: 'id' }
   })
   categories!: Category[];
 
-  // OneToMany with Product Images
-  @OneToMany(() => ProductImage, (image: ProductImage) => image.product, { cascade: ['insert', 'update'] })
+  // RELATION: One product has many images
+  @OneToMany(() => ProductImage, (image: ProductImage) => image.product, { cascade: true })
   images!: ProductImage[];
 
-  // OneToMany with Reservation Items
   @OneToMany(() => ReservationItem, (item: ReservationItem) => item.product)
   reservationItems!: ReservationItem[];
 }

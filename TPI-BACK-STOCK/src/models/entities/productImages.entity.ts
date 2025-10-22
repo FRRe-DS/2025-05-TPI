@@ -15,7 +15,6 @@ export class ProductImage {
     @Column({ name: 'product_id', type:'integer' })
     productId!: number; 
 
-    // RELATION ManyToOne to Product.
     @ManyToOne(() => Product, (product: Product) => product.images, { onDelete: 'CASCADE' })
     @JoinColumn({ name: 'product_id' })
     product!: Product;
