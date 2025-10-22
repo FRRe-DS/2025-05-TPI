@@ -16,50 +16,6 @@ export class ReservationRepository {
 
   //Trasactional methods 
 
-  async cancelReservation(idReserva: number): Promise<boolean> {
-    
-    const queryRunner = AppDataSource.createQueryRunner();
-    await queryRunner.connect();
-    await queryRunner.startTransaction();
-
-    try {
-      
-      const reservation = await queryRunner.manager
-        .createQueryBuilder(Reservation, "reservation")
-        .innerJoinAndSelect("reservation.items", "items")
-        .innerJoinAndSelect("items.product", "product")
-        .where("reservation.id = :idReserva", { idReserva })
-        .setLock("pessimistic_write") 
-        .getOne();
-
-      if (!reservation || reservation.state === ReservationState.CANCELED) {
-        await queryRunner.rollbackTransaction();
-        return false; 
-      }
-
-      for (const item of reservation.items) {
-        await queryRunner.manager.increment(
-            Product, 
-            { id: item.product.id },
-            'availableStock',        
-            item.quantity            
-        );
-      }
-
-      reservation.state = ReservationState.CANCELED; 
-      await queryRunner.manager.save(reservation);
-
-      await queryRunner.commitTransaction();
-      return true;
-    } catch (error) {
-      await queryRunner.rollbackTransaction();
-      throw error; 
-    } finally {
-      
-      await queryRunner.release();
-    }
-  }
-
   async createReservation(data: ReservaInput): Promise<Reservation> {
     const queryRunner = AppDataSource.createQueryRunner();
     await queryRunner.connect();

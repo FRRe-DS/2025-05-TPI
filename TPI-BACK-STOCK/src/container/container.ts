@@ -1,17 +1,7 @@
-import { ReservationRepository } from "../repository/reservationRepository";
-import { ReservationService } from "../services/reservation.service";
+import { buildReservationDependencies } from "./reservation.container"; 
 
-class Container{
-  private reservationService: ReservationService;
+const reservationDependencies = buildReservationDependencies();
 
-  constructor(){
-   this.reservationService = new ReservationService(new ReservationRepository());
-  }
-
-
-  getReservationService(): ReservationService {
-    return this.reservationService;
-  }
-}
-
-export const container = new Container();
+export const container = {
+  ...reservationDependencies
+};

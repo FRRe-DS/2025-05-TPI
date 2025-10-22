@@ -1,9 +1,7 @@
 import { Router } from "express";
 import { container } from "../container/container";
-import { ReservationController } from "../controllers/reservation.controller";
 
-const reservationService = container.getReservationService();
-const reservationController = new ReservationController(reservationService);
+const reservationController = container.reservationyController;
 
 const router = Router();
 

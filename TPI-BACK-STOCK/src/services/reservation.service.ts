@@ -2,7 +2,7 @@ import { AppDataSource} from "../config/appDataSource";
 import { Reservation } from "../models/entities";
 import { ReservationItem } from "../models/entities";
 import { Product } from "../models/entities";
-import { ReservationRepository } from "../repository/reservationRepository";
+import { ReservationRepository } from "../repository/reservation.repository";
 import { ReservaInput, GetReservationsFilters, ReservationState } from "../types/reservation";
 
 interface ReservaOutput {
