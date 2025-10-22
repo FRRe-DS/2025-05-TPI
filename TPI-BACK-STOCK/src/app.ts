@@ -33,7 +33,7 @@ const initApp = async () => {
 
     // Rutas
     app.get('/', (req, res) => res.send('Prueba api node'));
-    app.use("/categorias", categoryRouter);
+    app.use("/v1/categorias", categoryRouter);
     app.use("/v1/productos", productRouter);
     app.use("/v1/reservas", reservationRouter);
     
@@ -44,6 +44,7 @@ const initApp = async () => {
       console.log(`🚀 Servidor corriendo en puerto ${PORT}`);
       console.log(`📍 Productos: http://localhost:${PORT}/v1/productos`);
       console.log(`📍 Reservas: http://localhost:${PORT}/v1/reservas`);
+      console.log(`📍 Categorias: http://localhost:${PORT}/v1/categorias`);
     });
   } catch (error) {
     console.error("❌ Error initializing app:", error);
