@@ -3,7 +3,7 @@ import cors from 'cors';
 import dotenv from "dotenv";
 import { AppDataSource } from "./config/appDataSource";
 import productRoutes from "./routes/productRoutes";
-import reservationRoutes from "./routes/reservationRoutes";
+import reservationRoutes from "./routes/reservation.routes";
 
 dotenv.config();
 

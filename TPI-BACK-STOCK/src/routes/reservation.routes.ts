@@ -1,11 +1,8 @@
 import { Router } from "express";
 import { container } from "../container/container";
-import { ReservationController } from "../controllers/reservationController";
-
-const reservationService = container.getReservationService();
-const reservationController = new ReservationController(reservationService);
 
 const router = Router();
+const reservationController = container.reservationyController;
 
 // GET /v1/reservas - Listar reservas de un usuario
 router.get("/", reservationController.getReservationsByUserId);
