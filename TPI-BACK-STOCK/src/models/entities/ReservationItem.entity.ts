@@ -16,9 +16,7 @@ export class ReservationItem {
     quantity!: number;
 
     @Column({ name: 'unit_price', type: 'decimal',  precision: 10, scale: 2 })
-    unitPriceAtReservation!: number; // Price "frozen" at the time of reservation
-
-    // RELATIONS
+    unitPriceAtReservation!: number; 
 
     // ManyToOne to Reservation
     @ManyToOne(() => Reservation, reservation => reservation.items)

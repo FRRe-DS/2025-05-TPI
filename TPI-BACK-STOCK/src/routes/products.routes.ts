@@ -1,12 +1,9 @@
 import { Router } from "express";
-import { ProductController } from "../controllers/productController";
-import { ProductService } from "../services/productServices";
-
+import { container } from "../container/container";
 export const productRouter = Router();
 
 // Crear instancia del servicio y controlador
-const productService = new ProductService();
-const productController = new ProductController(productService);
+const productController = container.productController;
 
 // GET /v1/productos - Listar todos los productos
 productRouter.get("/", productController.getAllProducts);

@@ -2,6 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable, OneToMan
 import { Category } from './Category.entity';
 import { ProductImage } from './productImages.entity';
 import { ReservationItem } from './ReservationItem.entity';
+import { Dimension, WarehouseLocation } from '../embeddable';
 
 @Entity('products')
 export class Product {
@@ -23,16 +24,12 @@ export class Product {
   @Column({ name: 'weight_kg', type:'decimal', precision: 6, scale: 2 })
   weightKg!: number;
 
-  @Column({ name: 'unit_of_measurement', length: 100, nullable: true })
-  unitOfMeasurement?: string;
+  @Column(() => Dimension)
+  dimensions!: Dimension;
 
-  @CreateDateColumn({ name: 'created_at' })
-  createdAt!: Date;
+  @Column(() => WarehouseLocation)
+  location!: WarehouseLocation; 
 
-  @UpdateDateColumn({ name: 'updated_at' })
-  updatedAt!: Date;
-
-  // RELATION: Many to many with categories
   @ManyToMany(() => Category, (category: Category) => category.products)
   @JoinTable({
     name: 'product_categories',
@@ -41,7 +38,6 @@ export class Product {
   })
   categories!: Category[];
 
-  // RELATION: One product has many images
   @OneToMany(() => ProductImage, (image: ProductImage) => image.product, { cascade: true })
   images!: ProductImage[];
 

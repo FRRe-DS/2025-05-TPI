@@ -1,31 +1,53 @@
-import { Category } from "../models/entities/Category.entity";
+import { Dimension } from "../models";
+import { Category, ProductImage } from "../models/entities";
 
-export interface Product {
+export interface DimensionesInput {
+  lengthCm: number;
+  widthCm: number;
+  heightCm: number;
+}
+
+export interface UbicacionAlmacenInput {
+  warehouseId: number;
+  aisle: string;
+  shelf: string;
+  level: number;
+}
+
+export interface ProductInterface {
   id: number;
   name: string;
-  description?: string;
-  price: number;
-  initialStock: number;
+  description: string;
+  unitPrice: number; 
   availableStock: number;
-  unitOfMeasurement?: string;
-  categories?: Category[];
-  createdAt?: Date;
-  updatedAt?: Date;
+  weightKg: number;
+  dimensions: DimensionesInput;
+  location: UbicacionAlmacenInput;
+  images: ProductImage[]; 
+  categories: Category[]; 
 }
 
 export interface ProductInput {
   name: string;
-  description?: string;
-  price: number;
-  initialStock: number;
+  description: string;
+  unitPrice: number; 
   availableStock: number;
-  unitOfMeasurement?: string;
-  categoryIds?: number[];
+  weightKg: number;
+  dimensions: DimensionesInput;
+  location: UbicacionAlmacenInput;    
+  images: ProductImage[];
+  categories: Category[]; 
 }
 
-export interface ProductFilters {
-  page?: number;
-  limit?: number;
-  search?: string;
-  categoryId?: number;
+export interface ProductUpdate {
+  name: string;
+  description: string;
+  unitPrice: number; 
+  availableStock: number;
+  weightKg: number;
+  dimensions: DimensionesInput;
+  location: UbicacionAlmacenInput;
+  images: ProductImage[];
+  categories: Category[]; 
 }
+

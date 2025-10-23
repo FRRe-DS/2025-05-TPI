@@ -1,4 +1,3 @@
-export interface ICategoria {
-  id: number;
-  nombre: string;
-}
+export * from "./categories"
+export * from "./product"
+export * from "./reservation"

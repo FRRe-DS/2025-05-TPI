@@ -10,9 +10,9 @@ export class Category {
   @Column({ name: 'name' ,type: 'varchar', length: 100, unique: true })
   name!: string;
 
-  @Column({ name: 'description' ,type: 'varchar', length: 100, unique: true })
-  description!: string | null;
-
+  @Column({ name: 'description', type: 'varchar', length: 100, default: 'Sin descripción' })
+  description!: string; 
+    
   // RELATION Many-to-Many: maps the inverse relationship in the Product entity.
   @ManyToMany(() => Product, product => product.categories)
   products!: Product[];

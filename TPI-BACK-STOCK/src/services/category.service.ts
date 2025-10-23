@@ -1,7 +1,8 @@
 // src/services/CategoryService.ts
 
 import { Category } from '../models/entities';
-import { CategoryRepository } from '../repository/category.repository'; 
+import { CategoryRepository } from '../repository'; 
+import { CategoryInput } from '../types';
 
 export class CategoryService {
 
@@ -11,17 +12,17 @@ export class CategoryService {
     this.categoryRepository = categoryRepository;
   }
 
-  async createCategory(nombre: string): Promise<Category> {
-    if (typeof nombre !== "string" || nombre.trim().length < 2) {
+  async createCategory(categoryData: CategoryInput): Promise<Category> {
+    if (typeof categoryData.name !== "string" || categoryData.name.trim().length < 2) {
       throw new Error("VALIDATION_ERROR: El nombre es requerido (min 2 caracteres).");
     }
     
-    const existe = await this.categoryRepository.findByName(nombre);
+    const existe = await this.categoryRepository.findByName(categoryData.name.trim());
     if (existe) {
       throw new Error("CONFLICT_ERROR: La categoría ya existe.");
     }
     
-    return this.categoryRepository.create(nombre);
+    return this.categoryRepository.create(categoryData);
   }
 
   async listCategories(): Promise<Category[]> {

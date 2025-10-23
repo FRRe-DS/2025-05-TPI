@@ -1,60 +1,55 @@
+import { ReservationItem } from "../models";
+
 export enum ReservationState {
-  CONFIRMED = 'CONFIRMED',
   PENDING = 'PENDING',
-  CANCELED = 'CANCELED'
+  CONFIRMED = 'CONFIRMED',
+  CANCELLED = 'CANCELLED',
+  EXPIRED = 'EXPIRED',
 }
 
-
-export interface ProductoReserva {
-  idProducto: number;
-  cantidad: number;
+export interface ReservationItemInterface {
+  productId: number;
+  name: string;
+  quantity: number;
+  unitPriceAtReservation: number;
 }
 
-export interface ReservaInput {
-  idCompra: string;
-  usuarioId: number;
-  productos: ProductoReserva[];
-}
-
-export interface ReservaOutput {
-  idReserva: number;
-  idCompra: string;
-  usuarioId: number;
-  estado: 'confirmado' | 'pendiente' | 'cancelado';
+export interface ReservationInterface {
+  id: number;
+  purchaseId: string;
+  userId: number;
+  state: ReservationState;
+  createdAt: Date;
+  updatedAt: Date;
   expiresAt: Date;
-  fechaCreacion: Date;
+  items: ReservationItem[]; 
 }
 
-export interface ReservaCompleta {
+export interface ReservationInput {
+  purchaseId: number;
+  userId: number;
+  items:ReservationItemInterface[];
+}
+
+export interface UpdateReservation {
+  userId: number;
+  state: ReservationState;
+}
+
+export interface CancelReservation {
+  reservationId?: number;
+  state: 'CANCELLED';
+  reason: string;
+}
+
+export interface ReleaseReservationInput {
+  reservationId: number;
+  userId: number;
+  reason: string;
+}
+
+export interface ReleaseReservationOutput {
+  mensaje: string;
   idReserva: number;
-  idCompra: string;
-  usuarioId: number;
-  estado: 'confirmado' | 'pendiente' | 'cancelado';
-  expiresAt: Date;
-  fechaCreacion: Date;
-  fechaActualizacion: Date;
-  productos: ProductoReservaDetalle[];
-}
-
-export interface ProductoReservaDetalle {
-  idProducto: number;
-  nombre: string;
-  cantidad: number;
-  precioUnitario: number;
-}
-
-export interface ActualizarReservaInput {
-  usuarioId: number;
-  estado: 'confirmado' | 'pendiente' | 'cancelado';
-}
-
-export interface CancelacionReservaInput {
-  motivo: string;
-}
-
-export interface GetReservationsFilters {
-  usuarioId: number;
-  estado?: 'confirmado' | 'pendiente' | 'cancelado';
-  page?: number;
-  limit?: number;
+  estado: 'RELEASED';
 }

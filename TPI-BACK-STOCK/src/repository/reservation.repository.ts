@@ -2,7 +2,7 @@
 
 import { Repository, DataSource, EntityManager } from 'typeorm';
 import { Reservation, ReservationItem, Product } from '../models/entities'; // Asume que estas rutas son correctas
-import { ReservaInput, ReservationState } from '../types/reservation'; // Asume que esta ruta es correcta
+import { ReservationInput, ReservationState } from '../types/reservation'; // Asume que esta ruta es correcta
 import { AppDataSource } from '../config/appDataSource';
 
 export class ReservationRepository {
@@ -74,7 +74,7 @@ export class ReservationRepository {
         .setLock("pessimistic_write") 
         .getOne();
 
-      if (!reservation || reservation.state === ReservationState.CANCELED) {
+      if (!reservation || reservation.state === ReservationState.CANCELLED) {
         await queryRunner.rollbackTransaction();
         return false; 
       }
@@ -88,7 +88,7 @@ export class ReservationRepository {
         );
       }
 
-      reservation.state = ReservationState.CANCELED; 
+      reservation.state = ReservationState.CANCELLED; 
       await queryRunner.manager.save(reservation);
 
       await queryRunner.commitTransaction();
@@ -102,7 +102,7 @@ export class ReservationRepository {
     }
   }
 
-  async createReservation(data: ReservaInput): Promise<Reservation> {
+  async createReservation(data: ReservationInput): Promise<Reservation> {
     const queryRunner = AppDataSource.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
@@ -111,35 +111,36 @@ export class ReservationRepository {
       const transactionalManager = queryRunner.manager;
 
       const newReservation = new Reservation();
-      //newReservation.userId = data.userId;
-      newReservation.userId = 123; // Temporal hasta auth
+      newReservation.purchaseId = String(data.purchaseId);
+      newReservation.userId = data.userId;
       newReservation.state = ReservationState.PENDING;
       newReservation.items = []; 
 
-      for (const itemInput of data.productos) {
+      for (const itemInput of data.items) {
         
         const product = await transactionalManager
           .createQueryBuilder(Product, "product")
-          .where("product.id = :id", { id: itemInput.idProducto })
+          .where("product.id = :id", { id: itemInput.productId })
           .setLock("pessimistic_write") 
           .getOne();
         
 
-        if (!product || product.availableStock < itemInput.cantidad) {
-          throw new Error(`PRODUCT_STOCK_ERROR: Stock insuficiente para producto ${itemInput.idProducto}`);
+        if (!product || product.availableStock < itemInput.quantity) {
+          throw new Error(`PRODUCT_STOCK_ERROR: Stock insuficiente para producto ${itemInput.productId}`);
         }
 
         await transactionalManager.decrement(
           Product,
           { id: product.id },
           'availableStock',
-          itemInput.cantidad
+          itemInput.quantity
         );
 
         const reservationItem = transactionalManager.create(ReservationItem, {
-          product: product,             
-          quantity: itemInput.cantidad,
-          unitPrice: product.unitPrice 
+          product: product, 
+          name: itemInput.name, 
+          quantity: itemInput.quantity,
+          unitPriceAtReservation: itemInput.unitPriceAtReservation
         });
         
         newReservation.items.push(reservationItem);

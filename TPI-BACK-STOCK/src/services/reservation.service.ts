@@ -3,7 +3,7 @@ import { Reservation } from "../models/entities";
 import { ReservationItem } from "../models/entities";
 import { Product } from "../models/entities";
 import { ReservationRepository } from "../repository";
-import { ReservaInput, GetReservationsFilters, ReservationState } from "../types/reservation";
+import { ReservationInput, ReservationState } from "../types";
 
 interface ReservaOutput {
   idReserva: number;
@@ -102,7 +102,7 @@ export class ReservationService {
     }
   }
   
-  async createReservation(data: ReservaInput): Promise<Partial<Reservation>> {
+  async createReservation(data: ReservationInput): Promise<Partial<Reservation>> {
     try {
       const savedReservation = await this.reservationRepository.createReservation(data);
   

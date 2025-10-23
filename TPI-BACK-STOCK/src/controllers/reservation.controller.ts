@@ -33,7 +33,7 @@ export class ReservationController {
   
   getReservationById = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const idReserva = parseInt(req.params.id, 10);
+      const idReserva = Number(req.params.idReserva);
       //const usuarioId = req.user.id; 
       const usuarioId = 12; // Temporal para pruebas
 
@@ -82,7 +82,7 @@ export class ReservationController {
 
   cancelReservation = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const idReserva = parseInt(req.params.id, 10);
+      const idReserva = Number(req.params.idReserva);
       
       const result: boolean = await this.reservationService.cancelReservation(idReserva);
 
@@ -106,6 +106,8 @@ export class ReservationController {
       const usuarioId = 12; // Temporal: Reemplazar con req.user.id
       data.userId = usuarioId; 
       
+      console.log("DATA RESERVATION CONTROLLER: ", data)
+
       const newReservation = await this.reservationService.createReservation(data);
 
       res.status(201).json(newReservation);

@@ -3,6 +3,7 @@
 import { Repository, FindOptionsWhere, In } from 'typeorm';
 import { Category } from '../models/entities'; // Asume que tienes una entidad Category
 import { AppDataSource } from '../config/appDataSource';
+import { CategoryInput } from '../types';
 
 export class CategoryRepository {
 
@@ -18,8 +19,8 @@ export class CategoryRepository {
     });
   }
 
-  create(name: string): Promise<Category> {
-    const newCategory = this.repository.create({ name: name.trim() });
+  create(categoryData: CategoryInput): Promise<Category> {
+    const newCategory = this.repository.create(categoryData);
     return this.repository.save(newCategory);
   }
 
@@ -32,7 +33,7 @@ export class CategoryRepository {
     return this.repository.delete(id);
   }
 
-  async findByIds(ids: number[]): Promise<Category[]> {
+  findByIds(ids: number[]): Promise<Category[]> {
     return this.repository.findBy({
       id: In(ids)
     });

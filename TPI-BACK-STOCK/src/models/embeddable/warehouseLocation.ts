@@ -1,4 +1,5 @@
 import { Column } from 'typeorm';
+
 export class WarehouseLocation {
   @Column({ name: 'warehouse_id', type:'integer' })
   warehouseId!: number; 
