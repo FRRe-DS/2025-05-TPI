@@ -1,3 +1,6 @@
+import dns from 'dns';
+dns.setDefaultResultOrder('ipv4first');
+import "reflect-metadata";
 import express, { json } from "express";
 import cors from 'cors';
 import dotenv from "dotenv";
@@ -24,6 +27,14 @@ app.use(json());
 
 const PORT = process.env.PORT || 8080;
 
+AppDataSource.initialize()
+  .then(() => {
+    console.log("✅ Conectado a Supabase correctamente");
+  })
+  .catch(error => {
+    console.error("❌ Error conectando a Supabase:", error);
+  });
+
 const initApp = async () => {
   try {
 
@@ -37,11 +48,12 @@ const initApp = async () => {
     // Iniciar servidor
     app.listen(process.env.PORT || 8080, () => {
       console.log('API funcionando en el puerto ' + process.env.PORT);
-    });
+    }); 
   } catch (error) {
     console.error("❌ Error initializing app:", error);
     process.exit(1);
   }
 };
+
 
 initApp();

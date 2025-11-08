@@ -1,59 +1,8 @@
-version: '3.8'
+# docker-compose.yml
 services:
   # -----------------------------------------------------
-  # 1. BASES DE DATOS (MySQL -> PostgreSQL)
+  # 1. KEYCLOAK (se mantiene para autenticación)
   # -----------------------------------------------------
-  logistica_postgres_db: # ⬅️ CAMBIO DE NOMBRE
-    image: postgres:16.2 # ⬅️ IMAGEN CAMBIADA
-    container_name: logistica_postgres_db
-    ports:
-      - "5432:5432" # ⬅️ PUERTO POR DEFECTO DE POSTGRES
-    environment:
-      POSTGRES_DB: logistica # ⬅️ VARIABLES DE ENTORNO DE POSTGRES
-      POSTGRES_USER: usr_logistica
-      POSTGRES_PASSWORD: ds2025
-    volumes:
-      - logistica_postgres_db_data:/var/lib/postgresql/data # ⬅️ VOLUMEN CAMBIADO
-    restart: always
-    networks:
-      - tpi_network
-
-  compras_postgres_db: # ⬅️ CAMBIO DE NOMBRE
-    image: postgres:16.2 # ⬅️ IMAGEN CAMBIADA
-    container_name: compras_postgres_db
-    ports:
-      - "5433:5432" # ⬅️ PUERTO HOST 5433 para evitar conflicto con logistica
-    environment:
-      POSTGRES_DB: compras # ⬅️ VARIABLES DE ENTORNO DE POSTGRES
-      POSTGRES_USER: usr_compras
-      POSTGRES_PASSWORD: ds2025
-    volumes:
-      - compras_postgres_db_data:/var/lib/postgresql/data # ⬅️ VOLUMEN CAMBIADO
-    restart: always
-    networks:
-      - tpi_network
-
-  stock_postgres_db: # ⬅️ CAMBIO DE NOMBRE
-    image: postgres:16.2 # ⬅️ IMAGEN CAMBIADA
-    container_name: stock_postgres_db
-    ports:
-      - "5434:5432" # ⬅️ PUERTO HOST 5434
-    environment:
-      POSTGRES_DB: stock # ⬅️ VARIABLES DE ENTORNO DE POSTGRES
-      POSTGRES_USER: usr_stock
-      POSTGRES_PASSWORD: ds2025
-    volumes:
-      - stock_postgres_db_data:/var/lib/postgresql/data # ⬅️ VOLUMEN CAMBIADO
-    restart: always
-    networks:
-      - tpi_network
-    healthcheck: # ⬅️ AÑADIR ESTE BLOQUE
-      test: ["CMD-SHELL", "pg_isready -U usr_stock"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
-      
-  # Keycloak DB (se mantiene como estaba)
   keycloak_db:
     image: postgres:16.2
     volumes:
@@ -64,10 +13,9 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     networks:
       - tpi_network
-  # Keycloak (se mantiene como estaba)
+
   keycloak:
     image: quay.io/keycloak/keycloak:23.0.6
-    #command: start
     command: start --import-realm
     environment:
       KC_HOSTNAME: localhost
@@ -83,7 +31,7 @@ services:
       KC_DB_USERNAME: ${POSTGRES_USER}
       KC_DB_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
-      - 8080:8080
+      - "8080:8080"
     volumes:
       - ./realm-config:/opt/keycloak/data/import:ro
     restart: always
@@ -93,7 +41,7 @@ services:
       - tpi_network
 
   # -----------------------------------------------------
-  # 2. BACKEND (Node.js)
+  # 2. BACKEND STOCK (con Supabase)
   # -----------------------------------------------------
   stock_backend_api:
     build:
@@ -105,38 +53,25 @@ services:
     environment:
       NODE_ENV: production
       PORT: 8000
-      # ⬅️ CAMBIOS DE CONFIGURACIÓN DE DB A POSTGRES
-      DB_HOST: stock_postgres_db # ⬅️ Nuevo nombre del servicio
-      DB_PORT: 5432              # ⬅️ Puerto interno de PostgreSQL
-      DB_NAME: stock
-      DB_USER: usr_stock
-      DB_PASSWORD: ds2025
+      
+      # Configuración Supabase - TODOS USAN LA MISMA BD
+      DB_HOST: ${SUPABASE_DB_HOST}
+      DB_PORT: ${SUPABASE_DB_PORT}
+      DB_NAME: ${SUPABASE_DB_NAME}
+      DB_USER: ${SUPABASE_DB_USER}
+      DB_PASSWORD: ${SUPABASE_DB_PASSWORD}
       
       # Configuración para Keycloak:
       KEYCLOAK_ISSUER_URL: http://keycloak:8080/realms/ds-2025-realm
       KEYCLOAK_AUDIENCE: grupo-02
     depends_on:
-      stock_postgres_db:
-        condition: service_healthy # ⬅️ CAMBIO: Ahora espera a que el servicio esté "HEALTHY"
       keycloak:
         condition: service_started
     networks:
       - tpi_network
     restart: unless-stopped
 
-  # -----------------------------------------------------
-  # 3. FRONTEND (Node/React)
-  # -----------------------------------------------------
-  
-
 volumes:
-  # ⬅️ VOLÚMENES DE POSTGRES AÑADIDOS
-  logistica_postgres_db_data:
-    driver: local
-  compras_postgres_db_data:
-    driver: local
-  stock_postgres_db_data:
-    driver: local
   keycloak_db_data:
     driver: local
 
