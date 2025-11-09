@@ -1,7 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToMany } from "typeorm";
 
 @Entity('user')
-export class Category {
+export class User {
   @PrimaryGeneratedColumn()
   id!: number;
 
