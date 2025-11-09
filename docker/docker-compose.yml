@@ -1,16 +1,12 @@
-# docker-compose.yml
 services:
-  # -----------------------------------------------------
-  # 1. KEYCLOAK (se mantiene para autenticación)
-  # -----------------------------------------------------
   keycloak_db:
     image: postgres:16.2
     volumes:
       - keycloak_db_data:/var/lib/postgresql/data
     environment:
-      POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}              # keycloak_db
+      POSTGRES_USER: ${POSTGRES_USER}          # keycloak_db_user
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}  # keycloak_db_user_password
     networks:
       - tpi_network
 
@@ -24,8 +20,8 @@ services:
       KC_HTTP_ENABLED: true
       KC_HOSTNAME_STRICT_HTTPS: false
       KC_HEALTH_ENABLED: true
-      KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
-      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
+      KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}              # admin
+      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}  # ds2025
       KC_DB: postgres
       KC_DB_URL: jdbc:postgresql://keycloak_db/${POSTGRES_DB}
       KC_DB_USERNAME: ${POSTGRES_USER}
@@ -40,9 +36,6 @@ services:
     networks:
       - tpi_network
 
-  # -----------------------------------------------------
-  # 2. BACKEND STOCK (con Supabase)
-  # -----------------------------------------------------
   stock_backend_api:
     build:
       context: ../TPI-BACK-STOCK
@@ -54,12 +47,12 @@ services:
       NODE_ENV: production
       PORT: 8000
       
-      # Configuración Supabase - TODOS USAN LA MISMA BD
-      DB_HOST: ${SUPABASE_DB_HOST}
-      DB_PORT: ${SUPABASE_DB_PORT}
-      DB_NAME: ${SUPABASE_DB_NAME}
-      DB_USER: ${SUPABASE_DB_USER}
-      DB_PASSWORD: ${SUPABASE_DB_PASSWORD}
+      # Configuración Supabase - Session Pooler
+      DB_HOST: aws-1-us-east-2.pooler.supabase.com
+      DB_PORT: 5432
+      DB_NAME: postgres
+      DB_USER: postgres.vzabfnzrcynffhdjdddv
+      DB_PASSWORD: ${SUPABASE_DB_PASSWORD}  # 7[454ATMEpV5
       
       # Configuración para Keycloak:
       KEYCLOAK_ISSUER_URL: http://keycloak:8080/realms/ds-2025-realm
