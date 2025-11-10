@@ -1,28 +1,8 @@
-import { AppDataSource} from "../config/appDataSource";
 import { Reservation } from "../models/entities";
-import { ReservationItem } from "../models/entities";
-import { Product } from "../models/entities";
 import { ReservationRepository } from "../repository";
-import { ReservationInput, ReservationState } from "../types";
-
-interface ReservaOutput {
-  idReserva: number;
-  idCompra: string;
-  usuarioId: number;
-  estado: string;
-  expiresAt: Date;
-  fechaCreacion: Date;
-  fechaActualizacion?: Date;
-  productos: {
-      idProducto: number;
-      nombre: string;
-      cantidad: number;
-      precioUnitario: number;
-  }[];
-}
+import { ReservaInput, EstadoReserva } from "../types";
 
 export class ReservationService {
-  
   private reservationRepository: ReservationRepository;
 
   constructor(reservationRepository: ReservationRepository) {
@@ -30,88 +10,82 @@ export class ReservationService {
   }
 
   async getAllReservations(): Promise<Reservation[]> {
-    try{
-      const reservation = await this.reservationRepository.findAll();
+    try {
+      const reservation = await this.reservationRepository.findAll(); // CORREGIDO
       if (!reservation) {
         throw new Error("Reservas no encontradas");
       }
       return reservation;
-    } catch(error){
+    } catch(error) {
       console.error("Error al obtener las reservas:", error);
       throw error;
     }
   }
 
   async getReservationsByUserId(usuarioId: number): Promise<Reservation[]> {
-    try{
-      const reservation = await this.reservationRepository.findByUserId(usuarioId);
+    try {
+      const reservation = await this.reservationRepository.findByUserId(usuarioId); // CORREGIDO
       if (!reservation) {
         throw new Error("Reservas no encontradas");
       }
       return reservation;
-    } catch(error){
+    } catch(error) {
       console.error("Error al obtener las reservas:", error);
       throw error;
     }
   }
-      
-          
 
-  async getReservationById (idReserva: number, usuarioId: number): Promise<Partial<Reservation>> {
-    try{
+  // ... el resto del código se mantiene igual
+  async getReservationById(idReserva: number, usuarioId: number): Promise<Partial<Reservation>> {
+    try {
       const reservation = await this.reservationRepository.findByUserReservation(idReserva, usuarioId);
       if (!reservation) {
         throw new Error("Reserva no encontrada");
       }
-
       return reservation;
-    } catch(error){
+    } catch(error) {
       console.error("Error al obtener la reserva:", error);
       throw error;
     }
   }
 
-  async updateReservationStatus(idReserva: number,usuarioId: number, estado: ReservationState): Promise<Partial<Reservation> | null > {
-    try{  
+  async updateReservationStatus(idReserva: number, usuarioId: number, estado: EstadoReserva): Promise<Partial<Reservation> | null> {
+    try {  
       let reservation = await this.reservationRepository.findByUserReservation(idReserva, usuarioId);
-
       if (!reservation) throw new Error("Reserva no encontrada");
 
-      reservation.state = estado;
+      reservation.estado = estado;
     
-      const updatedReservation = await this.reservationRepository.update(reservation.id, { state: estado });
+      const updatedReservation = await this.reservationRepository.update(reservation.idReserva, { estado: estado }); // CORREGIDO: usar idReserva
 
-      const finalReservation = await this.reservationRepository.findByUserReservation(reservation.id, usuarioId);
-
+      const finalReservation = await this.reservationRepository.findByUserReservation(reservation.idReserva, usuarioId); // CORREGIDO: usar idReserva
       if (!finalReservation) throw new Error("Error al obtener la reserva actualizada"); 
 
-      return(finalReservation)
-    } catch(error){
+      return finalReservation;
+    } catch(error) {
       console.error("Error al actualizar la reserva:", error);
       throw error;
     }
   }
 
   async cancelReservation(idReserva: number): Promise<boolean> {
-    try{
+    try {
       const result = await this.reservationRepository.cancelReservation(idReserva);
       return result;
-    } catch(error){
+    } catch(error) {
       console.error("Error al cancelar la reserva:", error);
       throw error;
     }
   }
-  
-  async createReservation(data: ReservationInput): Promise<Partial<Reservation>> {
+
+  async createReservation(data: ReservaInput): Promise<Partial<Reservation>> {
     try {
       const savedReservation = await this.reservationRepository.createReservation(data);
-  
       return savedReservation;
     } catch(error) {
       console.error("Error al crear la reserva:", error);
       
       if (error instanceof Error && error.message.includes("PRODUCT_STOCK_ERROR")) {
-        
         throw new Error(`Conflicto de Stock: No se pudo completar la reserva debido a stock insuficiente. Detalles: ${error.message}`);
       }
     

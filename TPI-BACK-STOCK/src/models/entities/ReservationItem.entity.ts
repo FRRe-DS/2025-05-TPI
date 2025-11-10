@@ -1,30 +1,28 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
 import { Reservation, Product } from './';
 
-@Entity('reservation_items')
+@Entity('reserva_items')
 export class ReservationItem {
     @PrimaryGeneratedColumn()
     id!: number;
 
-    @Column({ name: 'product_id' })
-    productId!: number;
+    @Column({ name: 'producto_id' })
+    productoId!: number; // Cambiado de 'productId' a 'productoId'
     
-    @Column({name: 'name', type: 'varchar'})
-    name!: string;
+    @Column({ name: 'nombre', type: 'varchar' })
+    nombre!: string; // Cambiado de 'name' a 'nombre'
 
-    @Column({name: 'quantity'})
-    quantity!: number;
+    @Column({ name: 'cantidad' }) 
+    cantidad!: number; // Cambiado de 'quantity' a 'cantidad'
 
-    @Column({ name: 'unit_price', type: 'decimal',  precision: 10, scale: 2 })
-    unitPriceAtReservation!: number; 
+    @Column({ name: 'precio_unitario', type: 'decimal', precision: 10, scale: 2 }) 
+    precioUnitario!: number; // Cambiado de 'unitPriceAtReservation' a 'precioUnitario'
 
-    // ManyToOne to Reservation
-    @ManyToOne(() => Reservation, reservation => reservation.items)
-    @JoinColumn({ name: 'reservation_id' })
-    reservation!: Reservation;
+    @ManyToOne(() => Reservation, reserva => reserva.items) // Cambiado 'reservation' a 'reserva'
+    @JoinColumn({ name: 'reserva_id' }) 
+    reserva!: Reservation; // Cambiado de 'reservation' a 'reserva'
 
-    // ManyToOne to Product
-    @ManyToOne(() => Product, product => product.reservationItems)
-    @JoinColumn({ name: 'product_id' })
-    product!: Product;
+    @ManyToOne(() => Product, producto => producto.itemsReserva) // Cambiado 'product' a 'producto', 'reservationItems' a 'itemsReserva'
+    @JoinColumn({ name: 'producto_id' }) 
+    producto!: Product; // Cambiado de 'product' a 'producto'
 }

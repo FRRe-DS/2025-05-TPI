@@ -1,12 +1,12 @@
 import { Column } from 'typeorm';
 
 export class Dimension {
-    @Column({ name: 'length_cm', type:"decimal", precision: 5, scale: 2, default: 0 })
-    lengthCm!: number;
+    @Column({ name: 'largo_cm', type: "decimal", precision: 5, scale: 2, default: 0 })
+    largoCm!: number;
 
-    @Column({ name: 'width_cm', type:"decimal", precision: 5, scale: 2, default: 0 })
-    widthCm!: number;
+    @Column({ name: 'ancho_cm', type: "decimal", precision: 5, scale: 2, default: 0 })
+    anchoCm!: number;
 
-    @Column({ name: 'height_cm', type:"decimal", precision: 5, scale: 2, default: 0 })
-    heightCm!: number;
+    @Column({ name: 'alto_cm', type: "decimal", precision: 5, scale: 2, default: 0 })
+    altoCm!: number;
 }

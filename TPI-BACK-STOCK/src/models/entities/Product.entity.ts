@@ -4,43 +4,43 @@ import { ProductImage } from './productImages.entity';
 import { ReservationItem } from './ReservationItem.entity';
 import { Dimension, WarehouseLocation } from '../embeddable';
 
-@Entity('products')
+@Entity('productos') 
 export class Product {
   @PrimaryGeneratedColumn()
   id!: number;
 
-  @Column({ name: 'name',  type: 'varchar', length: 200 })
-  name!: string;
+  @Column({ name: 'nombre', type: 'varchar', length: 200 }) 
+  nombre!: string; // Cambiado de 'name' a 'nombre'
 
-  @Column({name:'description', type:'varchar'})
-  description!: string;
+  @Column({ name: 'descripcion', type: 'varchar' }) 
+  descripcion!: string; // Cambiado de 'description' a 'descripcion'
 
-  @Column({ name: 'unit_price', type:'decimal', precision: 10, scale: 2 })
-  unitPrice!: number; 
+  @Column({ name: 'precio', type: 'decimal', precision: 10, scale: 2 })
+  precio!: number; // Cambiado de 'unitPrice' a 'precio'
 
-  @Column({ name: 'available_stock', type:'integer' })
-  availableStock!: number;
+  @Column({ name: 'stock_disponible', type: 'integer' })
+  stockDisponible!: number; // Cambiado de 'availableStock' a 'stockDisponible'
 
-  @Column({ name: 'weight_kg', type:'decimal', precision: 6, scale: 2 })
-  weightKg!: number;
+  @Column({ name: 'peso_kg', type: 'decimal', precision: 6, scale: 2 }) 
+  pesoKg!: number; // Cambiado de 'weightKg' a 'pesoKg'
 
   @Column(() => Dimension)
-  dimensions!: Dimension;
+  dimensiones!: Dimension; // Cambiado de 'dimensions' a 'dimensiones'
 
   @Column(() => WarehouseLocation)
-  location!: WarehouseLocation; 
+  ubicacion!: WarehouseLocation; // Cambiado de 'location' a 'ubicacion'
 
-  @ManyToMany(() => Category, (category: Category) => category.products)
+  @ManyToMany(() => Category, (category: Category) => category.productos) // Cambiado 'products' a 'productos'
   @JoinTable({
-    name: 'product_categories',
-    joinColumn: { name: 'productId', referencedColumnName: 'id' },
-    inverseJoinColumn: { name: 'categoryId', referencedColumnName: 'id' }
+    name: 'producto_categorias', 
+    joinColumn: { name: 'producto_id', referencedColumnName: 'id' }, 
+    inverseJoinColumn: { name: 'categoria_id', referencedColumnName: 'id' } 
   })
-  categories!: Category[];
+  categorias!: Category[]; // Cambiado de 'categories' a 'categorias'
 
-  @OneToMany(() => ProductImage, (image: ProductImage) => image.product, { cascade: true })
-  images!: ProductImage[];
+  @OneToMany(() => ProductImage, (image: ProductImage) => image.producto, { cascade: true }) // Cambiado 'product' a 'producto'
+  imagenes!: ProductImage[]; // Cambiado de 'images' a 'imagenes'
 
-  @OneToMany(() => ReservationItem, (item: ReservationItem) => item.product)
-  reservationItems!: ReservationItem[];
+  @OneToMany(() => ReservationItem, (item: ReservationItem) => item.producto) // Cambiado 'product' a 'producto'
+  itemsReserva!: ReservationItem[]; // Cambiado de 'reservationItems' a 'itemsReserva'
 }

@@ -19,7 +19,7 @@ export class ReservationController {
   getReservationsByUserId = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       //const usuarioId = req.user.id; 
-      const usuarioId = 12; // Temporal para pruebas
+      const usuarioId = 12345; // Temporal para pruebas
       const reservations = await this.reservationService.getReservationsByUserId(usuarioId);
       
       // 200 OK
@@ -35,7 +35,7 @@ export class ReservationController {
     try {
       const idReserva = Number(req.params.idReserva);
       //const usuarioId = req.user.id; 
-      const usuarioId = 12; // Temporal para pruebas
+      const usuarioId = 12345; // Temporal para pruebas
 
       // Se espera que el service lance ResourceNotFoundError si no encuentra la reserva
       const reservation = await this.reservationService.getReservationById(idReserva, usuarioId);
@@ -54,7 +54,7 @@ export class ReservationController {
     try {
       const idReserva = parseInt(req.params.id, 10);
       //const usuarioId = req.user.id; 
-      const usuarioId = 12; // Temporal para pruebas
+      const usuarioId = 12345; // Temporal para pruebas
 
       const estado: ReservationState = req.body.estado as ReservationState; 
 
@@ -103,7 +103,7 @@ export class ReservationController {
     try {
       const data = req.body;
     
-      const usuarioId = 12; // Temporal: Reemplazar con req.user.id
+      const usuarioId = 12345; // Temporal: Reemplazar con req.user.id
       data.userId = usuarioId; 
       
       console.log("DATA RESERVATION CONTROLLER: ", data)

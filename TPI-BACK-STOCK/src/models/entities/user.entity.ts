@@ -1,13 +1,13 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToMany } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
 
-@Entity('user')
-export class Category {
+@Entity('usuarios') 
+export class User {
   @PrimaryGeneratedColumn()
   id!: number;
 
-  @Column({ name: 'name' ,type: 'varchar', length: 100, unique: true })
-  name!: string;
+  @Column({ name: 'nombre', type: 'varchar', length: 100 }) 
+  nombre!: string; // Cambiado de 'name' a 'nombre'
   
-  @Column({ name: 'email' ,type: 'varchar',  unique: true })
+  @Column({ name: 'email', type: 'varchar', unique: true })
   email!: string;
 }
