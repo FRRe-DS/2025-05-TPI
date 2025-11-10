@@ -47,10 +47,13 @@ const initApp = async () => {
       console.log(`📍 Reservas: http://localhost:${PORT}/v1/reservas`);
       console.log(`📍 Categorias: http://localhost:${PORT}/v1/categorias`);
     });
+
+    
   } catch (error) {
     console.error("❌ Error initializing app:", error);
     process.exit(1);
   }
 };
+
 
 initApp();

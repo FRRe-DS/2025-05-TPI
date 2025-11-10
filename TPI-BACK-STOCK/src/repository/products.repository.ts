@@ -29,8 +29,8 @@ export class ProductRepository {
       relations: {
         categorias: true, // Cambiado categories a categorias
         imagenes: true,   // Cambiado images a imagenes
-        dimensions: true,
-        location: true,
+        dimensiones: true,
+        ubicacion: true,
       }
     });
   }

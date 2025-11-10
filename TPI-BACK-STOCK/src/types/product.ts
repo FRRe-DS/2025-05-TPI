@@ -1,3 +1,5 @@
+import { Categoria } from './categories'; // Importar la interfaz
+
 export interface Dimensiones {
   largoCm: number;
   anchoCm: number;

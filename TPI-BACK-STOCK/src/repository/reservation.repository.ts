@@ -22,10 +22,10 @@ export class ReservationRepository {
   }
 
   findById(id: number) {
-    return this.repository.findOne({
-      where: { id },
-      relations: ["items", "items.producto"], // Cambiado product a producto
-    })
+  return this.repository.findOne({
+    where: { idReserva: id }, // ✅ Cambiado de 'id' a 'idReserva'
+    relations: ["items", "items.producto"], // ✅ Cambiado de "items.product"
+  })
   }
 
   findByUserId(usuarioId: number) {
@@ -41,13 +41,13 @@ export class ReservationRepository {
   } 
 
   findByUserReservation(idReserva: number, usuarioId: number) {
-    return this.repository.findOne({
-      where: { 
-        id: idReserva,
-        usuarioId: usuarioId // Cambiado userId a usuarioId
-      },
-      relations: ["items", "items.producto"], // Cambiado product a producto
-    });
+  return this.repository.findOne({
+    where: { 
+      idReserva: idReserva, // ✅ Cambiado de 'id' a 'idReserva'
+      usuarioId: usuarioId 
+    },
+    relations: ["items", "items.producto"],
+  });
   }
 
   update(id: number, reservaData: Partial<Reservation>) {
@@ -78,9 +78,9 @@ export class ReservationRepository {
       for (const item of reservation.items) {
         await queryRunner.manager.increment(
           Product, 
-          { id: item.product.id },
-          'stockDisponible', // Cambiado availableStock a stockDisponible
-          item.cantidad      // Cambiado quantity a cantidad
+          { id: item.producto.id }, 
+          'stockDisponible',
+          item.cantidad
         );
       }
 

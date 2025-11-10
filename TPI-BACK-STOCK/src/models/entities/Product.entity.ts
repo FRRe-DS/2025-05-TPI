@@ -1,46 +1,47 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable, OneToMany, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+// src/models/entities/Product.entity.ts
+import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable, OneToMany } from 'typeorm';
 import { Category } from './Category.entity';
 import { ProductImage } from './productImages.entity';
 import { ReservationItem } from './ReservationItem.entity';
 import { Dimension, WarehouseLocation } from '../embeddable';
 
-@Entity('productos') 
+@Entity('productos')
 export class Product {
   @PrimaryGeneratedColumn()
   id!: number;
 
-  @Column({ name: 'nombre', type: 'varchar', length: 200 }) 
-  nombre!: string; // Cambiado de 'name' a 'nombre'
+  @Column({ name: 'nombre', type: 'varchar', length: 200 })
+  nombre!: string;
 
-  @Column({ name: 'descripcion', type: 'varchar' }) 
-  descripcion!: string; // Cambiado de 'description' a 'descripcion'
+  @Column({ name: 'descripcion', type: 'varchar' })
+  descripcion!: string;
 
   @Column({ name: 'precio', type: 'decimal', precision: 10, scale: 2 })
-  precio!: number; // Cambiado de 'unitPrice' a 'precio'
+  precio!: number;
 
   @Column({ name: 'stock_disponible', type: 'integer' })
-  stockDisponible!: number; // Cambiado de 'availableStock' a 'stockDisponible'
+  stockDisponible!: number;
 
-  @Column({ name: 'peso_kg', type: 'decimal', precision: 6, scale: 2 }) 
-  pesoKg!: number; // Cambiado de 'weightKg' a 'pesoKg'
+  @Column({ name: 'peso_kg', type: 'decimal', precision: 6, scale: 2 })
+  pesoKg!: number;
 
   @Column(() => Dimension)
-  dimensiones!: Dimension; // Cambiado de 'dimensions' a 'dimensiones'
+  dimensiones!: Dimension;
 
   @Column(() => WarehouseLocation)
-  ubicacion!: WarehouseLocation; // Cambiado de 'location' a 'ubicacion'
+  ubicacion!: WarehouseLocation;
 
-  @ManyToMany(() => Category, (category: Category) => category.productos) // Cambiado 'products' a 'productos'
+  @ManyToMany(() => Category, (category: Category) => category.productos)
   @JoinTable({
-    name: 'producto_categorias', 
-    joinColumn: { name: 'producto_id', referencedColumnName: 'id' }, 
-    inverseJoinColumn: { name: 'categoria_id', referencedColumnName: 'id' } 
+    name: 'producto_categorias',
+    joinColumn: { name: 'producto_id', referencedColumnName: 'id' },
+    inverseJoinColumn: { name: 'categoria_id', referencedColumnName: 'id' }
   })
-  categorias!: Category[]; // Cambiado de 'categories' a 'categorias'
+  categorias!: Category[];
 
-  @OneToMany(() => ProductImage, (image: ProductImage) => image.producto, { cascade: true }) // Cambiado 'product' a 'producto'
-  imagenes!: ProductImage[]; // Cambiado de 'images' a 'imagenes'
+  @OneToMany(() => ProductImage, (image: ProductImage) => image.producto, { cascade: true })
+  imagenes!: ProductImage[];
 
-  @OneToMany(() => ReservationItem, (item: ReservationItem) => item.producto) // Cambiado 'product' a 'producto'
-  itemsReserva!: ReservationItem[]; // Cambiado de 'reservationItems' a 'itemsReserva'
+  @OneToMany(() => ReservationItem, (item: ReservationItem) => item.producto)
+  itemsReserva!: ReservationItem[];
 }
