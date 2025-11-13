@@ -101,12 +101,39 @@ export class ReservationController {
 
   createReservation = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const input: ReservaInput = req.body; // Usar interfaz en español
-    
+      const input: ReservaInput = req.body;
+
       // Validar campos requeridos según contrato
       if (!input.idCompra || !input.usuarioId || !input.productos) {
-        res.status(400).json({ message: "Los campos 'idCompra', 'usuarioId' y 'productos' son requeridos." });
+        res.status(400).json({ 
+          message: "Los campos 'idCompra', 'usuarioId' y 'productos' son requeridos." 
+        });
         return;
+      }
+
+      // Validar que productos sea un array no vacío
+      if (!Array.isArray(input.productos) || input.productos.length === 0) {
+        res.status(400).json({ 
+          message: "El campo 'productos' debe ser un array con al menos un producto." 
+        });
+        return;
+      }
+
+      // Validar estructura de cada producto
+      for (const producto of input.productos) {
+        if (!producto.productoId || producto.cantidad === undefined) {
+          res.status(400).json({ 
+            message: "Cada producto debe tener 'productoId' y 'cantidad'." 
+          });
+          return;
+        }
+
+        if (producto.cantidad <= 0) {
+          res.status(400).json({ 
+            message: "La cantidad debe ser mayor a 0." 
+          });
+          return;
+        }
       }
 
       console.log("DATA RESERVATION CONTROLLER: ", input);

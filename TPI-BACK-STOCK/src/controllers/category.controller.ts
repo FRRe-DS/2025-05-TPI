@@ -39,7 +39,7 @@ export class CategoryController {
 
   public deleteCategory = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const id = parseInt(req.params.categoriaId, 10); // Cambiado a categoriaId
+      const id = parseInt(req.params.id, 10); // Cambiado a categoriaId
       
       if (isNaN(id)) {
         res.status(400).json({ message: "El ID de la categoría debe ser numérico." });

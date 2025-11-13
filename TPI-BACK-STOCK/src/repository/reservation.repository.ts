@@ -97,7 +97,7 @@ export class ReservationRepository {
     }
   }
 
-  async createReservation(data: ReservaInput): Promise<Reservation> { // Cambiado ReservationInput a ReservaInput
+  async createReservation(data: ReservaInput): Promise<Reservation> {
     const queryRunner = AppDataSource.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
@@ -105,35 +105,49 @@ export class ReservationRepository {
     try {
       const transactionalManager = queryRunner.manager;
 
+      console.log("📦 DATA EN REPOSITORY:", JSON.stringify(data, null, 2));
+      console.log("🔍 Productos recibidos:", data.productos);
+
       const newReservation = new Reservation();
-      newReservation.idCompra = String(data.idCompra); // Cambiado purchaseId a idCompra
-      newReservation.usuarioId = data.usuarioId; // Cambiado userId a usuarioId
-      newReservation.estado = EstadoReserva.PENDIENTE; // Cambiado state a estado
+      newReservation.idCompra = String(data.idCompra);
+      newReservation.usuarioId = data.usuarioId;
+      newReservation.estado = EstadoReserva.PENDIENTE;
       newReservation.items = []; 
 
-      for (const productoInput of data.productos) { // Cambiado items a productos
+      for (const productoInput of data.productos) {
+        console.log("🔄 Procesando producto:", productoInput);
+        console.log("📋 productoId:", productoInput.productoId, "Tipo:", typeof productoInput.productoId);
+        console.log("📋 cantidad:", productoInput.cantidad, "Tipo:", typeof productoInput.cantidad);
+
+        // ✅ CORREGIDO: usar productoId en lugar de idProducto
         const product = await transactionalManager
           .createQueryBuilder(Product, "product")
-          .where("product.id = :id", { id: productoInput.idProducto }) // Cambiado productId a idProducto
+          .where("product.id = :id", { id: productoInput.productoId })
           .setLock("pessimistic_write") 
           .getOne();
 
-        if (!product || product.stockDisponible < productoInput.cantidad) { // Cambiado availableStock a stockDisponible
-          throw new Error(`PRODUCT_STOCK_ERROR: Stock insuficiente para producto ${productoInput.idProducto}`);
+        console.log("🔎 Producto encontrado:", product);
+
+        if (!product) {
+          throw new Error(`PRODUCT_NOT_FOUND: Producto con ID ${productoInput.productoId} no existe`);
+        }
+
+        if (product.stockDisponible < productoInput.cantidad) {
+          throw new Error(`PRODUCT_STOCK_ERROR: Stock insuficiente para producto ${productoInput.productoId}. Disponible: ${product.stockDisponible}, Solicitado: ${productoInput.cantidad}`);
         }
 
         await transactionalManager.decrement(
           Product,
           { id: product.id },
-          'stockDisponible', // Cambiado availableStock a stockDisponible
-          productoInput.cantidad // Cambiado quantity a cantidad
+          'stockDisponible',
+          productoInput.cantidad
         );
 
         const reservationItem = transactionalManager.create(ReservationItem, {
-          producto: product, // Cambiado product a producto
-          nombre: product.nombre, // Usar nombre del producto
-          cantidad: productoInput.cantidad, // Cambiado quantity a cantidad
-          precioUnitario: product.precio // Cambiado unitPrice a precio
+          producto: product,
+          nombre: product.nombre,
+          cantidad: productoInput.cantidad,
+          precioUnitario: product.precio
         });
         
         newReservation.items.push(reservationItem);
