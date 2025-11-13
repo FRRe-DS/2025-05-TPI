@@ -1,98 +1,121 @@
 import type { IReservation } from "../types/reservation.interface";
-import { DeleteReservationButton } from "./DeleteReservationButton";
 
-// Función helper fuera del componente para evitar recreación
-const formatDate = (date: Date | string): string => {
-  return new Date(date).toLocaleDateString("es-ES", {
-    day: '2-digit',
-    month: '2-digit',
-    year: 'numeric',
-  });
-};
-
-// Constantes de estilos fuera del componente para evitar recreación
-const STATUS_CLASSES = {
-  PENDING: "bg-yellow-100 text-yellow-800 border-yellow-300",
-  CONFIRMED: "bg-green-100 text-green-800 border-green-300",
-  CANCELLED: "bg-red-100 text-red-800 border-red-300",
-  DEFAULT: "bg-gray-100 text-gray-800 border-gray-300",
-} as const;
-
-/**
- * Props para el componente StatusBadge
- */
-interface StatusBadgeProps {
-  status: string;
-}
-
-/**
- * Badge que muestra el estado de una reserva con colores semánticos
- */
-export const StatusBadge = ({ status }: StatusBadgeProps) => {
-  const statusClass = STATUS_CLASSES[status as keyof typeof STATUS_CLASSES] || STATUS_CLASSES.DEFAULT;
-
-  return (
-    <span className={`px-3 py-1 rounded-full text-xs font-semibold border ${statusClass}`}>
-      {status}
-    </span>
-  );
-};
-
-/**
- * Props para DetailRow
- */
-interface DetailRowProps {
-  label: string;
-  value: string | number;
-}
-
-/**
- * Fila de detalle que muestra un label y su valor
- */
-export const DetailRow = ({ label, value }: DetailRowProps) => (
-  <div className="flex flex-col sm:flex-row gap-1">
-    <span className="font-medium">{label}:</span>
-    <span className="text-gray-800">{value}</span>
-  </div>
-);
-
-/**
- * Props para ReservationCard
- */
 interface ReservationCardProps {
   reservation: IReservation;
 }
 
-/**
- * Tarjeta que muestra la información de una reserva individual
- */
-export const ReservationCard = ({ reservation }: ReservationCardProps) => {
-  return (
-    <article className="p-6 hover:bg-gray-50 transition-colors">
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-        <div className="flex-1">
-          <header className="flex items-center gap-3 mb-2">
-            <h3 className="text-lg font-semibold text-gray-900">Reserva #{reservation.id}</h3>
-            <StatusBadge status={reservation.status} />
-          </header>
+export function ReservationCard({ reservation }: ReservationCardProps) {
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleString('es-AR', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  };
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm text-gray-600">
-            <DetailRow label="ID de Compra" value={reservation.idPurchase} />
-            <DetailRow label="Usuario" value={reservation.userId} />
-            <DetailRow label="Fecha de Reserva" value={formatDate(reservation.reservationDate)} />
-            <DetailRow label="Expira" value={formatDate(reservation.expiredAt)} />
-            <DetailRow label="Cantidad Total" value={`${reservation.totalQuantity} items`} />
-            <DetailRow label="Productos" value={reservation.products?.length || 0} />
+  const getStatusColor = (estado: string) => {
+    switch (estado) {
+      case 'CONFIRMADO':
+        return 'bg-green-100 text-green-800';
+      case 'PENDIENTE':
+        return 'bg-yellow-100 text-yellow-800';
+      case 'CANCELADO':
+        return 'bg-red-100 text-red-800';
+      case 'EXPIRADO':
+        return 'bg-gray-100 text-gray-800';
+      default:
+        return 'bg-blue-100 text-blue-800';
+    }
+  };
+
+  const calculateTotal = () => {
+    return reservation.items.reduce((total, item) => {
+      return total + (parseFloat(item.precioUnitario) * item.cantidad);
+    }, 0);
+  };
+
+  const getTotalItems = () => {
+    return reservation.items.reduce((total, item) => total + item.cantidad, 0);
+  };
+
+  return (
+    <div className="border rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow bg-white">
+      {/* Header */}
+      <div className="flex justify-between items-start mb-3">
+        <div>
+          <h3 className="font-semibold text-lg">Reserva #{reservation.idReserva}</h3>
+          <p className="text-sm text-gray-600">ID Compra: {reservation.idCompra}</p>
+        </div>
+        <span className={`px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(reservation.estado)}`}>
+          {reservation.estado}
+        </span>
+      </div>
+
+      {/* Información general */}
+      <div className="space-y-2 mb-3 text-sm">
+        <p>
+          <span className="font-medium">Usuario ID:</span> {reservation.usuarioId}
+        </p>
+        <p>
+          <span className="font-medium">Fecha de reserva:</span> {formatDate(reservation.fechaCreacion)}
+        </p>
+        <p>
+          <span className="font-medium">Última actualización:</span> {formatDate(reservation.fechaActualizacion)}
+        </p>
+        <p>
+          <span className="font-medium">Expira:</span> {formatDate(reservation.expiraEn)}
+        </p>
+        <p>
+          <span className="font-medium">Total productos:</span> {getTotalItems()} unidades
+        </p>
+      </div>
+
+      {/* Lista de productos */}
+      {reservation.items && reservation.items.length > 0 && (
+        <div className="border-t pt-3">
+          <h4 className="font-medium text-sm mb-2">Productos reservados:</h4>
+          <ul className="space-y-2">
+            {reservation.items.map((item) => (
+              <li key={item.id} className="text-sm bg-gray-50 p-3 rounded">
+                <div className="flex justify-between items-start mb-2">
+                  <div className="flex-1">
+                    <p className="font-medium text-base">{item.nombre}</p>
+                    <p className="text-xs text-gray-600 mt-1">
+                      {item.producto.descripcion}
+                    </p>
+                    <p className="text-xs text-gray-500 mt-1">
+                      Stock disponible: {item.producto.stockDisponible} | Peso: {item.producto.pesoKg} kg
+                    </p>
+                    {item.producto.ubicacion && (
+                      <p className="text-xs text-gray-500 mt-1">
+                        📍 {item.producto.ubicacion.calle}, {item.producto.ubicacion.ciudad}, {item.producto.ubicacion.provincia}
+                      </p>
+                    )}
+                  </div>
+                  <div className="text-right ml-3">
+                    <p className="font-semibold text-base">
+                      {item.cantidad}x ${parseFloat(item.precioUnitario).toFixed(2)}
+                    </p>
+                    <p className="text-xs text-gray-600 mt-1">
+                      Subtotal: ${(parseFloat(item.precioUnitario) * item.cantidad).toFixed(2)}
+                    </p>
+                  </div>
+                </div>
+              </li>
+            ))}
+          </ul>
+          
+          {/* Total */}
+          <div className="mt-3 pt-3 border-t">
+            <div className="flex justify-between items-center">
+              <span className="font-semibold text-base">Total de la reserva:</span>
+              <span className="text-xl font-bold text-blue-600">${calculateTotal().toFixed(2)}</span>
+            </div>
           </div>
         </div>
-
-        <div className="flex gap-2">
-          <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium">
-            Ver Detalles
-          </button>
-          <DeleteReservationButton reservationId={reservation.id} />
-        </div>
-      </div>
-    </article>
+      )}
+    </div>
   );
-};
+}

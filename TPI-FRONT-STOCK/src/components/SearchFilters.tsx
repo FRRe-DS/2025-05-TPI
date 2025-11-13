@@ -3,17 +3,14 @@
  */
 interface SearchFiltersProps {
   filterId: string;
-  filterStatus: "ALL" | "PENDING" | "CONFIRMED" | "CANCELLED";
+  filterStatus: "ALL" | "PENDING" | "CONFIRMED" | "CANCELED";
   onIdChange: (id: string) => void;
-  onStatusChange: (status: "ALL" | "PENDING" | "CONFIRMED" | "CANCELLED") => void;
+  onStatusChange: (status: "ALL" | "PENDING" | "CONFIRMED" | "CANCELED") => void;
   onSearch: () => void;
   onReset: () => void;
 }
 
-/**
- * Componente de filtros de búsqueda para reservas
- * Incluye búsqueda por ID y filtro por estado
- */
+
 export const SearchFilters = ({
   filterId,
   filterStatus,
@@ -61,7 +58,7 @@ export const SearchFilters = ({
             <option value="ALL">Todos los estados</option>
             <option value="PENDING">Pendiente</option>
             <option value="CONFIRMED">Confirmada</option>
-            <option value="CANCELLED">Cancelada</option>
+            <option value="CANCELED">Cancelada</option>
           </select>
         </div>
       </div>
