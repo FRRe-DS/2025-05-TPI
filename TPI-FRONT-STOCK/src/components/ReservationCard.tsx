@@ -1,3 +1,4 @@
+import { formatDate, getStatusColor, calculateReservationTotal, getTotalItems } from "../utils/reservation.utils";
 import type { IReservation } from "../types/reservation.interface";
 
 interface ReservationCardProps {
@@ -5,41 +6,6 @@ interface ReservationCardProps {
 }
 
 export function ReservationCard({ reservation }: ReservationCardProps) {
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleString('es-AR', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    });
-  };
-
-  const getStatusColor = (estado: string) => {
-    switch (estado) {
-      case 'CONFIRMADO':
-        return 'bg-green-100 text-green-800';
-      case 'PENDIENTE':
-        return 'bg-yellow-100 text-yellow-800';
-      case 'CANCELADO':
-        return 'bg-red-100 text-red-800';
-      case 'EXPIRADO':
-        return 'bg-gray-100 text-gray-800';
-      default:
-        return 'bg-blue-100 text-blue-800';
-    }
-  };
-
-  const calculateTotal = () => {
-    return reservation.items.reduce((total, item) => {
-      return total + (parseFloat(item.precioUnitario) * item.cantidad);
-    }, 0);
-  };
-
-  const getTotalItems = () => {
-    return reservation.items.reduce((total, item) => total + item.cantidad, 0);
-  };
-
   return (
     <div className="border rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow bg-white">
       {/* Header */}
@@ -59,16 +25,16 @@ export function ReservationCard({ reservation }: ReservationCardProps) {
           <span className="font-medium">Usuario ID:</span> {reservation.usuarioId}
         </p>
         <p>
-          <span className="font-medium">Fecha de reserva:</span> {formatDate(reservation.fechaCreacion)}
+          <span className="font-medium">Fecha de reserva:</span> {formatDate(reservation.fechaCreacion, true)}
         </p>
         <p>
-          <span className="font-medium">Última actualización:</span> {formatDate(reservation.fechaActualizacion)}
+          <span className="font-medium">Última actualización:</span> {formatDate(reservation.fechaActualizacion, true)}
         </p>
         <p>
-          <span className="font-medium">Expira:</span> {formatDate(reservation.expiraEn)}
+          <span className="font-medium">Expira:</span> {formatDate(reservation.expiraEn, true)}
         </p>
         <p>
-          <span className="font-medium">Total productos:</span> {getTotalItems()} unidades
+          <span className="font-medium">Total productos:</span> {getTotalItems(reservation.items)} unidades
         </p>
       </div>
 
@@ -111,7 +77,7 @@ export function ReservationCard({ reservation }: ReservationCardProps) {
           <div className="mt-3 pt-3 border-t">
             <div className="flex justify-between items-center">
               <span className="font-semibold text-base">Total de la reserva:</span>
-              <span className="text-xl font-bold text-blue-600">${calculateTotal().toFixed(2)}</span>
+              <span className="text-xl font-bold text-blue-600">${calculateReservationTotal(reservation.items).toFixed(2)}</span>
             </div>
           </div>
         </div>

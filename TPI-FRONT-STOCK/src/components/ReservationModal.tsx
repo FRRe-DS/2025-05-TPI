@@ -1,3 +1,4 @@
+import { formatDate, getStatusColor, calculateReservationTotal, getTotalItems } from "../utils/reservation.utils";
 import type { IReservation } from "../types/reservation.interface";
 
 interface ReservationModalProps {
@@ -8,37 +9,6 @@ interface ReservationModalProps {
 
 export function ReservationModal({ reservation, isOpen, onClose }: ReservationModalProps) {
   if (!isOpen || !reservation) return null;
-
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleString('es-AR', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    });
-  };
-
-  const calculateTotal = () => {
-    return reservation.items.reduce((total, item) => {
-      return total + (parseFloat(item.precioUnitario) * item.cantidad);
-    }, 0);
-  };
-
-  const getStatusColor = (estado: string) => {
-    switch (estado) {
-      case 'CONFIRMADO':
-        return 'bg-green-100 text-green-800 border-green-300';
-      case 'PENDIENTE':
-        return 'bg-yellow-100 text-yellow-800 border-yellow-300';
-      case 'CANCELADO':
-        return 'bg-red-100 text-red-800 border-red-300';
-      case 'EXPIRADO':
-        return 'bg-gray-100 text-gray-800 border-gray-300';
-      default:
-        return 'bg-blue-100 text-blue-800 border-blue-300';
-    }
-  };
 
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto" onClick={onClose}>
@@ -78,7 +48,7 @@ export function ReservationModal({ reservation, isOpen, onClose }: ReservationMo
             <div className="grid grid-cols-2 gap-4">
               <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
                 <p className="text-xs text-gray-500 font-semibold uppercase mb-1">Fecha de Creación</p>
-                <p className="text-sm font-bold text-gray-900">{formatDate(reservation.fechaCreacion)}</p>
+                <p className="text-sm font-bold text-gray-900">{formatDate(reservation.fechaCreacion, true)}</p>
               </div>
               
               <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
@@ -146,12 +116,12 @@ export function ReservationModal({ reservation, isOpen, onClose }: ReservationMo
                     Total de la Reserva
                   </span>
                   <span className="text-2xl font-bold text-blue-600">
-                    ${calculateTotal().toFixed(2)}
+                    ${calculateReservationTotal(reservation.items).toFixed(2)}
                   </span>
                 </div>
                 <p className="text-sm text-gray-600 mt-2">
                   {reservation.items.length} {reservation.items.length === 1 ? 'producto' : 'productos'} • {' '}
-                  {reservation.items.reduce((total, item) => total + item.cantidad, 0)} unidades totales
+                  {getTotalItems(reservation.items)} unidades totales
                 </p>
               </div>
             </div>
