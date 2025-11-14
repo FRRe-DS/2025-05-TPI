@@ -27,7 +27,7 @@ export interface ReservaInput {
   idCompra: string;
   usuarioId: number;
   productos: Array<{
-    idProducto: number;
+    productoId: number;
     cantidad: number;
   }>;
 }

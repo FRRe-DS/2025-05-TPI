@@ -33,6 +33,8 @@ export const SearchFilters = ({
             <input
               id="filterId"
               type="number"
+              min="1"
+              step="1"
               value={filterId}
               onChange={(e) => onIdChange(e.target.value)}
               placeholder="Ingrese ID de reserva"

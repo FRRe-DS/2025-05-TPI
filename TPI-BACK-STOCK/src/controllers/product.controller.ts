@@ -50,9 +50,9 @@ export class ProductController {
       // Validación actualizada al español
       if (
         !input.nombre ||
-        !input.descripcion || 
+        !input.descripcion ||  
         input.precio === undefined || 
-        input.stockInicial === undefined || 
+        input.stockDisponible === undefined || 
         input.pesoKg === undefined || 
         !input.dimensiones || 
         input.dimensiones.largoCm === undefined || 

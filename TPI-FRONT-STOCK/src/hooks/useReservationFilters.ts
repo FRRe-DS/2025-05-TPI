@@ -2,12 +2,7 @@ import { useState, useMemo } from "react";
 import { useReservations, useReservationById, useReservationsByStatus } from "./reservation.hook";
 import type { IReservation } from "../types/reservation.interface";
 
-/**
- * Estado de búsqueda
- */
-type SearchMode = "ALL" | "ID" | "STATUS";
-type FilterStatus = "ALL" | "PENDING" | "CONFIRMED" | "CANCELED";
-
+export type FilterStatus = "ALL" | "PENDING" | "CONFIRMED" | "CANCELED";
 
 interface UseReservationFiltersResult {
   filterId: string;
@@ -17,79 +12,52 @@ interface UseReservationFiltersResult {
   error: Error | null;
   
   setFilterId: (id: string) => void;
-  handleSearchById: () => void;
-  handleSearchByStatus: (status: FilterStatus) => void;
-  handleReset: () => void;
+  setFilterStatus: (status: FilterStatus) => void;
+  reset: () => void;
 }
 
-
 export const useReservationFilters = (): UseReservationFiltersResult => {
-  const [filterId, setFilterId] = useState<string>("");
+  const [filterId, setFilterId] = useState("");
   const [filterStatus, setFilterStatus] = useState<FilterStatus>("ALL");
-  const [searchMode, setSearchMode] = useState<SearchMode>("ALL");
 
-  const allReservationsQuery = useReservations();
-  
-  const parsedId = useMemo(() => {
-    const num = parseInt(filterId);
-    return isNaN(num) ? 0 : num;
-  }, [filterId]);
-  
-  const byIdQuery = useReservationById(
-    parsedId,
-    searchMode === "ID" && parsedId > 0
-  );
-  
+  // Parse ID (el input ya valida que sea > 0)
+  const parsedId = filterId ? parseInt(filterId) : null;
+
+  // Queries condicionales
+  const allQuery = useReservations();
+  const byIdQuery = useReservationById(parsedId || 0, !!parsedId);
   const byStatusQuery = useReservationsByStatus(
-    filterStatus as "PENDING" | "CONFIRMED" | "CANCELED",
-    searchMode === "STATUS" && filterStatus !== "ALL"
+    filterStatus as Exclude<FilterStatus, "ALL">,
+    filterStatus !== "ALL"
   );
 
+  // Selección unificada de la query activa
+  const activeQuery = parsedId
+    ? byIdQuery
+    : filterStatus !== "ALL"
+      ? byStatusQuery
+      : allQuery;
+
+  // Determinar qué datos mostrar
   const displayData = useMemo((): IReservation[] => {
-    if (searchMode === "ID" && filterId && byIdQuery.data) {
-      return [byIdQuery.data];
-    }
-    if (searchMode === "STATUS" && filterStatus !== "ALL" && byStatusQuery.data) {
-      return byStatusQuery.data;
-    }
-    return allReservationsQuery.data || [];
-  }, [searchMode, filterId, filterStatus, byIdQuery.data, byStatusQuery.data, allReservationsQuery.data]);
+    if (parsedId && byIdQuery.data) return [byIdQuery.data];
+    if (filterStatus !== "ALL" && byStatusQuery.data) return byStatusQuery.data;
+    return allQuery.data || [];
+  }, [parsedId, byIdQuery.data, filterStatus, byStatusQuery.data, allQuery.data]);
 
-  const isLoading =
-    (searchMode === "ALL" && allReservationsQuery.isLoading) ||
-    (searchMode === "ID" && byIdQuery.isLoading) ||
-    (searchMode === "STATUS" && byStatusQuery.isLoading);
-
-  const error =
-    (searchMode === "ALL" && allReservationsQuery.error) ||
-    (searchMode === "ID" && byIdQuery.error) ||
-    (searchMode === "STATUS" && byStatusQuery.error) ||
-    null;
-
-  const handleSearchById = () => {
-    setSearchMode(filterId.trim() === "" ? "ALL" : "ID");
-  };
-
-  const handleSearchByStatus = (status: FilterStatus) => {
-    setFilterStatus(status);
-    setSearchMode(status === "ALL" ? "ALL" : "STATUS");
-  };
-
-  const handleReset = () => {
+  const reset = () => {
     setFilterId("");
     setFilterStatus("ALL");
-    setSearchMode("ALL");
   };
 
   return {
     filterId,
     filterStatus,
     displayData,
-    isLoading,
-    error,
+    isLoading: activeQuery.isLoading,
+    error: activeQuery.error,
     setFilterId,
-    handleSearchById,
-    handleSearchByStatus,
-    handleReset,
+    setFilterStatus,
+    reset,
   };
 };

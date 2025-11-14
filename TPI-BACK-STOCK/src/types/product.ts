@@ -31,7 +31,7 @@ export interface ProductoInput {
   nombre: string;
   descripcion: string;
   precio: number; 
-  stockInicial: number;
+  stockDisponible: number;
   pesoKg: number;
   dimensiones: Dimensiones;
   ubicacion: UbicacionAlmacen;    
