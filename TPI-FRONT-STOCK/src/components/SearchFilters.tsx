@@ -1,73 +1,67 @@
-/**
- * Props para SearchFilters
- */
+import type { FilterStatus } from "../hooks/useReservationFilters";
+
 interface SearchFiltersProps {
   filterId: string;
-  filterStatus: "ALL" | "PENDING" | "CONFIRMED" | "CANCELED";
-  onIdChange: (id: string) => void;
-  onStatusChange: (status: "ALL" | "PENDING" | "CONFIRMED" | "CANCELED") => void;
-  onSearch: () => void;
+  filterStatus: FilterStatus;
+  onFilterIdChange: (id: string) => void;
+  onFilterStatusChange: (status: FilterStatus) => void;
   onReset: () => void;
 }
 
-
-export const SearchFilters = ({
+export function SearchFilters({
   filterId,
   filterStatus,
-  onIdChange,
-  onStatusChange,
-  onSearch,
-  onReset,
-}: SearchFiltersProps) => {
+  onFilterIdChange,
+  onFilterStatusChange,
+  onReset
+}: SearchFiltersProps) {
   return (
-    <section className="bg-white rounded-lg shadow-md p-6 mb-6">
-      <h2 className="text-xl font-semibold mb-4 text-gray-700">Filtros de Búsqueda</h2>
+    <div className="bg-white rounded-xl shadow-lg border-2 border-gray-200 p-6 mb-6">
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-xl font-bold text-gray-800"> Filtros de Búsqueda</h2>
+        <button
+          onClick={onReset}
+          className="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white text-sm font-medium rounded-lg transition-colors cursor-pointer"
+        >
+          Limpiar filtros
+        </button>
+      </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* Filtro por ID */}
-        <div className="flex flex-col">
-          <label htmlFor="filterId" className="block text-sm font-medium text-gray-700 mb-2">
+        <div>
+          <label htmlFor="filterId" className="block text-sm font-semibold text-gray-700 mb-2">
             Buscar por ID de Reserva
           </label>
-          <div className="flex gap-2">
-            <input
-              id="filterId"
-              type="number"
-              min="1"
-              step="1"
-              value={filterId}
-              onChange={(e) => onIdChange(e.target.value)}
-              placeholder="Ingrese ID de reserva"
-              className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            />
-            <button onClick={onSearch} className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium">
-              Buscar
-            </button>
-          </div>
+          <input
+            id="filterId"
+            type="number"
+            min="1"
+            value={filterId}
+            onChange={(e) => onFilterIdChange(e.target.value)}
+            placeholder="Ingrese ID de reserva..."
+            className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 transition-colors"
+          />
         </div>
 
         {/* Filtro por Estado */}
-        <div className="flex flex-col">
-          <label htmlFor="filterStatus" className="block text-sm font-medium text-gray-700 mb-2">
+        <div>
+          <label htmlFor="filterStatus" className="block text-sm font-semibold text-gray-700 mb-2">
             Filtrar por Estado
           </label>
           <select
             id="filterStatus"
             value={filterStatus}
-            onChange={(e) => onStatusChange(e.target.value as typeof filterStatus)}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            onChange={(e) => onFilterStatusChange(e.target.value as FilterStatus)}
+            className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 transition-colors cursor-pointer"
           >
             <option value="ALL">Todos los estados</option>
             <option value="PENDING">Pendiente</option>
-            <option value="CONFIRMED">Confirmada</option>
-            <option value="CANCELED">Cancelada</option>
+            <option value="CONFIRMED">Confirmado</option>
+            <option value="CANCELED">Cancelado</option>
           </select>
         </div>
       </div>
-
-      <button onClick={onReset} className="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors">
-        Resetear Filtros
-      </button>
-    </section>
+    </div>
   );
-};
+}
