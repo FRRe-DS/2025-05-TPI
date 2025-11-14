@@ -2,7 +2,7 @@
 
 import { Request, Response } from 'express';
 import { ProductService } from "../services";
-import { ProductoInput, ProductoUpdate } from '../types'; // Cambiado a español
+import { ProductoInput, ProductoUpdate } from '../types'; 
 
 export class ProductController {
   private productService: ProductService;
@@ -45,9 +45,8 @@ export class ProductController {
 
   createProduct = async (req: Request, res: Response) => {
     try {
-      const input: ProductoInput = req.body; // Cambiado a ProductoInput
+      const input: ProductoInput = req.body; 
 
-      // Validación actualizada al español
       if (
         !input.nombre ||
         !input.descripcion ||  
@@ -79,9 +78,8 @@ export class ProductController {
     }
   };
 
-  // En el método updateProduct, línea 96:
 updateProduct = async (req: Request, res: Response) => {
-  const id = Number(req.params.productoId); // ← Definir aquí, fuera del try-catch
+  const id = Number(req.params.productoId); 
   const updateData: ProductoUpdate = req.body;
 
   if (isNaN(id)) {
@@ -94,7 +92,7 @@ updateProduct = async (req: Request, res: Response) => {
 
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : "Error desconocido";
-    console.error(`Detalle del error al actualizar producto ID ${id}:`, error); // ✅ Ahora 'id' está en scope
+    console.error(`Detalle del error al actualizar producto ID ${id}:`, error); 
     
     const statusCode = errorMessage.includes("not found") ? 404 : 500;
     res.status(statusCode).json({ 
@@ -114,7 +112,7 @@ updateProduct = async (req: Request, res: Response) => {
     
     try {
       await this.productService.deleteProduct(id);
-      res.status(204).send(); // Cambiado a 204 No Content
+      res.status(204).send(); 
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : "Error desconocido";
       console.error(`Detalle del error al eliminar producto ID ${id}:`, error); 

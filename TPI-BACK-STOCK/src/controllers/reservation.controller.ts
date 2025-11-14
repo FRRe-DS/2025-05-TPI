@@ -33,14 +33,8 @@ export class ReservationController {
   getReservationById = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const idReserva = Number(req.params.idReserva);
-      const usuarioId = Number(req.query.usuarioId); // Según contrato: query parameter
 
-      if (!usuarioId) {
-        res.status(400).json({ message: "El parámetro 'usuarioId' es requerido." });
-        return;
-      }
-
-      const reservation = await this.reservationService.getReservationById(idReserva, usuarioId);
+      const reservation = await this.reservationService.getReservationById(idReserva);
       res.status(200).json(reservation);
     } catch (error) {
       if (error instanceof ResourceNotFoundError) {
@@ -53,17 +47,16 @@ export class ReservationController {
 
   updateReservationStatus = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const idReserva = parseInt(req.params.idReserva, 10); // Cambiado a idReserva
-      const input: ActualizarReservaInput = req.body; // Usar interfaz en español
+      const idReserva = parseInt(req.params.idReserva, 10);
+      const input: ActualizarReservaInput = req.body; 
 
-      if (!input.usuarioId || !input.estado) {
+      if (!input.estado) {
         res.status(400).json({ message: "Los campos 'usuarioId' y 'estado' son requeridos." });
         return;
       }
 
       const updatedReservation = await this.reservationService.updateReservationStatus(
         idReserva, 
-        input.usuarioId, 
         input.estado
       );
 
@@ -80,7 +73,7 @@ export class ReservationController {
   cancelReservation = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const idReserva = Number(req.params.idReserva);
-      const input: CancelacionReservaInput = req.body; // Usar interfaz en español
+      const input: CancelacionReservaInput = req.body; 
 
       if (!input.motivo) {
         res.status(400).json({ message: "El campo 'motivo' es requerido." });

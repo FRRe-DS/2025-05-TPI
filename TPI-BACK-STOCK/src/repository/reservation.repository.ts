@@ -40,11 +40,10 @@ export class ReservationRepository {
     });
   } 
 
-  findByUserReservation(idReserva: number, usuarioId: number) {
+  findByUserReservation(idReserva: number) {
   return this.repository.findOne({
     where: { 
-      idReserva: idReserva, // ✅ Cambiado de 'id' a 'idReserva'
-      usuarioId: usuarioId 
+      idReserva: idReserva
     },
     relations: ["items", "items.producto"],
   });
@@ -66,7 +65,7 @@ export class ReservationRepository {
         .createQueryBuilder(Reservation, "reservation")
         .innerJoinAndSelect("reservation.items", "items")
         .innerJoinAndSelect("items.producto", "product") // Cambiado product a producto
-        .where("reservation.id = :idReserva", { idReserva })
+        .where("reservation.idReserva = :idReserva", { idReserva })
         .setLock("pessimistic_write") 
         .getOne();
 

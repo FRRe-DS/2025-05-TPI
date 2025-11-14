@@ -12,13 +12,13 @@ export class CategoryRepository {
     this.repository = AppDataSource.getRepository(Category);
   }
 
-  findByName(nombre: string): Promise<Category | null> { // Cambiado name a nombre
+  findByName(nombre: string): Promise<Category | null> { 
     return this.repository.findOne({ 
-      where: { nombre } // Cambiado name a nombre
+      where: { nombre } 
     });
   }
 
-  create(categoryData: CategoriaInput): Promise<Category> { // Cambiado CategoryInput a CategoriaInput
+  create(categoryData: CategoriaInput): Promise<Category> { 
     const newCategory = this.repository.create(categoryData);
     return this.repository.save(newCategory);
   }

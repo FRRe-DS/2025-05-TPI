@@ -2,7 +2,7 @@
 
 import { Request, Response, NextFunction } from 'express';
 import { CategoryService } from '../services/category.service'; 
-import { CategoriaInput } from '../types/categories'; // Importar la interfaz en español
+import { CategoriaInput } from '../types/categories'; 
 
 export class CategoryController {
   private categoryService: CategoryService;
@@ -13,7 +13,7 @@ export class CategoryController {
 
   public createCategory = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const input: CategoriaInput = req.body; // Usar la interfaz en español
+      const input: CategoriaInput = req.body; 
       
       if (!input.nombre) {
         res.status(400).json({ message: "El campo 'nombre' es requerido." });
@@ -39,7 +39,7 @@ export class CategoryController {
 
   public deleteCategory = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const id = parseInt(req.params.id, 10); // Cambiado a categoriaId
+      const id = parseInt(req.params.id, 10); 
       
       if (isNaN(id)) {
         res.status(400).json({ message: "El ID de la categoría debe ser numérico." });
