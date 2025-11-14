@@ -1,4 +1,7 @@
-import { formatDate, getStatusColor, calculateReservationTotal, getTotalItems } from "../utils/reservation.utils";
+import { useCallback } from "react";
+import { formatDate, getStatusColor } from "../utils/reservation.utils";
+import { ModalProductItem } from "./ModalProductItem";
+import { ModalTotal } from "./ModalTotal";
 import type { IReservation } from "../types/reservation.interface";
 
 interface ReservationModalProps {
@@ -8,17 +11,25 @@ interface ReservationModalProps {
 }
 
 export function ReservationModal({ reservation, isOpen, onClose }: ReservationModalProps) {
+  const handleBackdropClick = useCallback(() => {
+    onClose();
+  }, [onClose]);
+
+  const handleModalClick = useCallback((e: React.MouseEvent) => {
+    e.stopPropagation();
+  }, []);
+
   if (!isOpen || !reservation) return null;
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto" onClick={onClose}>
+    <div className="fixed inset-0 z-50 overflow-y-auto" onClick={handleBackdropClick}>
       {/* Backdrop */}
       <div className="fixed inset-0 bg-gray-900/30 backdrop-blur-sm transition-opacity"></div>
       {/* Modal */}
       <div className="flex min-h-full items-center justify-center p-4">
         <div 
           className="relative bg-white rounded-xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto"
-          onClick={(e) => e.stopPropagation()}
+          onClick={handleModalClick}
         >
           {/* Header */}
           <div className="sticky top-0 bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-4 rounded-t-xl z-10">
@@ -66,65 +77,14 @@ export function ReservationModal({ reservation, isOpen, onClose }: ReservationMo
               </h3>
               
               <div className="space-y-3">
-                {reservation.items.map((item, index) => (
-                  <div 
-                    key={index}
-                    className="bg-white border-2 border-gray-200 rounded-lg p-4 hover:border-blue-300 transition-colors"
-                  >
-                    <div className="flex justify-between items-start">
-                      <div className="flex-1">
-                        <h4 className="font-semibold text-gray-900 mb-1">
-                          {item.nombre}
-                        </h4>
-                        <p className="text-sm text-gray-600 mb-2">
-                          SKU: {item.productoId}
-                        </p>
-                        
-                        <div className="flex gap-4 text-sm">
-                          <div>
-                            <span className="text-gray-500">Cantidad:</span>
-                            <span className="ml-1 font-semibold text-gray-900">
-                              {item.cantidad} unidades
-                            </span>
-                          </div>
-                          <div>
-                            <span className="text-gray-500">Precio unitario:</span>
-                            <span className="ml-1 font-semibold text-gray-900">
-                              ${parseFloat(item.precioUnitario).toFixed(2)}
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                      
-                      <div className="text-right">
-                        <p className="text-xs text-gray-500 mb-1">Subtotal</p>
-                        <p className="text-lg font-bold text-blue-600">
-                          ${(parseFloat(item.precioUnitario) * item.cantidad).toFixed(2)}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
+                {reservation.items.map((item) => (
+                  <ModalProductItem key={item.id} item={item} />
                 ))}
               </div>
             </div>
 
             {/* Total */}
-            <div className="border-t-2 border-gray-200 pt-4">
-              <div className="bg-blue-50 rounded-lg p-4 border-2 border-blue-200">
-                <div className="flex justify-between items-center">
-                  <span className="text-lg font-semibold text-gray-700">
-                    Total de la Reserva
-                  </span>
-                  <span className="text-2xl font-bold text-blue-600">
-                    ${calculateReservationTotal(reservation.items).toFixed(2)}
-                  </span>
-                </div>
-                <p className="text-sm text-gray-600 mt-2">
-                  {reservation.items.length} {reservation.items.length === 1 ? 'producto' : 'productos'} • {' '}
-                  {getTotalItems(reservation.items)} unidades totales
-                </p>
-              </div>
-            </div>
+            <ModalTotal items={reservation.items} />
           </div>
 
           {/* Footer */}

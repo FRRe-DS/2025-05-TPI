@@ -1,11 +1,16 @@
-import { formatDate, getStatusColor, calculateReservationTotal, getTotalItems } from "../utils/reservation.utils";
+import { memo, useMemo } from "react";
+import { formatDate, getStatusColor, getTotalItems, calculateReservationTotal } from "../utils/reservation.utils";
+import { ReservationItem } from "./ReservationItem";
 import type { IReservation } from "../types/reservation.interface";
 
 interface ReservationCardProps {
   reservation: IReservation;
 }
 
-export function ReservationCard({ reservation }: ReservationCardProps) {
+export const ReservationCard = memo(function ReservationCard({ reservation }: ReservationCardProps) {
+  const totalItems = useMemo(() => getTotalItems(reservation.items), [reservation.items]);
+  const total = useMemo(() => calculateReservationTotal(reservation.items), [reservation.items]);
+
   return (
     <div className="border rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow bg-white">
       {/* Header */}
@@ -34,7 +39,7 @@ export function ReservationCard({ reservation }: ReservationCardProps) {
           <span className="font-medium">Expira:</span> {formatDate(reservation.expiraEn, true)}
         </p>
         <p>
-          <span className="font-medium">Total productos:</span> {getTotalItems(reservation.items)} unidades
+          <span className="font-medium">Total productos:</span> {totalItems} unidades
         </p>
       </div>
 
@@ -44,32 +49,7 @@ export function ReservationCard({ reservation }: ReservationCardProps) {
           <h4 className="font-medium text-sm mb-2">Productos reservados:</h4>
           <ul className="space-y-2">
             {reservation.items.map((item) => (
-              <li key={item.id} className="text-sm bg-gray-50 p-3 rounded">
-                <div className="flex justify-between items-start mb-2">
-                  <div className="flex-1">
-                    <p className="font-medium text-base">{item.nombre}</p>
-                    <p className="text-xs text-gray-600 mt-1">
-                      {item.producto.descripcion}
-                    </p>
-                    <p className="text-xs text-gray-500 mt-1">
-                      Stock disponible: {item.producto.stockDisponible} | Peso: {item.producto.pesoKg} kg
-                    </p>
-                    {item.producto.ubicacion && (
-                      <p className="text-xs text-gray-500 mt-1">
-                        📍 {item.producto.ubicacion.calle}, {item.producto.ubicacion.ciudad}, {item.producto.ubicacion.provincia}
-                      </p>
-                    )}
-                  </div>
-                  <div className="text-right ml-3">
-                    <p className="font-semibold text-base">
-                      {item.cantidad}x ${parseFloat(item.precioUnitario).toFixed(2)}
-                    </p>
-                    <p className="text-xs text-gray-600 mt-1">
-                      Subtotal: ${(parseFloat(item.precioUnitario) * item.cantidad).toFixed(2)}
-                    </p>
-                  </div>
-                </div>
-              </li>
+              <ReservationItem key={item.id} item={item} />
             ))}
           </ul>
           
@@ -77,11 +57,11 @@ export function ReservationCard({ reservation }: ReservationCardProps) {
           <div className="mt-3 pt-3 border-t">
             <div className="flex justify-between items-center">
               <span className="font-semibold text-base">Total de la reserva:</span>
-              <span className="text-xl font-bold text-blue-600">${calculateReservationTotal(reservation.items).toFixed(2)}</span>
+              <span className="text-xl font-bold text-blue-600">${total.toFixed(2)}</span>
             </div>
           </div>
         </div>
       )}
     </div>
   );
-}
+});

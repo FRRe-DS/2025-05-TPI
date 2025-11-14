@@ -1,10 +1,10 @@
 import { useReservationFilters } from "../hooks/useReservationFilters";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { ReservationModal } from "../components/ReservationModal";
 import { SearchFilters } from "../components/SearchFilters";
+import { ReservationTableRow } from "../components/ReservationTableRow";
 import { LoadingState, ErrorState, EmptyState } from "../components/ReservationStates";
 import type { IReservation } from "../types/reservation.interface";
-import { formatDate, getStatusColor, getTotalItems } from "../utils/reservation.utils";
 
 export default function ReservationsPage() {
   const {
@@ -21,15 +21,15 @@ export default function ReservationsPage() {
   const [selectedReservation, setSelectedReservation] = useState<IReservation | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const handleOpenModal = (reservation: IReservation) => {
+  const handleOpenModal = useCallback((reservation: IReservation) => {
     setSelectedReservation(reservation);
     setIsModalOpen(true);
-  };
+  }, []);
 
-  const handleCloseModal = () => {
+  const handleCloseModal = useCallback(() => {
     setIsModalOpen(false);
     setSelectedReservation(null);
-  };
+  }, []);
 
 
   return (
@@ -92,51 +92,11 @@ export default function ReservationsPage() {
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
                 {displayData.map((reservation) => (
-                  <tr 
-                    key={reservation.idReserva} 
-                    className="hover:bg-blue-50 transition-colors duration-150"
-                  >
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="flex items-center">
-                        <div>
-                          <div className="text-sm font-bold text-gray-900">
-                            #{reservation.idReserva}
-                          </div>
-                          <div className="text-xs text-gray-500">
-                            Compra: #{reservation.idCompra}
-                          </div>
-                        </div>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-gray-900 font-medium">
-                        {formatDate(reservation.fechaCreacion)}
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <span className={`px-3 py-1 inline-flex text-xs leading-5 font-bold rounded-full border ${getStatusColor(reservation.estado)}`}>
-                        {reservation.estado}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="flex items-center gap-2">
-                        <span className="text-sm font-semibold text-gray-700">
-                          {getTotalItems(reservation.items)}
-                        </span>
-                        <span className="text-xs text-gray-500">
-                          {getTotalItems(reservation.items) === 1 ? 'producto' : 'productos'}
-                        </span>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-center">
-                      <button
-                        onClick={() => handleOpenModal(reservation)}
-                        className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors duration-150 shadow-sm hover:shadow-md cursor-pointer"
-                      >
-                        Ver detalles
-                      </button>
-                    </td>
-                  </tr>
+                  <ReservationTableRow
+                    key={reservation.idReserva}
+                    reservation={reservation}
+                    onViewDetails={handleOpenModal}
+                  />
                 ))}
               </tbody>
             </table>
