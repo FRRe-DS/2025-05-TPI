@@ -1,14 +1,29 @@
 import express, { json } from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+dotenv.config(); //esto es una recomendacion para que las variables de entorno esten disponibles antes de importar keycloak
+
 import { AppDataSource } from "./config/appDataSource";
 import { categoryRouter, productRouter, reservationRouter } from "./routes";
-
-dotenv.config();
+import session from "express-session";
+import { keycloak, memoryStore } from "./config/keycloak";
 
 const app = express();
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }))
+app.use(express.urlencoded({ extended: true }));
+
+//configuracion de la session
+app.use(
+  session({
+    secret: "",   //completar
+    resave: false,
+    saveUninitialized: true,
+    store: memoryStore,
+  })
+);
+
+// Esto engancha Keycloak a todas las requests
+app.use(keycloak.middleware());
 
 /*
   Configuracion para orgigenes y permisos 
