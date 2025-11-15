@@ -1,6 +1,6 @@
 import { memo, useMemo } from "react";
-import { formatDate, getStatusColor, getTotalItems } from "../utils/reservation.utils";
-import type { IReservation } from "../types/reservation.interface";
+import { formatDate, getStatusColor, getTotalItems } from "../../utils/reservation.utils";
+import type { IReservation } from "../../types/reservation.interface";
 
 interface ReservationTableRowProps {
   reservation: IReservation;

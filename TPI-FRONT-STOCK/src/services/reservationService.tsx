@@ -9,7 +9,7 @@ import type { IReservation } from "../types/reservation.interface";
 export const getAllReservations = async (): Promise<IReservation[]> => {
   try {
     const response = await api.get<IReservation[]>("/reservas");
-    return response.data;
+    return response.data.reverse();
   } catch (error) {
     console.error("Error fetching all reservations:", error);
     throw error;
