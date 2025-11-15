@@ -1,10 +1,13 @@
 import { useState, useCallback } from "react";
 import { ReservationFilterProvider, useReservationFilters } from "../context/ReservationFilterContext";
-import { ReservationModal } from "../components/ReservationModal";
-import { SearchFilters } from "../components/SearchFilters";
-import { ReservationTableRow } from "../components/ReservationTableRow";
-import { LoadingState, EmptyState } from "../components/ReservationStates";
-import { Pagination } from "../components/Pagination";
+import {
+  ReservationModal,
+  SearchFilters,
+  ReservationTableRow,
+  LoadingState,
+  EmptyState,
+  Pagination,
+} from "../components/reservations";
 import type { IReservation } from "../types/reservation.interface";
 
 function ReservationsContent() {

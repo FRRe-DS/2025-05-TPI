@@ -1,5 +1,5 @@
 import { memo, useMemo } from "react";
-import type { IReservationItem } from "../types/reservation.interface";
+import type { IReservationItem } from "../../types/reservation.interface";
 
 interface ModalProductItemProps {
   item: IReservationItem;

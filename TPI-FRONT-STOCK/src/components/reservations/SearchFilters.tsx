@@ -1,4 +1,4 @@
-import { useReservationFilters, type FilterStatus } from "../context/ReservationFilterContext";
+import { useReservationFilters, type FilterStatus } from "../../context/ReservationFilterContext";
 
 export function SearchFilters() {
   const { filterId, filterStatus, filterUserId, setFilterId, setFilterStatus, setFilterUserId, reset } = useReservationFilters();
