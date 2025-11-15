@@ -56,9 +56,9 @@ export function SearchFilters({
             className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 transition-colors cursor-pointer"
           >
             <option value="ALL">Todos los estados</option>
-            <option value="PENDING">Pendiente</option>
-            <option value="CONFIRMED">Confirmado</option>
-            <option value="CANCELED">Cancelado</option>
+            <option value="PENDIENTE">Pendiente</option>
+            <option value="CONFIRMADO">Confirmado</option>
+            <option value="CANCELADO">Cancelado</option>
           </select>
         </div>
       </div>

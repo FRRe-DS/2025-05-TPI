@@ -1,8 +1,8 @@
 import { useState, useMemo } from "react";
-import { useReservations, useReservationById, useReservationsByStatus } from "./reservation.hook";
+import { useReservations, useReservationById } from "./reservation.hook";
 import type { IReservation } from "../types/reservation.interface";
 
-export type FilterStatus = "ALL" | "PENDING" | "CONFIRMED" | "CANCELED";
+export type FilterStatus = "ALL" | "PENDIENTE" | "CONFIRMADO" | "CANCELADO";
 
 interface UseReservationFiltersResult {
   filterId: string;
@@ -26,24 +26,26 @@ export const useReservationFilters = (): UseReservationFiltersResult => {
   // Queries condicionales
   const allQuery = useReservations();
   const byIdQuery = useReservationById(parsedId || 0, !!parsedId);
-  const byStatusQuery = useReservationsByStatus(
-    filterStatus as Exclude<FilterStatus, "ALL">,
-    filterStatus !== "ALL"
-  );
 
-  // Selección unificada de la query activa
-  const activeQuery = parsedId
-    ? byIdQuery
-    : filterStatus !== "ALL"
-      ? byStatusQuery
-      : allQuery;
+  // Determinar query activa (solo usar byId si hay ID, sino allQuery)
+  const activeQuery = parsedId ? byIdQuery : allQuery;
 
-  // Determinar qué datos mostrar
   const displayData = useMemo((): IReservation[] => {
-    if (parsedId && byIdQuery.data) return [byIdQuery.data];
-    if (filterStatus !== "ALL" && byStatusQuery.data) return byStatusQuery.data;
-    return allQuery.data || [];
-  }, [parsedId, byIdQuery.data, filterStatus, byStatusQuery.data, allQuery.data]);
+    // filtrado por id
+    if (parsedId && byIdQuery.data) {
+      return [byIdQuery.data];
+    }
+
+    // muestra todo 
+    const allData = allQuery.data || [];
+    
+    // filtra por estado 
+    if (filterStatus !== "ALL") {
+      return allData.filter(reservation => reservation.estado === filterStatus);
+    }
+
+    return allData;
+  }, [parsedId, byIdQuery.data, filterStatus, allQuery.data]);
 
   const reset = () => {
     setFilterId("");

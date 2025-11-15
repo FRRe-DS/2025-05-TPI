@@ -6,10 +6,6 @@ import type { IReservation } from "../types/reservation.interface";
  * Utiliza Axios configurado en client/axios.ts
  */
 
-/**
- * Obtiene todas las reservas
- * GET /reservas
- */
 export const getAllReservations = async (): Promise<IReservation[]> => {
   try {
     const response = await api.get<IReservation[]>("/reservas");
@@ -20,13 +16,12 @@ export const getAllReservations = async (): Promise<IReservation[]> => {
   }
 };
 
-/**
- * Obtiene una reserva por su ID
- * GET /reservas/:id
- */
+// Siempre enviando el usuarioId 12345 como query param para que funcione
 export const getReservationById = async (id: number): Promise<IReservation> => {
   try {
-    const response = await api.get<IReservation>(`/reservas/${id}`);
+    const response = await api.get<IReservation>(`/reservas/${id}`, {
+      params: { usuarioId: 12345 }
+    });
     return response.data;
   } catch (error) {
     console.error(`Error fetching reservation with id ${id}:`, error);
@@ -34,10 +29,7 @@ export const getReservationById = async (id: number): Promise<IReservation> => {
   }
 };
 
-/**
- * Obtiene reservas filtradas por estado
- * GET /reservas?status=PENDING|CONFIRMED|CANCELED
- */
+
 export const getReservationsByStatus = async (
   status: "PENDING" | "CONFIRMED" | "CANCELED"
 ): Promise<IReservation[]> => {
@@ -52,10 +44,7 @@ export const getReservationsByStatus = async (
   }
 };
 
-/**
- * Obtiene reservas por usuario
- * GET /reservas/user/:userId
- */
+
 export const getReservationsByUser = async (
   userId: number
 ): Promise<IReservation[]> => {
