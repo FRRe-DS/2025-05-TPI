@@ -3,13 +3,13 @@ import { ReservationFilterProvider, useReservationFilters } from "../context/Res
 import { ReservationModal } from "../components/ReservationModal";
 import { SearchFilters } from "../components/SearchFilters";
 import { ReservationTableRow } from "../components/ReservationTableRow";
-import { LoadingState, ErrorState, EmptyState } from "../components/ReservationStates";
+import { LoadingState, EmptyState } from "../components/ReservationStates";
 import { Pagination } from "../components/Pagination";
 import type { IReservation } from "../types/reservation.interface";
 
 function ReservationsContent() {
-  const { displayData, isLoading, error,currentPage,
-  totalPages,totalItems,goToNextPage,goToPrevPage,
+  const { displayData, isLoading, currentPage,
+  totalPages,totalItems,itemsPerPage,goToNextPage,goToPrevPage,
   goToPage} = useReservationFilters();
 
   const [selectedReservation, setSelectedReservation] = useState<IReservation | null>(null);
@@ -49,14 +49,12 @@ function ReservationsContent() {
         {/* Estados */}
         {isLoading && <LoadingState />}
         
-        {error && <ErrorState message={error.message} />}
-        
-        {!isLoading && !error && (!displayData || displayData.length === 0) && (
+        {!isLoading && (!displayData || displayData.length === 0) && (
           <EmptyState />
         )}
 
         {/* Tabla de Reservas */}
-        {!isLoading && !error && displayData && displayData.length > 0 && (
+        {!isLoading && displayData && displayData.length > 0 && (
           <div className="bg-white rounded-xl shadow-lg border-2 border-gray-200 overflow-hidden">
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gradient-to-r from-gray-50 to-gray-100">
@@ -97,6 +95,7 @@ function ReservationsContent() {
                 currentPage={currentPage}
                 totalPages={totalPages}
                 totalItems={totalItems}
+                itemsPerPage={itemsPerPage}
                 onPrevPage={goToPrevPage}
                 onNextPage={goToNextPage}
                 onGoToPage={goToPage}

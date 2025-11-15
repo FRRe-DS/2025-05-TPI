@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useMemo, useCallback, type ReactNode } from "react";
+import { createContext, useContext, useState, useMemo, useCallback, useEffect, type ReactNode } from "react";
 import { useReservations, useReservationById } from "../hooks/reservation.hook";
 import type { IReservation } from "../types/reservation.interface";
 
@@ -10,10 +10,10 @@ interface ReservationFilterContextValue {
   filterStatus: FilterStatus;
   displayData: IReservation[];
   totalItems: number;
+  itemsPerPage: number;
   currentPage: number;
   totalPages: number;
   isLoading: boolean;
-  error: Error | null;
   
   setFilterId: (id: string) => void;
   setFilterStatus: (status: FilterStatus) => void;
@@ -48,7 +48,11 @@ export function ReservationFilterProvider({ children }: { children: ReactNode })
   // Datos filtrados (sin paginar)
   const filtered = useMemo((): IReservation[] => {
     // Filtro por id 
-    if (parsedId && byIdQuery.data) {
+    if (parsedId) {
+      // Si hay error al buscar por ID (no existe), retornar array vacío
+      if (byIdQuery.error || !byIdQuery.data) {
+        return [];
+      }
       const reservation = byIdQuery.data;
       // verifique el estado 
       if (filterStatus !== "ALL" && reservation.estado !== filterStatus) {
@@ -90,7 +94,7 @@ export function ReservationFilterProvider({ children }: { children: ReactNode })
   }, [filtered, currentPage]);
 
   // Resetear a página 1 cuando cambian los filtros
-  useMemo(() => {
+  useEffect(() => {
     setCurrentPage(1);
   }, [filterId, filterStatus, filterUserId]);
 
@@ -120,10 +124,10 @@ export function ReservationFilterProvider({ children }: { children: ReactNode })
       filterUserId,
       displayData: paginatedData,
       totalItems: filtered.length,
+      itemsPerPage: ITEMS_PER_PAGE,
       currentPage,
       totalPages,
       isLoading: activeQuery.isLoading,
-      error: activeQuery.error,
       setFilterId,
       setFilterStatus,
       setFilterUserId,
