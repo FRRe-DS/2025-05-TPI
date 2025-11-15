@@ -31,14 +31,14 @@ function ReservationsContent() {
       <div className="container mx-auto px-4 max-w-7xl">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-4xl font-bold text-gray-800 mb-2">🏪 Gestión de Reservas</h1>
+          <h1 className="text-4xl font-bold text-gray-800 mb-2">Gestión de Reservas</h1>
           <p className="text-gray-600 text-lg">
             Control de stock reservado para ventas del ecommerce
           </p>
           <div className="mt-4 flex items-center gap-2">
             <span className="text-sm text-gray-500">Total de reservas:</span>
             <span className="px-3 py-1 bg-blue-100 text-blue-800 font-semibold rounded-full text-sm">
-              {displayData?.length || 0}
+              {totalItems || 0}
             </span>
           </div>
         </div>

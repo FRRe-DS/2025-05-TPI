@@ -6,6 +6,7 @@ export type FilterStatus = "ALL" | "PENDIENTE" | "CONFIRMADO" | "CANCELADO";
 
 interface ReservationFilterContextValue {
   filterId: string;
+  filterUserId: string;
   filterStatus: FilterStatus;
   displayData: IReservation[];
   totalItems: number;
@@ -16,6 +17,7 @@ interface ReservationFilterContextValue {
   
   setFilterId: (id: string) => void;
   setFilterStatus: (status: FilterStatus) => void;
+  setFilterUserId: (userId: string) => void;
   goToNextPage: () => void;
   goToPrevPage: () => void;
   goToPage: (page: number) => void;
@@ -27,6 +29,7 @@ const ReservationFilterContext = createContext<ReservationFilterContextValue | u
 export function ReservationFilterProvider({ children }: { children: ReactNode }) {
   const [filterId, setFilterId] = useState("");
   const [filterStatus, setFilterStatus] = useState<FilterStatus>("ALL");
+  const [filterUserId, setFilterUserId] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   
   const ITEMS_PER_PAGE = 8;
@@ -47,20 +50,35 @@ export function ReservationFilterProvider({ children }: { children: ReactNode })
     // Filtro por id 
     if (parsedId && byIdQuery.data) {
       const reservation = byIdQuery.data;
-      // verifique ademas el estado 
+      // verifique el estado 
       if (filterStatus !== "ALL" && reservation.estado !== filterStatus) {
         return []; 
+      }
+      // verifique el usuario ID
+      if (filterUserId.trim() && reservation.usuarioId !== parseInt(filterUserId)) {
+        return [];
       }
       return [reservation];
     }
     
     // Todas las reservas
-    const allData = allQuery.data || [];
+    let allData = allQuery.data || [];
+    
+    // Filtrar por estado
     if (filterStatus !== "ALL") {
-      return allData.filter(r => r.estado === filterStatus);
+      allData = allData.filter(r => r.estado === filterStatus);
     }
+    
+    // Filtrar por usuario ID
+    if (filterUserId.trim()) {
+      const userId = parseInt(filterUserId);
+      if (!isNaN(userId)) {
+        allData = allData.filter(r => r.usuarioId === userId);
+      }
+    }
+    
     return allData;
-  }, [parsedId, byIdQuery.data, filterStatus, allQuery.data]);
+  }, [parsedId, byIdQuery.data, filterStatus, filterUserId, allQuery.data]);
 
   // Cálculos de paginación
   const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE);
@@ -74,11 +92,12 @@ export function ReservationFilterProvider({ children }: { children: ReactNode })
   // Resetear a página 1 cuando cambian los filtros
   useMemo(() => {
     setCurrentPage(1);
-  }, [filterId, filterStatus]);
+  }, [filterId, filterStatus, filterUserId]);
 
   const reset = useCallback(() => {
     setFilterId("");
     setFilterStatus("ALL");
+    setFilterUserId("");
     setCurrentPage(1);
   }, []);
 
@@ -98,6 +117,7 @@ export function ReservationFilterProvider({ children }: { children: ReactNode })
     <ReservationFilterContext.Provider value={{
       filterId,
       filterStatus,
+      filterUserId,
       displayData: paginatedData,
       totalItems: filtered.length,
       currentPage,
@@ -106,6 +126,7 @@ export function ReservationFilterProvider({ children }: { children: ReactNode })
       error: activeQuery.error,
       setFilterId,
       setFilterStatus,
+      setFilterUserId,
       goToNextPage,
       goToPrevPage,
       goToPage,
