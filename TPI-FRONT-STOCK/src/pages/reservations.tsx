@@ -1,22 +1,13 @@
-import { useReservationFilters } from "../hooks/useReservationFilters";
 import { useState, useCallback } from "react";
+import { ReservationFilterProvider, useReservationFilters } from "../context/ReservationFilterContext";
 import { ReservationModal } from "../components/ReservationModal";
 import { SearchFilters } from "../components/SearchFilters";
 import { ReservationTableRow } from "../components/ReservationTableRow";
 import { LoadingState, ErrorState, EmptyState } from "../components/ReservationStates";
 import type { IReservation } from "../types/reservation.interface";
 
-export default function ReservationsPage() {
-  const {
-    filterId,
-    filterStatus,
-    displayData,
-    isLoading,
-    error,
-    setFilterId,
-    setFilterStatus,
-    reset
-  } = useReservationFilters();
+function ReservationsContent() {
+  const { displayData, isLoading, error } = useReservationFilters();
 
   const [selectedReservation, setSelectedReservation] = useState<IReservation | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -50,13 +41,7 @@ export default function ReservationsPage() {
         </div>
 
         {/* Filtros de Búsqueda */}
-        <SearchFilters
-          filterId={filterId}
-          filterStatus={filterStatus}
-          onFilterIdChange={setFilterId}
-          onFilterStatusChange={setFilterStatus}
-          onReset={reset}
-        />
+        <SearchFilters />
 
         {/* Estados */}
         {isLoading && <LoadingState />}
@@ -111,5 +96,13 @@ export default function ReservationsPage() {
         />
       </div>
     </div>
+  );
+}
+
+export default function ReservationsPage() {
+  return (
+    <ReservationFilterProvider>
+      <ReservationsContent />
+    </ReservationFilterProvider>
   );
 }

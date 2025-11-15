@@ -1,26 +1,13 @@
-import type { FilterStatus } from "../hooks/useReservationFilters";
+import { useReservationFilters, type FilterStatus } from "../context/ReservationFilterContext";
 
-interface SearchFiltersProps {
-  filterId: string;
-  filterStatus: FilterStatus;
-  onFilterIdChange: (id: string) => void;
-  onFilterStatusChange: (status: FilterStatus) => void;
-  onReset: () => void;
-}
-
-export function SearchFilters({
-  filterId,
-  filterStatus,
-  onFilterIdChange,
-  onFilterStatusChange,
-  onReset
-}: SearchFiltersProps) {
+export function SearchFilters() {
+  const { filterId, filterStatus, setFilterId, setFilterStatus, reset } = useReservationFilters();
   return (
     <div className="bg-white rounded-xl shadow-lg border-2 border-gray-200 p-6 mb-6">
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-xl font-bold text-gray-800"> Filtros de Búsqueda</h2>
         <button
-          onClick={onReset}
+          onClick={reset}
           className="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white text-sm font-medium rounded-lg transition-colors cursor-pointer"
         >
           Limpiar filtros
@@ -38,7 +25,7 @@ export function SearchFilters({
             type="number"
             min="1"
             value={filterId}
-            onChange={(e) => onFilterIdChange(e.target.value)}
+            onChange={(e) => setFilterId(e.target.value)}
             placeholder="Ingrese ID de reserva..."
             className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 transition-colors"
           />
@@ -52,7 +39,7 @@ export function SearchFilters({
           <select
             id="filterStatus"
             value={filterStatus}
-            onChange={(e) => onFilterStatusChange(e.target.value as FilterStatus)}
+            onChange={(e) => setFilterStatus(e.target.value as FilterStatus)}
             className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 transition-colors cursor-pointer"
           >
             <option value="ALL">Todos los estados</option>
