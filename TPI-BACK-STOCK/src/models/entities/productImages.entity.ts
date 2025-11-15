@@ -10,12 +10,12 @@ export class ProductImage {
     url!: string;
 
     @Column({ name: 'es_principal', type: 'boolean', default: false })
-    esPrincipal!: boolean; // Cambiado de 'isMain' a 'esPrincipal'
+    esPrincipal!: boolean; 
     
     @Column({ name: 'producto_id', type: 'integer' }) 
-    productoId!: number; // Cambiado de 'productId' a 'productoId'
+    productoId!: number; 
 
-    @ManyToOne(() => Product, (product: Product) => product.imagenes, { onDelete: 'CASCADE' }) // Cambiado 'images' a 'imagenes'
+    @ManyToOne(() => Product, (product: Product) => product.imagenes, { onDelete: 'CASCADE' })
     @JoinColumn({ name: 'producto_id' }) 
-    producto!: Product; // Cambiado de 'product' a 'producto'
+    producto!: Product; 
 }

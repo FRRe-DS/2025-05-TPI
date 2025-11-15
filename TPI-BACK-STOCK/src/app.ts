@@ -30,7 +30,7 @@ const initApp = async () => {
 
     // Conexion a base de datos
     await AppDataSource.initialize();
-    console.log("✅ Conexion establecida")
+    console.log("✅ Conexion establecida a la Base de Datos");
 
     // Rutas
     app.get('/', (req, res) => res.send('Prueba api node'));

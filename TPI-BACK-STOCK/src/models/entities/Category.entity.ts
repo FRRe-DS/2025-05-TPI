@@ -8,11 +8,11 @@ export class Category {
   id!: number;
 
   @Column({ name: 'nombre', type: 'varchar', length: 100, unique: true }) 
-  nombre!: string; // Cambiado de 'name' a 'nombre'
+  nombre!: string; 
 
   @Column({ name: 'descripcion', type: 'varchar', length: 100, default: 'Sin descripción' }) 
-  descripcion!: string; // Cambiado de 'description' a 'descripcion'
+  descripcion!: string; 
     
-  @ManyToMany(() => Product, product => product.categorias) // Cambiado 'categories' a 'categorias'
-  productos!: Product[]; // Cambiado de 'products' a 'productos'
+  @ManyToMany(() => Product, product => product.categorias) 
+  productos!: Product[]; 
 }
