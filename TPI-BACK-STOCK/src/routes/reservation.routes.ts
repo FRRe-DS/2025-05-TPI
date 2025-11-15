@@ -4,8 +4,8 @@ import { container } from "../container/container";
 export const reservationRouter = Router();
 const reservationController = container.reservationyController;
 
-// GET /v1/reservas - Listar reservas de un usuario
-reservationRouter.get("/", reservationController.getReservationsByUserId);
+// GET /v1/reservas - Obtener todas las reservas o filtrar por usuarioId
+reservationRouter.get("/", reservationController.getReservations);
 
 // GET /v1/reservas/:idReserva - Obtener una reserva específica
 reservationRouter.get("/:idReserva", reservationController.getReservationById);

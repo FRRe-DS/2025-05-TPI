@@ -11,7 +11,7 @@ export class ReservationService {
 
   async getAllReservations(): Promise<Reservation[]> {
     try {
-      const reservation = await this.reservationRepository.findAll(); // CORREGIDO
+      const reservation = await this.reservationRepository.findAll(); 
       if (!reservation) {
         throw new Error("Reservas no encontradas");
       }
@@ -24,7 +24,7 @@ export class ReservationService {
 
   async getReservationsByUserId(usuarioId: number): Promise<Reservation[]> {
     try {
-      const reservation = await this.reservationRepository.findByUserId(usuarioId); // CORREGIDO
+      const reservation = await this.reservationRepository.findByUserId(usuarioId);
       if (!reservation) {
         throw new Error("Reservas no encontradas");
       }
@@ -55,9 +55,9 @@ export class ReservationService {
 
       reservation.estado = estado;
     
-      const updatedReservation = await this.reservationRepository.update(reservation.idReserva, { estado: estado }); // CORREGIDO: usar idReserva
+      const updatedReservation = await this.reservationRepository.update(reservation.idReserva, { estado: estado }); 
 
-      const finalReservation = await this.reservationRepository.findByUserReservation(reservation.idReserva); // CORREGIDO: usar idReserva
+      const finalReservation = await this.reservationRepository.findByUserReservation(reservation.idReserva);
       if (!finalReservation) throw new Error("Error al obtener la reserva actualizada"); 
 
       return finalReservation;
