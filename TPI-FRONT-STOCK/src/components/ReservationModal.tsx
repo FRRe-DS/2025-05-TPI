@@ -44,7 +44,7 @@ export function ReservationModal({ reservation, isOpen, onClose }: ReservationMo
               </div>
               <button
                 onClick={onClose}
-                className="text-white hover:bg-blue-500 rounded-lg p-2 transition-colors"
+                className="text-white hover:bg-blue-500 rounded-lg p-2 transition-colors cursor-pointer"
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -67,6 +67,11 @@ export function ReservationModal({ reservation, isOpen, onClose }: ReservationMo
                 <span className={`inline-flex px-3 py-1 text-sm font-bold rounded-full border ${getStatusColor(reservation.estado)}`}>
                   {reservation.estado}
                 </span>
+              </div>
+
+              <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                <p className="text-xs text-gray-500 font-semibold uppercase mb-1">Usuario</p>
+                <p className="text-sm font-bold text-gray-900">ID: {reservation.usuarioId}</p>
               </div>
             </div>
 

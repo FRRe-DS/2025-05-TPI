@@ -22,11 +22,16 @@ export function ReservationFilterProvider({ children }: { children: ReactNode })
   const [filterId, setFilterId] = useState("");
   const [filterStatus, setFilterStatus] = useState<FilterStatus>("ALL");
 
-  const parsedId = filterId ? parseInt(filterId) : null;
+    const parsedId = useMemo(() => {
+      const trimmed = filterId.trim();
+      if (!trimmed) return null;
+      const num = parseInt(trimmed);
+      return !isNaN(num) && num > 0 ? num : null;
+    }, [filterId]);
 
-  const allQuery = useReservations();
-  const byIdQuery = useReservationById(parsedId || 0, !!parsedId);
-  const activeQuery = parsedId ? byIdQuery : allQuery;
+    const allQuery = useReservations();
+    const byIdQuery = useReservationById(parsedId || 0, parsedId !== null && parsedId > 0);
+    const activeQuery = parsedId ? byIdQuery : allQuery;
 
   const displayData = useMemo((): IReservation[] => {
     // Filtro por id 
