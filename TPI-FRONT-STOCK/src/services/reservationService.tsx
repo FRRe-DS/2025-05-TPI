@@ -16,30 +16,12 @@ export const getAllReservations = async (): Promise<IReservation[]> => {
   }
 };
 
-// Siempre enviando el usuarioId 12345 como query param para que funcione
 export const getReservationById = async (id: number): Promise<IReservation> => {
   try {
-    const response = await api.get<IReservation>(`/reservas/${id}`, {
-      params: { usuarioId: 12345 }
-    });
+    const response = await api.get<IReservation>(`/reservas/${id}`);
     return response.data;
   } catch (error) {
     console.error(`Error fetching reservation with id ${id}:`, error);
-    throw error;
-  }
-};
-
-
-export const getReservationsByStatus = async (
-  status: "PENDING" | "CONFIRMED" | "CANCELED"
-): Promise<IReservation[]> => {
-  try {
-    const response = await api.get<IReservation[]>("/reservas", {
-      params: { status },
-    });
-    return response.data;
-  } catch (error) {
-    console.error(`Error fetching reservations with status ${status}:`, error);
     throw error;
   }
 };
@@ -49,9 +31,9 @@ export const getReservationsByUser = async (
   userId: number
 ): Promise<IReservation[]> => {
   try {
-    const response = await api.get<IReservation[]>(
-      `/reservas/user/${userId}`
-    );
+    const response = await api.get<IReservation[]>("/reservas", {
+      params: { usuarioId: userId }
+    });
     return response.data;
   } catch (error) {
     console.error(`Error fetching reservations for user ${userId}:`, error);

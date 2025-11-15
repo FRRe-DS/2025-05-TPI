@@ -2,7 +2,6 @@ import { useQuery } from "@tanstack/react-query";
 import {
   getAllReservations,
   getReservationById,
-  getReservationsByStatus,
   getReservationsByUser,
 } from "../services/reservationService";
 import type { IReservation } from "../types/reservation.interface";
@@ -20,17 +19,6 @@ export const useReservationById = (id: number, enabled = true) =>
     queryKey: ["reservation", id],
     queryFn: () => getReservationById(id),
     enabled: enabled && id > 0,
-  });
-
-// Obtener reservas por estado
-export const useReservationsByStatus = (
-  status: "PENDING" | "CONFIRMED" | "CANCELED",
-  enabled = true
-) => 
-  useQuery<IReservation[], Error>({
-    queryKey: ["reservations", "status", status],
-    queryFn: () => getReservationsByStatus(status),
-    enabled: enabled && !!status,
   });
 
 // Obtener reservas por usuario
