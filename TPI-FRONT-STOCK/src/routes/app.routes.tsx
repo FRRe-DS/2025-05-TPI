@@ -8,7 +8,7 @@ export default function AppRouter(){
       {/* Ruta principal - Muestra reservas directamente ya que no tenemos home */}
       <Route path="/" element={<Home/>}>
         <Route path="/productos" element={<h1 className="text-2xl">RUTA DE PRODUCTOS</h1>}/>
-        <Route path="/reservas" element={<h1 className="text-2xl">RUTA DE RESERVAS</h1>}/>
+        <Route path="/reservas" element={<ReservationsPage />}/>
         <Route path="/clientes" element={<h1 className="text-2xl">RUTA DE CLIENTES</h1>}/>
       </Route>
       
