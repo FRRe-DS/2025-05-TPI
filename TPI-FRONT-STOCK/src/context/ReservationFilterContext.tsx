@@ -12,7 +12,6 @@ interface ReservationFilterContextValue {
   currentPage: number;
   totalPages: number;
   isLoading: boolean;
-  error: Error | null;
   
   setFilterId: (id: string) => void;
   setFilterStatus: (status: FilterStatus) => void;
@@ -45,7 +44,11 @@ export function ReservationFilterProvider({ children }: { children: ReactNode })
   // Datos filtrados (sin paginar)
   const filtered = useMemo((): IReservation[] => {
     // Filtro por id 
-    if (parsedId && byIdQuery.data) {
+    if (parsedId) {
+      // Si hay error al buscar por ID (no existe), retornar array vacío
+      if (byIdQuery.error || !byIdQuery.data) {
+        return [];
+      }
       const reservation = byIdQuery.data;
       // verifique ademas el estado 
       if (filterStatus !== "ALL" && reservation.estado !== filterStatus) {
@@ -60,7 +63,7 @@ export function ReservationFilterProvider({ children }: { children: ReactNode })
       return allData.filter(r => r.estado === filterStatus);
     }
     return allData;
-  }, [parsedId, byIdQuery.data, filterStatus, allQuery.data]);
+  }, [parsedId, byIdQuery.data, byIdQuery.error, filterStatus, allQuery.data]);
 
   // Cálculos de paginación
   const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE);
@@ -103,7 +106,6 @@ export function ReservationFilterProvider({ children }: { children: ReactNode })
       currentPage,
       totalPages,
       isLoading: activeQuery.isLoading,
-      error: activeQuery.error,
       setFilterId,
       setFilterStatus,
       goToNextPage,
