@@ -2,6 +2,7 @@ interface PaginationProps {
   currentPage: number;
   totalPages: number;
   totalItems: number;
+  itemsPerPage: number;
   onPrevPage: () => void;
   onNextPage: () => void;
   onGoToPage: (page: number) => void;
@@ -11,6 +12,7 @@ export function Pagination({
   currentPage,
   totalPages,
   totalItems,
+  itemsPerPage,
   onPrevPage,
   onNextPage,
   onGoToPage
@@ -47,8 +49,8 @@ export function Pagination({
     return pages;
   };
 
-  const startItem = (currentPage - 1) * 8 + 1;
-  const endItem = Math.min(currentPage * 8, totalItems);
+  const startItem = (currentPage - 1) * itemsPerPage + 1;
+  const endItem = Math.min(currentPage * itemsPerPage, totalItems);
 
   return (
     <div className="bg-white rounded-xl shadow-lg border-2 border-gray-200 p-4 mt-6">

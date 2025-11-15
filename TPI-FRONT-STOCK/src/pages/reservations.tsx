@@ -9,7 +9,7 @@ import type { IReservation } from "../types/reservation.interface";
 
 function ReservationsContent() {
   const { displayData, isLoading, currentPage,
-  totalPages,totalItems,goToNextPage,goToPrevPage,
+  totalPages,totalItems,itemsPerPage,goToNextPage,goToPrevPage,
   goToPage} = useReservationFilters();
 
   const [selectedReservation, setSelectedReservation] = useState<IReservation | null>(null);
@@ -95,6 +95,7 @@ function ReservationsContent() {
                 currentPage={currentPage}
                 totalPages={totalPages}
                 totalItems={totalItems}
+                itemsPerPage={itemsPerPage}
                 onPrevPage={goToPrevPage}
                 onNextPage={goToNextPage}
                 onGoToPage={goToPage}

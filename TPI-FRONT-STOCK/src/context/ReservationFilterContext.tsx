@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useMemo, useCallback, type ReactNode } from "react";
+import { createContext, useContext, useState, useMemo, useCallback, useEffect, type ReactNode } from "react";
 import { useReservations, useReservationById } from "../hooks/reservation.hook";
 import type { IReservation } from "../types/reservation.interface";
 
@@ -9,6 +9,7 @@ interface ReservationFilterContextValue {
   filterStatus: FilterStatus;
   displayData: IReservation[];
   totalItems: number;
+  itemsPerPage: number;
   currentPage: number;
   totalPages: number;
   isLoading: boolean;
@@ -75,7 +76,7 @@ export function ReservationFilterProvider({ children }: { children: ReactNode })
   }, [filtered, currentPage]);
 
   // Resetear a página 1 cuando cambian los filtros
-  useMemo(() => {
+  useEffect(() => {
     setCurrentPage(1);
   }, [filterId, filterStatus]);
 
@@ -103,6 +104,7 @@ export function ReservationFilterProvider({ children }: { children: ReactNode })
       filterStatus,
       displayData: paginatedData,
       totalItems: filtered.length,
+      itemsPerPage: ITEMS_PER_PAGE,
       currentPage,
       totalPages,
       isLoading: activeQuery.isLoading,
