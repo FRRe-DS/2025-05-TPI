@@ -4,10 +4,13 @@ import { ReservationModal } from "../components/ReservationModal";
 import { SearchFilters } from "../components/SearchFilters";
 import { ReservationTableRow } from "../components/ReservationTableRow";
 import { LoadingState, ErrorState, EmptyState } from "../components/ReservationStates";
+import { Pagination } from "../components/Pagination";
 import type { IReservation } from "../types/reservation.interface";
 
 function ReservationsContent() {
-  const { displayData, isLoading, error } = useReservationFilters();
+  const { displayData, isLoading, error,currentPage,
+  totalPages,totalItems,goToNextPage,goToPrevPage,
+  goToPage} = useReservationFilters();
 
   const [selectedReservation, setSelectedReservation] = useState<IReservation | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -88,9 +91,19 @@ function ReservationsContent() {
                 ))}
               </tbody>
             </table>
+            {/* Paginación */}
+            {displayData && displayData.length > 0 && (
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                totalItems={totalItems}
+                onPrevPage={goToPrevPage}
+                onNextPage={goToNextPage}
+                onGoToPage={goToPage}
+              />
+            )}
           </div>
         )}
-
         {/* Modal */}
         <ReservationModal
           reservation={selectedReservation}
