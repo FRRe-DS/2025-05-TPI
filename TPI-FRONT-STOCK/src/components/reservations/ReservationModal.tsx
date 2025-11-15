@@ -2,7 +2,6 @@ import { useCallback } from "react";
 import { formatDate, getStatusColor } from "../../utils/reservation.utils";
 import { ModalProductItem } from "./ModalProductItem";
 import { ModalTotal } from "./ModalTotal";
-import { StatusBadge } from "./ReservationStates";
 import type { IReservation } from "../../types/reservation.interface";
 
 interface ReservationModalProps {
