@@ -1,18 +1,12 @@
-import { Routes, Route} from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import ReservationsPage from "../pages/reservations";
-import Home from "../pages/home";
+import { ProductListView } from "@/components/product-list-view";
 
-export default function AppRouter(){
-  return(
+export default function AppRouter() {
+  return (
     <Routes>
-      {/* Ruta principal - Muestra reservas directamente ya que no tenemos home */}
-      <Route path="/" element={<Home/>}>
-        <Route path="/productos" element={<h1 className="text-2xl">RUTA DE PRODUCTOS</h1>}/>
-        <Route path="/reservas" element={<h1 className="text-2xl">RUTA DE RESERVAS</h1>}/>
-        <Route path="/clientes" element={<h1 className="text-2xl">RUTA DE CLIENTES</h1>}/>
-      </Route>
-      
-      {/* Ruta alternativa para reservas */}
+      <Route path="/" element={<ProductListView />} />
+      <Route path="/reservas" element={<ReservationsPage />} />
       <Route path="/reservations" element={<ReservationsPage />} />
     </Routes>
   );

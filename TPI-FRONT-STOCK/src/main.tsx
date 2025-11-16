@@ -7,13 +7,14 @@ import './styles/index.css'
 import App from './App.tsx'
 import AppRouter from './routes/app.routes.tsx'
 
+document.documentElement.classList.add('dark')
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
         <App>
-          <AppRouter/>
+          <AppRouter />
         </App>
       </QueryClientProvider>
     </BrowserRouter>
