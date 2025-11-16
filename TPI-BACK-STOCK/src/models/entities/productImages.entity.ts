@@ -1,7 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
 import { Product } from '.';
 
-@Entity('product_images')
+@Entity('producto_imagenes') 
 export class ProductImage {
     @PrimaryGeneratedColumn()
     id!: number;
@@ -9,14 +9,13 @@ export class ProductImage {
     @Column({ name: 'url', type: 'varchar', length: 500 })
     url!: string;
 
-    @Column({ name: 'is_main',  type: 'boolean', default: false })
-    isMain!: boolean;
+    @Column({ name: 'es_principal', type: 'boolean', default: false })
+    esPrincipal!: boolean; 
     
-    @Column({ name: 'product_id', type:'integer' })
-    productId!: number; 
+    @Column({ name: 'producto_id', type: 'integer' }) 
+    productoId!: number; 
 
-    // RELATION ManyToOne to Product.
-    @ManyToOne(() => Product, (product: Product) => product.images, { onDelete: 'CASCADE' })
-    @JoinColumn({ name: 'product_id' })
-    product!: Product;
+    @ManyToOne(() => Product, (product: Product) => product.imagenes, { onDelete: 'CASCADE' })
+    @JoinColumn({ name: 'producto_id' }) 
+    producto!: Product; 
 }

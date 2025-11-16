@@ -11,15 +11,6 @@ export interface IReservaInput {
   productos: IProductoReservaInput[]; // Requerido
 }
 
-// Output: Respuesta simple de una Reserva (ReservaOutput)
-export interface IReservaOutput {
-  idReserva: number;
-  idCompra: string;
-  usuarioId: number;
-  estado: 'confirmado' | 'pendiente' | 'cancelado' | string; // Enum definido
-  expiresAt: string; // date-time
-  fechaCreacion: string; // date-time
-}
 
 // Detalle de un producto dentro de la respuesta completa de reserva
 export interface IProductoReservaCompleta {

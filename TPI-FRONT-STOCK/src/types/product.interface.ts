@@ -1,72 +1,66 @@
-// src/interfaces/product.interface.ts
-// src/interfaces/product.interface.ts
-import type { IDimension, IWarehouseLocation } from ".";
+import type { IDimension, IWarehouseLocation } from "./embeddables.interface";
 import type { ICategory } from "./category.interface";
 
 export interface IProduct {
     id: number;
     name: string;
-    description?: string;
-    price: number;
+    description: string;
+    unitPrice: number;
     availableStock: number;
-    weightKg?: number;
+    weightKg: number;
+    dimensions: IDimension;
+    location: IWarehouseLocation;
     categories: ICategory[];
-
-    // Componentes incrustados
-    dimension?: IDimension;
-    location?: IWarehouseLocation;
-
-    // Relaciones (Array de objetos completos)
-    imagenes: IImageProduct[];
-    categorias: ICategory[] | null; 
+    images: IImageProduct[];
 }
-
-/**
- * Interfas para el ingreso de un producto.
-*/
 
 export interface IProductInput {
     name: string;
-    price: number;
+    unitPrice: number;
     availableStock: number; 
     description?: string;
     weightKg?: number;
-
-    // Componentes incrustados (opcionales)
-    dimension?: IDimension;
+    dimensions?: IDimension;
     location?: IWarehouseLocation;
-
-    // Relaciones (Array de IDs o de objetos sin ID)
-    imagenes?: Omit<IImageProduct, 'id'>[]; 
+    images?: Omit<IImageProduct, 'id'>[]; 
     categoryIds?: number[];
 }
 
-/**
- * Tipo para actualizar un producto
-*/
 export type IProductUpdate = Partial<IProductInput>;
 
-/**
- * Respuesta cuando se crea un producto.
-*/
 export interface ICreatedProduct {
     id: number;
     mensaje: string;
 }
 
-/**
- * Imagen de producto.
-*/
+export interface ICreateProduct {
+  nombre: string;
+  descripcion: string;
+  precio: number;
+  stockDisponible: number;
+  pesoKg: number;
+  dimensiones: {
+    largoCm: number;
+    anchoCm: number;
+    altoCm: number;
+  };
+  ubicacion: {
+    calle: string;
+    ciudad: string;
+    provincia: string;
+    codigoPostal: string;
+    pais: string;
+  };
+  categorias?: number[];
+}
+
 export interface IImageProduct {
     id?: number; 
     productId: number;
     url: string;
-    esPrincipal: boolean;
+    isMain: boolean;
 }
 
-/**
- * Productos de una reserva.
-*/
 export interface IReservationProduct {
   idProducto: number;
   name: string;

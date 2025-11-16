@@ -2,17 +2,17 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToMany } from "typeorm";
 import { Product } from "./Product.entity";
 
-@Entity('categories')
+@Entity('categorias') 
 export class Category {
   @PrimaryGeneratedColumn()
   id!: number;
 
-  @Column({ name: 'name' ,type: 'varchar', length: 100, unique: true })
-  name!: string;
-  @Column('text', { nullable: true })
-  description!: string | null;
+  @Column({ name: 'nombre', type: 'varchar', length: 100, unique: true }) 
+  nombre!: string; 
 
-  // RELATION Many-to-Many: maps the inverse relationship in the Product entity.
-  @ManyToMany(() => Product, product => product.categories)
-  products!: Product[];
+  @Column({ name: 'descripcion', type: 'varchar', length: 100, default: 'Sin descripción' }) 
+  descripcion!: string; 
+    
+  @ManyToMany(() => Product, product => product.categorias) 
+  productos!: Product[]; 
 }

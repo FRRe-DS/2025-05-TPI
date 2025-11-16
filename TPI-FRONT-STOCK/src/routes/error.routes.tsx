@@ -11,6 +11,7 @@ export default function ErrorRouter({children}: ErrorProps){
     <Routes>
       {children}
       <Route path="error-404" element={<p>Error 404</p>} />
+      <Route path="*" element={<div>Error 404 - Página no encontrada</div>} />
     </Routes>
   );
 }
