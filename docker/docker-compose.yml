@@ -64,6 +64,22 @@ services:
       - tpi_network
     restart: unless-stopped
 
+  # NUEVO: Frontend de la aplicación
+  stock_frontend:
+    build:
+      context: ../TPI-FRONT-STOCK  # Ajusta esta ruta si es necesario
+      dockerfile: Dockerfile
+    container_name: stock_frontend
+    ports:
+      - "3000:80"  # Frontend en puerto 3000
+    environment:
+      - VITE_API_BASE_URL=http://localhost:8000/api  # Se conecta al backend
+    depends_on:
+      - stock_backend_api
+    networks:
+      - tpi_network
+    restart: unless-stopped
+
 volumes:
   keycloak_db_data:
     driver: local
