@@ -4,7 +4,7 @@ import { ProductImage } from './productImages.entity';
 import { ReservationItem } from './ReservationItem.entity';
 import { Dimension, WarehouseLocation } from '../embeddable';
 
-@Entity('products')
+@Entity('productos')
 export class Product {
   @PrimaryGeneratedColumn()
   id!: number;

@@ -1,12 +1,12 @@
 import express, { json } from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-dotenv.config(); //esto es una recomendacion para que las variables de entorno esten disponibles antes de importar keycloak
-
+dotenv.config();
 import { AppDataSource } from "./config/appDataSource";
 import { categoryRouter, productRouter, reservationRouter } from "./routes";
 import session from "express-session";
 import { keycloak, memoryStore } from "./config/keycloak";
+import {initAuthM2M } from "./services/keykcloak.service"
 
 const app = express();
 app.use(express.json());
@@ -15,7 +15,7 @@ app.use(express.urlencoded({ extended: true }));
 //configuracion de la session
 app.use(
   session({
-    secret: "",   //completar
+    secret: "MiclaveDeDesarrollo",   //completar
     resave: false,
     saveUninitialized: true,
     store: memoryStore,
@@ -30,10 +30,7 @@ app.use(keycloak.middleware());
   (Acepta cualquier peticion que venga las urls establecidas y con el header de credenciales)
 */
 const corsOptions = {
-  origin: [
-    'http://localhost:3000',
-    'http://localhost:5173'
-  ],
+  origin: true,
   optionsSuccessStatus: 200 
 }
 
@@ -46,6 +43,10 @@ const initApp = async () => {
     // Conexion a base de datos
     await AppDataSource.initialize();
     console.log("✅ Conexion establecida")
+    
+    // JWT keycloak
+    //await initAuthM2M();
+   // console.log("✅ Autenticación M2M (Token de servicio) lista y disponible.");
 
     // Rutas
     app.get('/', (req, res) => res.send('Prueba api node'));
