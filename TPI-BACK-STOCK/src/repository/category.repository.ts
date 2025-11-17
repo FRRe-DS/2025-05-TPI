@@ -1,29 +1,27 @@
 // src/repositories/CategoryRepository.ts
 
 import { Repository, FindOptionsWhere, In } from 'typeorm';
-import { Category } from '../models/entities'; // Asume que tienes una entidad Category
+import { Category } from '../models/entities';
 import { AppDataSource } from '../config/appDataSource';
-import { CategoryInput } from '../types';
+import { CategoriaInput } from '../types';
 
 export class CategoryRepository {
-
   private repository: Repository<Category>;
 
   constructor() {
     this.repository = AppDataSource.getRepository(Category);
   }
 
-  findByName(name: string): Promise<Category | null> {
+  findByName(nombre: string): Promise<Category | null> { // Cambiado name a nombre
     return this.repository.findOne({ 
-      where: { name } 
+      where: { nombre } // Cambiado name a nombre
     });
   }
 
-  create(categoryData: CategoryInput): Promise<Category> {
+  create(categoryData: CategoriaInput): Promise<Category> { // Cambiado CategoryInput a CategoriaInput
     const newCategory = this.repository.create(categoryData);
     return this.repository.save(newCategory);
   }
-
 
   findAll(): Promise<Category[]> {
     return this.repository.find();

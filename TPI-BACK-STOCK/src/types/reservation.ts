@@ -1,55 +1,54 @@
-import { ReservationItem } from "../models";
-
-export enum ReservationState {
-  PENDING = 'PENDING',
-  CONFIRMED = 'CONFIRMED',
-  CANCELLED = 'CANCELLED',
-  EXPIRED = 'EXPIRED',
+export enum EstadoReserva {
+  PENDIENTE = 'PENDIENTE',
+  CONFIRMADO = 'CONFIRMADO',
+  CANCELADO = 'CANCELADO',
+  EXPIRADO = 'EXPIRADO',
 }
 
-export interface ReservationItemInterface {
-  productId: number;
-  name: string;
-  quantity: number;
-  unitPriceAtReservation: number;
+export interface ItemReserva {
+  idProducto: number;
+  nombre: string;
+  cantidad: number;
+  precioUnitario: number;
 }
 
-export interface ReservationInterface {
-  id: number;
-  purchaseId: string;
-  userId: number;
-  state: ReservationState;
-  createdAt: Date;
-  updatedAt: Date;
-  expiresAt: Date;
-  items: ReservationItem[]; 
+export interface Reserva {
+  idReserva: number;
+  idCompra: string;
+  usuarioId: number;
+  estado: EstadoReserva;
+  fechaCreacion: Date;
+  fechaActualizacion: Date;
+  expiraEn: Date;
+  items: ItemReserva[]; 
 }
 
-export interface ReservationInput {
-  purchaseId: number;
-  userId: number;
-  items:ReservationItemInterface[];
+export interface ReservaInput {
+  idCompra: string;
+  usuarioId: number;
+  productos: Array<{
+    productoId: number;
+    cantidad: number;
+  }>;
 }
 
-export interface UpdateReservation {
-  userId: number;
-  state: ReservationState;
+export interface ActualizarReservaInput {
+  usuarioId: number;
+  estado: EstadoReserva;
 }
 
-export interface CancelReservation {
-  reservationId?: number;
-  state: 'CANCELLED';
-  reason: string;
+export interface CancelacionReservaInput {
+  motivo: string;
 }
 
-export interface ReleaseReservationInput {
-  reservationId: number;
-  userId: number;
-  reason: string;
+export interface LiberacionReservaInput {
+  idReserva: number;
+  usuarioId: number;
+  motivo: string;
 }
 
-export interface ReleaseReservationOutput {
+export interface LiberacionReservaOutput {
   mensaje: string;
   idReserva: number;
-  estado: 'RELEASED';
+  estado: 'LIBERADO';
 }

@@ -2,14 +2,12 @@
 
 import { Request, Response, NextFunction } from 'express';
 import { ReservationService } from '../services';
-import { ReservationState } from '../types/reservation'; 
+import { EstadoReserva, ReservaInput, ActualizarReservaInput, CancelacionReservaInput } from '../types/reservation'; // Cambiado a español
 
-// --- Definición de Errores (Asumiendo que existen) ---
+// --- Definición de Errores ---
 class ResourceNotFoundError extends Error {} 
 
-
 export class ReservationController {
-    
   private reservationService: ReservationService;
 
   constructor(reservationService: ReservationService) {
@@ -18,59 +16,58 @@ export class ReservationController {
 
   getReservationsByUserId = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      //const usuarioId = req.user.id; 
-      const usuarioId = 12; // Temporal para pruebas
-      const reservations = await this.reservationService.getReservationsByUserId(usuarioId);
+      const usuarioId = Number(req.query.usuarioId) || 12345; // Según contrato: query parameter
       
-      // 200 OK
+      if (!usuarioId) {
+        res.status(400).json({ message: "El parámetro 'usuarioId' es requerido." });
+        return;
+      }
+
+      const reservations = await this.reservationService.getReservationsByUserId(usuarioId);
       res.status(200).json(reservations);
     } catch (error) {
-      // Se asume que cualquier error aquí es un 500 del servidor/DB
       next(error); 
     }
   }
 
-  
   getReservationById = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const idReserva = Number(req.params.idReserva);
-      //const usuarioId = req.user.id; 
-      const usuarioId = 12; // Temporal para pruebas
+      const usuarioId = Number(req.query.usuarioId); // Según contrato: query parameter
 
-      // Se espera que el service lance ResourceNotFoundError si no encuentra la reserva
+      if (!usuarioId) {
+        res.status(400).json({ message: "El parámetro 'usuarioId' es requerido." });
+        return;
+      }
+
       const reservation = await this.reservationService.getReservationById(idReserva, usuarioId);
-
       res.status(200).json(reservation);
     } catch (error) {
       if (error instanceof ResourceNotFoundError) {
-          res.status(404).json({ message: error.message });
+        res.status(404).json({ message: error.message });
       } else {
-          next(error); 
+        next(error); 
       }
     }
   }
 
   updateReservationStatus = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const idReserva = parseInt(req.params.id, 10);
-      //const usuarioId = req.user.id; 
-      const usuarioId = 12; // Temporal para pruebas
+      const idReserva = parseInt(req.params.idReserva, 10); // Cambiado a idReserva
+      const input: ActualizarReservaInput = req.body; // Usar interfaz en español
 
-      const estado: ReservationState = req.body.estado as ReservationState; 
-
-      if (!estado) {
-        res.status(400).json({ message: "El campo 'estado' es requerido." });
+      if (!input.usuarioId || !input.estado) {
+        res.status(400).json({ message: "Los campos 'usuarioId' y 'estado' son requeridos." });
         return;
       }
 
       const updatedReservation = await this.reservationService.updateReservationStatus(
         idReserva, 
-        usuarioId, 
-        estado
+        input.usuarioId, 
+        input.estado
       );
 
       res.status(200).json(updatedReservation);
-
     } catch (error) {
       if (error instanceof ResourceNotFoundError) {
         res.status(404).json({ message: error.message });
@@ -83,16 +80,19 @@ export class ReservationController {
   cancelReservation = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const idReserva = Number(req.params.idReserva);
-      
+      const input: CancelacionReservaInput = req.body; // Usar interfaz en español
+
+      if (!input.motivo) {
+        res.status(400).json({ message: "El campo 'motivo' es requerido." });
+        return;
+      }
+
       const result: boolean = await this.reservationService.cancelReservation(idReserva);
 
       if (result) {
-        res.status(200).json({ 
-          message: `Reserva ${idReserva} cancelada y stock liberado exitosamente.`,
-          idReserva: idReserva
-        });
+        res.status(204).send(); // Cambiado a 204 según contrato
       } else {
-        res.status(409).json({ message: `No se pudo cancelar la reserva ${idReserva}. Verifique si la reserva es cancelable o si ya fue cancelada.` });
+        res.status(409).json({ message: `No se pudo cancelar la reserva ${idReserva}.` });
       }
     } catch (error) {
       next(error); 
@@ -101,17 +101,44 @@ export class ReservationController {
 
   createReservation = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const data = req.body;
-    
-      const usuarioId = 12; // Temporal: Reemplazar con req.user.id
-      data.userId = usuarioId; 
-      
-      console.log("DATA RESERVATION CONTROLLER: ", data)
+      const input: ReservaInput = req.body;
 
-      const newReservation = await this.reservationService.createReservation(data);
+      // Validar campos requeridos según contrato
+      if (!input.idCompra || !input.usuarioId || !input.productos) {
+        res.status(400).json({ 
+          message: "Los campos 'idCompra', 'usuarioId' y 'productos' son requeridos." 
+        });
+        return;
+      }
 
+      // Validar que productos sea un array no vacío
+      if (!Array.isArray(input.productos) || input.productos.length === 0) {
+        res.status(400).json({ 
+          message: "El campo 'productos' debe ser un array con al menos un producto." 
+        });
+        return;
+      }
+
+      // Validar estructura de cada producto
+      for (const producto of input.productos) {
+        if (!producto.productoId || producto.cantidad === undefined) {
+          res.status(400).json({ 
+            message: "Cada producto debe tener 'productoId' y 'cantidad'." 
+          });
+          return;
+        }
+
+        if (producto.cantidad <= 0) {
+          res.status(400).json({ 
+            message: "La cantidad debe ser mayor a 0." 
+          });
+          return;
+        }
+      }
+
+      console.log("DATA RESERVATION CONTROLLER: ", input);
+      const newReservation = await this.reservationService.createReservation(input);
       res.status(201).json(newReservation);
-
     } catch (error) {
       next(error); 
     }

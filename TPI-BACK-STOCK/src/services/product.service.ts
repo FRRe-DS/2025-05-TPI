@@ -2,13 +2,11 @@
 
 import { ProductRepository } from "../repository/products.repository";
 import { CategoryRepository } from "../repository/category.repository";
-import { Product, Category, Dimension, WarehouseLocation } from "../models";
-import { ProductInput, ProductUpdate } from "../types";
+import { Product, Category } from "../models";
+import { ProductoInput, ProductoUpdate } from "../types";
 import { DeleteResult } from "typeorm";
 
-
 export class ProductService {
-  
   private productRepository: ProductRepository;
   private categoryRepository: CategoryRepository;
 
@@ -25,33 +23,31 @@ export class ProductService {
     return this.productRepository.findById(id);
   }
 
-  async createProduct(productData: ProductInput): Promise<Product> {
-    
+  async createProduct(productData: ProductoInput): Promise<Product> {
     let categories: Category[] = [];
-    if (productData.categories && productData.categories.length > 0) {
-      const categoriesIds: number[] = productData.categories.map(cat => cat.id);
-      categories = await this.categoryRepository.findByIds(categoriesIds);
+    
+    // Ahora usa categoriaIds en lugar de categories
+    if (productData.categoriaIds && productData.categoriaIds.length > 0) {
+      categories = await this.categoryRepository.findByIds(productData.categoriaIds);
       
-      if (categories.length !== productData.categories.length) {
+      if (categories.length !== productData.categoriaIds.length) {
         throw new Error("Una o más categorías no fueron encontradas.");
       }
     }
 
-    const newProduct = this.productRepository.create(productData);
+    const newProduct = await this.productRepository.create(productData);
     return newProduct;
   }
 
-
-  async updateProduct(id: number, updateData: ProductUpdate): Promise<Product> {
-
-    const categoriesIds : number[] = updateData.categories.map(cat => cat.id);
-
-    if (categoriesIds && Array.isArray(categoriesIds) && categoriesIds.length > 0) {
+  async updateProduct(id: number, updateData: ProductoUpdate): Promise<Product> {
+    let categories: Category[] = [];
+    
+    // Manejar categoriaIds si están presentes
+    if (updateData.categoriaIds && updateData.categoriaIds.length > 0) {
+      categories = await this.categoryRepository.findByIds(updateData.categoriaIds);
       
-      const categoriesToAssign = await this.categoryRepository.findByIds(categoriesIds);
-      
-      if (categoriesToAssign.length !== categoriesIds.length) {
-        throw new Error("One or more categories sent were not found.");
+      if (categories.length !== updateData.categoriaIds.length) {
+        throw new Error("Una o más categorías no fueron encontradas.");
       }
     }
     
@@ -62,7 +58,7 @@ export class ProductService {
     const result: DeleteResult = await this.productRepository.deleteProduct(id);
 
     if (result.affected === 0) {
-      throw new Error(`Product with ID ${id} not found.`);
+      throw new Error(`Producto con ID ${id} no encontrado.`);
     }
   }
 }

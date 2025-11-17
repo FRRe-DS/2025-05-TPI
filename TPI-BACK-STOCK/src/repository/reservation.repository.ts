@@ -1,12 +1,11 @@
 // src/repositories/ReservationRepository.ts
 
 import { Repository, DataSource, EntityManager } from 'typeorm';
-import { Reservation, ReservationItem, Product } from '../models/entities'; // Asume que estas rutas son correctas
-import { ReservationInput, ReservationState } from '../types/reservation'; // Asume que esta ruta es correcta
+import { Reservation, ReservationItem, Product } from '../models/entities';
+import { ReservaInput, EstadoReserva } from '../types/reservation'; // Cambiado imports
 import { AppDataSource } from '../config/appDataSource';
 
 export class ReservationRepository {
-
   private repository: Repository<Reservation>
 
   constructor() {
@@ -15,80 +14,77 @@ export class ReservationRepository {
 
   findAll() {
     return this.repository.find({
-      relations: ["items", "items.product"],
+      relations: ["items", "items.producto"], // Cambiado product a producto si es necesario
       order: {
-        createdAt: "DESC" 
+        fechaCreacion: "DESC" // Cambiado createdAt a fechaCreacion
       }
     });
   }
 
-  findById(id: number){
-    return this.repository.findOne({
-      where: { id },
-      relations: ["items", "items.product"],
-    })
+  findById(id: number) {
+  return this.repository.findOne({
+    where: { idReserva: id }, // ✅ Cambiado de 'id' a 'idReserva'
+    relations: ["items", "items.producto"], // ✅ Cambiado de "items.product"
+  })
   }
 
   findByUserId(usuarioId: number) {
     return this.repository.find({
       where: { 
-        userId: usuarioId 
+        usuarioId: usuarioId // Cambiado userId a usuarioId
       },
-      relations: ["items", "items.product"],
-
+      relations: ["items", "items.producto"], // Cambiado product a producto
       order: {
-        createdAt: "DESC" 
+        fechaCreacion: "DESC" // Cambiado createdAt a fechaCreacion
       }
     });
   } 
 
   findByUserReservation(idReserva: number, usuarioId: number) {
-    return this.repository.findOne({
-      where: { 
-        id: idReserva,
-        userId: usuarioId 
-      },
-      relations: ["items", "items.product"],
-    });
+  return this.repository.findOne({
+    where: { 
+      idReserva: idReserva, // ✅ Cambiado de 'id' a 'idReserva'
+      usuarioId: usuarioId 
+    },
+    relations: ["items", "items.producto"],
+  });
   }
 
-  update(id:number, reservaData: Partial<Reservation>) {
-    return this.repository.update(id, reservaData)
+  update(id: number, reservaData: Partial<Reservation>) {
+    return this.repository.update(id, reservaData);
   }
 
-  //Trasactional methods 
+  // Transactional methods 
 
   async cancelReservation(idReserva: number): Promise<boolean> {
-    
     const queryRunner = AppDataSource.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
 
     try {
-      
       const reservation = await queryRunner.manager
         .createQueryBuilder(Reservation, "reservation")
         .innerJoinAndSelect("reservation.items", "items")
-        .innerJoinAndSelect("items.product", "product")
+        .innerJoinAndSelect("items.producto", "product") // Cambiado product a producto
         .where("reservation.id = :idReserva", { idReserva })
         .setLock("pessimistic_write") 
         .getOne();
 
-      if (!reservation || reservation.state === ReservationState.CANCELLED) {
+      if (!reservation || reservation.estado === EstadoReserva.CANCELADO) { // Cambiado state a estado
         await queryRunner.rollbackTransaction();
         return false; 
       }
 
       for (const item of reservation.items) {
         await queryRunner.manager.increment(
-            Product, 
-            { id: item.product.id },
-            'availableStock',        
-            item.quantity            
+          Product, 
+          { id: item.producto.id }, 
+          'stockDisponible',
+          item.cantidad
         );
       }
 
-      reservation.state = ReservationState.CANCELLED; 
+      reservation.estado = EstadoReserva.CANCELADO; // Cambiado state a estado
       await queryRunner.manager.save(reservation);
 
       await queryRunner.commitTransaction();
@@ -97,12 +93,11 @@ export class ReservationRepository {
       await queryRunner.rollbackTransaction();
       throw error; 
     } finally {
-      
       await queryRunner.release();
     }
   }
 
-  async createReservation(data: ReservationInput): Promise<Reservation> {
+  async createReservation(data: ReservaInput): Promise<Reservation> {
     const queryRunner = AppDataSource.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
@@ -110,44 +105,55 @@ export class ReservationRepository {
     try {
       const transactionalManager = queryRunner.manager;
 
+      console.log("📦 DATA EN REPOSITORY:", JSON.stringify(data, null, 2));
+      console.log("🔍 Productos recibidos:", data.productos);
+
       const newReservation = new Reservation();
-      newReservation.purchaseId = String(data.purchaseId);
-      newReservation.userId = data.userId;
-      newReservation.state = ReservationState.PENDING;
+      newReservation.idCompra = String(data.idCompra);
+      newReservation.usuarioId = data.usuarioId;
+      newReservation.estado = EstadoReserva.PENDIENTE;
       newReservation.items = []; 
 
-      for (const itemInput of data.items) {
-        
+      for (const productoInput of data.productos) {
+        console.log("🔄 Procesando producto:", productoInput);
+        console.log("📋 productoId:", productoInput.productoId, "Tipo:", typeof productoInput.productoId);
+        console.log("📋 cantidad:", productoInput.cantidad, "Tipo:", typeof productoInput.cantidad);
+
+        // ✅ CORREGIDO: usar productoId en lugar de idProducto
         const product = await transactionalManager
           .createQueryBuilder(Product, "product")
-          .where("product.id = :id", { id: itemInput.productId })
+          .where("product.id = :id", { id: productoInput.productoId })
           .setLock("pessimistic_write") 
           .getOne();
-        
 
-        if (!product || product.availableStock < itemInput.quantity) {
-          throw new Error(`PRODUCT_STOCK_ERROR: Stock insuficiente para producto ${itemInput.productId}`);
+        console.log("🔎 Producto encontrado:", product);
+
+        if (!product) {
+          throw new Error(`PRODUCT_NOT_FOUND: Producto con ID ${productoInput.productoId} no existe`);
+        }
+
+        if (product.stockDisponible < productoInput.cantidad) {
+          throw new Error(`PRODUCT_STOCK_ERROR: Stock insuficiente para producto ${productoInput.productoId}. Disponible: ${product.stockDisponible}, Solicitado: ${productoInput.cantidad}`);
         }
 
         await transactionalManager.decrement(
           Product,
           { id: product.id },
-          'availableStock',
-          itemInput.quantity
+          'stockDisponible',
+          productoInput.cantidad
         );
 
         const reservationItem = transactionalManager.create(ReservationItem, {
-          product: product, 
-          name: itemInput.name, 
-          quantity: itemInput.quantity,
-          unitPriceAtReservation: itemInput.unitPriceAtReservation
+          producto: product,
+          nombre: product.nombre,
+          cantidad: productoInput.cantidad,
+          precioUnitario: product.precio
         });
         
         newReservation.items.push(reservationItem);
       }
       
       const savedReservation = await transactionalManager.save(newReservation);
-
       await queryRunner.commitTransaction();
       return savedReservation;
 

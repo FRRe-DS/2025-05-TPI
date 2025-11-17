@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable, OneToMany, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+// src/models/entities/Product.entity.ts
+import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable, OneToMany } from 'typeorm';
 import { Category } from './Category.entity';
 import { ProductImage } from './productImages.entity';
 import { ReservationItem } from './ReservationItem.entity';
@@ -9,38 +10,38 @@ export class Product {
   @PrimaryGeneratedColumn()
   id!: number;
 
-  @Column({ name: 'name',  type: 'varchar', length: 200 })
-  name!: string;
+  @Column({ name: 'nombre', type: 'varchar', length: 200 })
+  nombre!: string;
 
-  @Column({name:'description', type:'varchar'})
-  description!: string;
+  @Column({ name: 'descripcion', type: 'varchar' })
+  descripcion!: string;
 
-  @Column({ name: 'unit_price', type:'decimal', precision: 10, scale: 2 })
-  unitPrice!: number; 
+  @Column({ name: 'precio', type: 'decimal', precision: 10, scale: 2 })
+  precio!: number;
 
-  @Column({ name: 'available_stock', type:'integer' })
-  availableStock!: number;
+  @Column({ name: 'stock_disponible', type: 'integer' })
+  stockDisponible!: number;
 
-  @Column({ name: 'weight_kg', type:'decimal', precision: 6, scale: 2 })
-  weightKg!: number;
+  @Column({ name: 'peso_kg', type: 'decimal', precision: 6, scale: 2 })
+  pesoKg!: number;
 
   @Column(() => Dimension)
-  dimensions!: Dimension;
+  dimensiones!: Dimension;
 
   @Column(() => WarehouseLocation)
-  location!: WarehouseLocation; 
+  ubicacion!: WarehouseLocation;
 
-  @ManyToMany(() => Category, (category: Category) => category.products)
+  @ManyToMany(() => Category, (category: Category) => category.productos)
   @JoinTable({
-    name: 'product_categories',
-    joinColumn: { name: 'productId', referencedColumnName: 'id' },
-    inverseJoinColumn: { name: 'categoryId', referencedColumnName: 'id' }
+    name: 'producto_categorias',
+    joinColumn: { name: 'producto_id', referencedColumnName: 'id' },
+    inverseJoinColumn: { name: 'categoria_id', referencedColumnName: 'id' }
   })
-  categories!: Category[];
+  categorias!: Category[];
 
-  @OneToMany(() => ProductImage, (image: ProductImage) => image.product, { cascade: true })
-  images!: ProductImage[];
+  @OneToMany(() => ProductImage, (image: ProductImage) => image.producto, { cascade: true })
+  imagenes!: ProductImage[];
 
-  @OneToMany(() => ReservationItem, (item: ReservationItem) => item.product)
-  reservationItems!: ReservationItem[];
+  @OneToMany(() => ReservationItem, (item: ReservationItem) => item.producto)
+  itemsReserva!: ReservationItem[];
 }

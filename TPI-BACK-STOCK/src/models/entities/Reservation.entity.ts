@@ -1,37 +1,36 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany , CreateDateColumn, UpdateDateColumn, BeforeInsert } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, CreateDateColumn, UpdateDateColumn, BeforeInsert } from 'typeorm';
 import { ReservationItem } from './';
-import { ReservationState } from '../../types/reservation';
+import { EstadoReserva } from '../../types/reservation'; // Cambiado ReservationState a EstadoReserva
 import { addDays } from 'date-fns';
 
-@Entity('reservations')
+@Entity('reservas') 
 export class Reservation {
 	@PrimaryGeneratedColumn()
-	id!: number;
+	idReserva!: number; // Cambiado de 'id' a 'idReserva' para coincidir con el contrato
 
-	@Column({ name: 'purchase_id', type: 'varchar', length: 50, unique: true })
-	purchaseId!: string; // ID of the purchase in the Shopping Portal
+	@Column({ name: 'id_compra', type: 'varchar', length: 50, unique: true })
+	idCompra!: string; // Cambiado de 'purchaseId' a 'idCompra'
 
-	@Column({ name: 'user_id', type: 'integer'})
-	userId!: number; // ID of the buyer
+	@Column({ name: 'usuario_id', type: 'integer' }) 
+	usuarioId!: number; // Cambiado de 'userId' a 'usuarioId'
 
-	@Column({ name: 'state', type: 'enum', enum: ReservationState, default: ReservationState.PENDING})
-	state!: ReservationState; 
+	@Column({ name: 'estado', type: 'enum', enum: EstadoReserva, default: EstadoReserva.PENDIENTE }) // Cambiado ReservationState a EstadoReserva
+	estado!: EstadoReserva; // Cambiado de 'state' a 'estado'
 
-	@CreateDateColumn({ name: 'created_at' })
-	createdAt!: Date;
+	@CreateDateColumn({ name: 'fecha_creacion' }) 
+	fechaCreacion!: Date; // Cambiado de 'createdAt' a 'fechaCreacion'
 
-	@UpdateDateColumn({ name: 'updated_at' })
-	updatedAt!: Date;
+	@UpdateDateColumn({ name: 'fecha_actualizacion' }) 
+	fechaActualizacion!: Date; // Cambiado de 'updatedAt' a 'fechaActualizacion'
 
-	@Column({ name: 'expires_at', type: 'timestamp' })
-	expiresAt!: Date;
+	@Column({ name: 'expira_en', type: 'timestamp' }) 
+	expiraEn!: Date; // Cambiado de 'expiresAt' a 'expiraEn'
 
-	// RELATION: One reservation has many items.
-	@OneToMany(() => ReservationItem, (item: ReservationItem) => item.reservation, { cascade: true }) 
+	@OneToMany(() => ReservationItem, (item: ReservationItem) => item.reserva, { cascade: true }) // Cambiado 'reservation' a 'reserva'
 	items!: ReservationItem[];
 
 	@BeforeInsert()
 	setExpirationDate() {
-		this.expiresAt = addDays(new Date(), 20);
+		this.expiraEn = addDays(new Date(), 20); // Cambiado 'expiresAt' a 'expiraEn'
 	}
 }
