@@ -12,14 +12,18 @@
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
+    "date-fns": "^4.1.0",
     "dotenv": "^17.2.2",
     "express": "^5.1.0",
+    "express-session": "^1.18.2",
+    "keycloak-connect": "^26.1.1",
     "pg": "^8.16.3",
     "typeorm": "^0.3.27"
   },
   "devDependencies": {
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.3",
+    "@types/express-session": "^1.18.2",
     "@types/node": "^24.5.2",
     "@types/pg": "^8.15.5",
     "ts-node": "^10.9.2",

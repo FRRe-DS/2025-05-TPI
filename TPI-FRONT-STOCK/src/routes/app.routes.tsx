@@ -1,11 +1,14 @@
-import { Route} from "react-router-dom";
-import ErrorRouter from "./error.routes";
-import Home from "../pages/home";
+import { Routes, Route, Navigate } from "react-router-dom";
+import ReservationsPage from "../pages/reservations";
 
 export default function AppRouter(){
   return(
-    <ErrorRouter>
-      <Route path="/" element={<Home/>} />
-    </ErrorRouter>
+    <Routes>
+      {/* Ruta principal - Muestra reservas directamente ya que no tenemos home */}
+      <Route path="/" element={<ReservationsPage />} />
+      
+      {/* Ruta alternativa para reservas */}
+      <Route path="/reservations" element={<ReservationsPage />} />
+    </Routes>
   );
 }

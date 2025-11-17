@@ -1,0 +1,40 @@
+# -----------------------------------------------------
+# ETAPA 1: BUILD - Instalación y compilación
+# -----------------------------------------------------
+FROM node:20-alpine AS builder
+
+WORKDIR /app
+
+# Copia solo los archivos de dependencias para aprovechar el caché
+COPY package*.json ./
+
+# Instala todas las dependencias
+RUN npm install
+
+# Copia el código fuente
+COPY . .
+
+# Asumiendo que usas TypeScript, ejecuta el script de compilación 
+# (Verifica que tu package.json tenga un script 'build' que genera la carpeta 'dist')
+RUN npm run build 
+
+# -----------------------------------------------------
+# ETAPA 2: RUNTIME - Contenedor final ligero y seguro
+# -----------------------------------------------------
+FROM node:20-alpine
+
+# Directorio de trabajo
+WORKDIR /app
+
+# Instala solo las dependencias de producción (más seguro y pequeño)
+COPY --from=builder /app/package*.json ./
+RUN npm install --only=production 
+
+# Copia los archivos finales compilados de la carpeta 'dist'
+COPY --from=builder /app/dist ./dist 
+
+# Expone el puerto que usa tu servidor Express
+EXPOSE 8000
+
+# Comando para iniciar la aplicación (Asegúrate que 'dist/app.js' sea tu archivo de inicio)
+CMD [ "node", "dist/app.js" ]

@@ -55,3 +55,4 @@ export interface IReleaseOutput {
   idReservation: number;
   status: 'liberado';
 }
+
