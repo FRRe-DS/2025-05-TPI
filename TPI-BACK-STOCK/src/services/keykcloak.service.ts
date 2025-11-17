@@ -19,9 +19,7 @@ const solicitarToken = async (): Promise<string> => {
         console.error("❌ M2M Auth Error: Falta configurar variables de entorno (URL, CLIENT_ID, o CLIENT_SECRET).");
         throw new Error("M2M credentials missing.");
     }
-    
-    // --- NUEVO CÓDIGO CON FETCH ---
-    // 1. Preparamos el cuerpo de la petición en formato application/x-www-form-urlencoded
+
     const body = new URLSearchParams({
         grant_type: 'client_credentials',
         client_id: CLIENT_ID,
@@ -38,21 +36,11 @@ const solicitarToken = async (): Promise<string> => {
         });
 
         if (!response.ok) {
-            // Manejamos errores HTTP (4xx, 5xx) que fetch NO lanza automáticamente
-            const errorText = await response.text();
-            let errorData: any = {};
-            try {
-                errorData = JSON.parse(errorText);
-            } catch (e) {
-                 // No es JSON, usamos el texto plano
-            }
-            
-            const httpError = errorData.error_description || errorData.error || `HTTP Error ${response.status}`;
-            throw new Error(`Fallo en la petición HTTP: ${httpError}`);
+            const text = await response.text();
+            throw new Error(`HTTP ${response.status}: ${text}`);
         }
 
         const data = await response.json();
-        // --- FIN NUEVO CÓDIGO ---
 
         currentAccessToken = data.access_token;
         tokenExpiryTime = Date.now() + (data.expires_in * 1000) - (5000); 

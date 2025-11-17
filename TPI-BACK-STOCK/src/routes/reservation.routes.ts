@@ -1,31 +1,36 @@
 import { Router } from "express";
 import { container } from "../container/container";
-import { keycloak } from "../config/keycloak";
+import { requireAnyRole } from "../middleware/requireRole";
 
 export const reservationRouter = Router();
 const reservationController = container.reservationyController;
 
 // GET /v1/reservas - Listar reservas de un usuario
 reservationRouter.get("/", 
-    keycloak.protect("reservas:read"),
-    reservationController.getReservationsByUserId);
+    requireAnyRole(["stock-be", "compras-be", "logistica-be"]),
+    reservationController.getReservationsByUserId
+);
 
 // GET /v1/reservas/:idReserva - Obtener una reserva específica
 reservationRouter.get("/:idReserva", 
-    keycloak.protect("reservas:read"),
-    reservationController.getReservationById);
+    requireAnyRole(["stock-be", "compras-be", "logistica-be"]),
+    reservationController.getReservationById
+);
 
 // PATCH /v1/reservas/:idReserva - Actualizar estado de reserva
 reservationRouter.patch("/:idReserva", 
-    keycloak.protect("reservas:write"),
-    reservationController.updateReservationStatus);
+    requireAnyRole(["stock-be", "logistica-be"]),
+    reservationController.updateReservationStatus
+);
 
 // DELETE /v1/reservas/:idReserva - Cancelar reserva (libera stock)
 reservationRouter.delete("/:idReserva", 
-    keycloak.protect("reservas:write"),
-    reservationController.cancelReservation);
+    requireAnyRole(["stock-be", "compras-be", "logistica-be"]),
+    reservationController.cancelReservation
+);
 
 // POST /v1/reservas - Crear una nueva reserva
 reservationRouter.post("/", 
-    keycloak.protect("reservas:write"),
-    reservationController.createReservation);
+    requireAnyRole(["stock-be", "compras-be"]),
+    reservationController.createReservation
+);

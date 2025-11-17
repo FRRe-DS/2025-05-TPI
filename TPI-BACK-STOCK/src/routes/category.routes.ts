@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { container } from "../container/container"
-import { keycloak } from "../config/keycloak";
+import { requireAnyRole } from "../middleware/requireRole";
 
 export const categoryRouter = Router();
 const categoryController = container.categoryController;
@@ -8,15 +8,18 @@ const categoryController = container.categoryController;
 
 // POST /categorias
 categoryRouter.post("/", 
-    keycloak.protect("categorias:write"), 
-    categoryController.createCategory);
+    requireAnyRole(["stock-be"]), 
+    categoryController.createCategory
+);
 
 // GET /categorias
 categoryRouter.get("/", 
-    keycloak.protect("categorias:read"),
-    categoryController.listCategories);
+    requireAnyRole(["stock-be", "compras-be", "logistica-be"]),
+    categoryController.listCategories
+);
 
 // DELETE /categorias/:id
 categoryRouter.delete("/:id", 
-    keycloak.protect("categorias:write"),
-    categoryController.deleteCategory);
+    requireAnyRole(["stock-be"]),
+    categoryController.deleteCategory
+);
