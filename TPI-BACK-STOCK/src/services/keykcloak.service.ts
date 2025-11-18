@@ -14,6 +14,9 @@ const KEYCLOAK_TOKEN_URL = process.env.KEYCLOAK_TOKEN_URL;
 const CLIENT_ID = process.env.KEYCLOAK_CLIENT_ID; 
 const CLIENT_SECRET = process.env.KEYCLOAK_CLIENT_SECRET; 
 
+
+// Peticion para obtener el token
+
 const solicitarToken = async (): Promise<string> => {
     if (!KEYCLOAK_TOKEN_URL || !CLIENT_ID || !CLIENT_SECRET) {
         console.error("❌ M2M Auth Error: Falta configurar variables de entorno (URL, CLIENT_ID, o CLIENT_SECRET).");
@@ -27,7 +30,7 @@ const solicitarToken = async (): Promise<string> => {
     });
 
     try {
-        const response = await fetch("http://keycloak:8080/realms/ds-2025-realm/protocol/openid-connect/token", {
+        const response = await fetch(KEYCLOAK_TOKEN_URL, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
@@ -75,17 +78,14 @@ export const initAuthM2M = async () => {
             retries++;
             const errorMessage = e instanceof Error ? e.message : String(e);
             
-            // Si superamos el límite, lanzamos un error crítico y terminamos la aplicación
             if (retries >= MAX_RETRIES) {
                 console.error(`❌ Fallo crítico de autenticación M2M después de ${MAX_RETRIES} reintentos.`);
                 console.error(errorMessage);
-                // Lanzamos la excepción para que initApp la capture y finalice el proceso.
                 throw new Error("No se pudo conectar y autenticar con Keycloak M2M. Abortando inicio.");
             }
             
-            // Logueamos el error y esperamos antes de reintentar
             console.warn(`⚠️ Intento fallido (${retries}/${MAX_RETRIES}). Causa: ${errorMessage}. Reintentando en ${RETRY_DELAY_MS / 1000}s...`);
-            // Función de espera
+            
             await new Promise(resolve => setTimeout(resolve, RETRY_DELAY_MS));
         }
     }
@@ -93,8 +93,9 @@ export const initAuthM2M = async () => {
 
 /**
  * Devuelve el token actual, solicitando uno nuevo si está expirado o cerca de expirar.
- * Debe ser llamado ANTES de cualquier llamada saliente a otra API.
+ * Se llama ANTES de cualquier llamada saliente a otra API.
  */
+
 export const getValidToken = async (): Promise<string> => {
     // Si el token expiró (o está cerca de expirar, gracias al margen de 5s)
     if (Date.now() >= tokenExpiryTime || !currentAccessToken) {

@@ -20,7 +20,7 @@ export function requireAnyRole(allowedRoles: string[]) {
         const hasRole = roles.some((r: string) => allowedRoles.includes(r));
 
         if (!hasRole) {
-            return res.status(403).json({ error: "Forbidden" });
+            return res.status(403).json({ error: "Dont have access" });
         }
 
         next();
