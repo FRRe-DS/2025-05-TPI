@@ -3,10 +3,10 @@ import { QueryClient } from "@tanstack/react-query";
 export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      // Mantener datos en cache por 10 minutos
-      staleTime: 10 * 60 * 1000, // 10 minutos
-      // Mantener cache por 15 minutos
-      gcTime: 15 * 60 * 1000, // 15 minutos 
+      // Mantener datos en cache por 1 minutos
+      staleTime: 60 * 1000, // 1 minutos
+      // Mantener cache por 3 minutos
+      gcTime: 3 * 60 * 1000, // 3 minutos 
       // No refetch automático al volver a la ventana
       refetchOnWindowFocus: false,
       // No refetch al montar si los datos no están stale

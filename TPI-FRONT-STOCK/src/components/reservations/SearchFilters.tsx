@@ -1,7 +1,7 @@
-import { useReservationFilters, type FilterStatus } from "../../context/ReservationFilterContext";
+import { useReservationFilter, type FilterStatus  } from "../../context/filter/reservationFilterContext";
 
 export function SearchFilters() {
-  const { filterId, filterStatus, filterUserId, setFilterId, setFilterStatus, setFilterUserId, reset } = useReservationFilters();
+  const { filterId, filterStatus, filterUserId, setFilterId, setFilterStatus, setFilterUserId, reset } = useReservationFilter();
   return (
     <div className="bg-white rounded-xl shadow-lg border-2 border-gray-200 p-6 mb-6">
       <div className="flex items-center justify-between mb-4">
