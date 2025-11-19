@@ -1,6 +1,6 @@
 import { memo, useMemo } from "react";
-import { calculateReservationTotal, getTotalItems } from "../utils/reservation.utils";
-import type { IReservationItem } from "../types/reservation.interface";
+import { calculateReservationTotal, getTotalItems } from "../../utils/reservation.utils";
+import type { IReservationItem } from "../../types/reservation.interface";
 
 interface ModalTotalProps {
   items: IReservationItem[];
