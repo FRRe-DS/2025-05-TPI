@@ -7,30 +7,30 @@ const reservationController = container.reservationyController;
 
 // GET /v1/reservas - Listar reservas de un usuario
 reservationRouter.get("/", 
-    requireAnyRole(["stock-be", "compras-be", "logistica-be"]),
+    //requireAnyRole(["stock-be", "compras-be", "logistica-be"]),
     reservationController.getReservationsByUserId
 );
 
 // GET /v1/reservas/:idReserva - Obtener una reserva específica
 reservationRouter.get("/:idReserva", 
-    requireAnyRole(["stock-be", "compras-be", "logistica-be"]),
+    //requireAnyRole(["stock-be", "compras-be", "logistica-be"]),
     reservationController.getReservationById
 );
 
 // PATCH /v1/reservas/:idReserva - Actualizar estado de reserva
 reservationRouter.patch("/:idReserva", 
-    requireAnyRole(["stock-be", "logistica-be"]),
+    //requireAnyRole(["stock-be", "logistica-be"]),
     reservationController.updateReservationStatus
 );
 
 // DELETE /v1/reservas/:idReserva - Cancelar reserva (libera stock)
 reservationRouter.delete("/:idReserva", 
-    requireAnyRole(["stock-be", "compras-be", "logistica-be"]),
+    //requireAnyRole(["stock-be", "compras-be", "logistica-be"]),
     reservationController.cancelReservation
 );
 
 // POST /v1/reservas - Crear una nueva reserva
 reservationRouter.post("/", 
-    requireAnyRole(["stock-be", "compras-be"]),
+    //requireAnyRole(["stock-be", "compras-be"]),
     reservationController.createReservation
 );
