@@ -33,7 +33,6 @@ export interface ReservaInput {
 }
 
 export interface ActualizarReservaInput {
-  usuarioId: number;
   estado: EstadoReserva;
 }
 

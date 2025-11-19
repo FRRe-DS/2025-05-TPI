@@ -14,33 +14,40 @@ export class ReservationController {
     this.reservationService = reservationService;
   }
 
-  getReservationsByUserId = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  getReservations = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const usuarioId = Number(req.query.usuarioId) || 12345; // Según contrato: query parameter
-      
-      if (!usuarioId) {
-        res.status(400).json({ message: "El parámetro 'usuarioId' es requerido." });
-        return;
-      }
+      const usuarioId = req.query.usuarioId ? Number(req.query.usuarioId) : undefined;
 
-      const reservations = await this.reservationService.getReservationsByUserId(usuarioId);
-      res.status(200).json(reservations);
+      // Si viene usuarioId, filtrar por usuario
+      if (usuarioId !== undefined) {
+        if (isNaN(usuarioId)) {
+          res.status(400).json({ message: "El parámetro 'usuarioId' debe ser un número válido." });
+          return;
+        }
+        const userReservations = await this.reservationService.getReservationsByUserId(usuarioId);
+        res.status(200).json(userReservations);
+      } 
+      // Si no viene usuarioId, retornar todas las reservas
+      else {
+        const allReservations = await this.reservationService.getAllReservations();
+        res.status(200).json(allReservations);
+      }
     } catch (error) {
-      next(error); 
+      next(error);
     }
   }
 
+// Método para obtener reserva por ID (sin cambios)
   getReservationById = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const idReserva = Number(req.params.idReserva);
-      const usuarioId = Number(req.query.usuarioId); // Según contrato: query parameter
 
-      if (!usuarioId) {
-        res.status(400).json({ message: "El parámetro 'usuarioId' es requerido." });
+      if (isNaN(idReserva)) {
+        res.status(400).json({ message: "El ID de reserva debe ser un número válido." });
         return;
       }
 
-      const reservation = await this.reservationService.getReservationById(idReserva, usuarioId);
+      const reservation = await this.reservationService.getReservationById(idReserva);
       res.status(200).json(reservation);
     } catch (error) {
       if (error instanceof ResourceNotFoundError) {
@@ -53,17 +60,16 @@ export class ReservationController {
 
   updateReservationStatus = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const idReserva = parseInt(req.params.idReserva, 10); // Cambiado a idReserva
-      const input: ActualizarReservaInput = req.body; // Usar interfaz en español
+      const idReserva = parseInt(req.params.idReserva, 10);
+      const input: ActualizarReservaInput = req.body; 
 
-      if (!input.usuarioId || !input.estado) {
+      if (!input.estado) {
         res.status(400).json({ message: "Los campos 'usuarioId' y 'estado' son requeridos." });
         return;
       }
 
       const updatedReservation = await this.reservationService.updateReservationStatus(
         idReserva, 
-        input.usuarioId, 
         input.estado
       );
 
@@ -80,7 +86,7 @@ export class ReservationController {
   cancelReservation = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const idReserva = Number(req.params.idReserva);
-      const input: CancelacionReservaInput = req.body; // Usar interfaz en español
+      const input: CancelacionReservaInput = req.body; 
 
       if (!input.motivo) {
         res.status(400).json({ message: "El campo 'motivo' es requerido." });
