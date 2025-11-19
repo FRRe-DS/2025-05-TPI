@@ -131,14 +131,17 @@ export function useSelectFilter<T extends string>(
   };
 }
 
-/**
- * Utilidad para resetear múltiples filtros a la vez
- * 
- * @example
- * const reset = useFilterReset(resetId, resetStatus, resetPage);
- */
-export function useFilterReset(...resetFunctions: Array<() => void>) {
-  return useCallback(() => {
-    resetFunctions.forEach(fn => fn());
+export function useFilterReset(...resetFunctions: (() => void)[]) {
+  // Utilizamos useCallback para garantizar que la función de reseteo sea estable
+  // y para ejecutar todas las funciones pasadas secuencialmente.
+  const resetAll = useCallback(() => {
+    // Itera y llama a cada función de reseteo proporcionada.
+    // Como las funciones individuales usan la actualización funcional de setSearchParams,
+    // se garantiza que todas las eliminaciones de parámetros se procesen correctamente.
+    resetFunctions.forEach(resetFn => {
+      resetFn(); 
+    });
   }, [resetFunctions]);
+
+  return resetAll;
 }

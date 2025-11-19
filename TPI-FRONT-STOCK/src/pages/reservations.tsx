@@ -1,6 +1,6 @@
 import { useState, useCallback } from "react";
 // Importamos el Provider y el Hook Consumidor
-import { ReservationFilterProvider} from "../context/filter/reservationFilterProvider";
+import { ReservationFilterProvider } from "../context/filter/reservationFilterProvider";
 import { useReservationFilter } from "../context/filter/reservationFilterContext";
 import Pagination from "../components/common/ui/pagination";
 

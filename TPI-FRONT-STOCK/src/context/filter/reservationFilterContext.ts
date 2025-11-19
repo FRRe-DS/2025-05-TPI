@@ -16,8 +16,6 @@ interface ReservationFilterContextType {
   setFilterId: (id: string) => void;
   setFilterStatus: (status: FilterStatus) => void;
   setFilterUserId: (userId: string) => void;
-  goToNextPage: () => void;
-  goToPrevPage: () => void;
   goToPage: (page: number) => void;
   reset: () => void;
 }

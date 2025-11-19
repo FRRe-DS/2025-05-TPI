@@ -1,13 +1,26 @@
 import { useReservationFilter, type FilterStatus  } from "../../context/filter/reservationFilterContext";
 
 export function SearchFilters() {
-  const { filterId, filterStatus, filterUserId, setFilterId, setFilterStatus, setFilterUserId, reset } = useReservationFilter();
+  const { 
+    filterId, 
+    filterStatus, 
+    filterUserId, 
+    setFilterId, 
+    setFilterStatus, 
+    setFilterUserId, 
+    //reset 
+  } = useReservationFilter();
+  
+  const handleGlobalReset = () => {
+    window.location.href = window.location.pathname;
+ };
+  
   return (
     <div className="bg-white rounded-xl shadow-lg border-2 border-gray-200 p-6 mb-6">
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-xl font-bold text-gray-800"> Filtros de Búsqueda</h2>
         <button
-          onClick={reset}
+          onClick={handleGlobalReset}
           className="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white text-sm font-medium rounded-lg transition-colors cursor-pointer"
         >
           Limpiar filtros

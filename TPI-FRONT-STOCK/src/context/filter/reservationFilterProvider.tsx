@@ -1,117 +1,118 @@
-import { useMemo, useEffect } from "react";
+import { useMemo } from "react";
 import type { ReactNode } from "react";
-import { ReservationFilterContext } from "./reservationFilterContext";
+import { ReservationFilterContext } from "./reservationFilterContext"; 
 import { useReservations, useReservationById } from "../../hooks/reservation.hook";
 import type { IReservation } from "../../types/reservation.interface";
-import {
-  useIdFilter,
-  useSelectFilter,
-  usePagination,
-  useFilterReset,
-} from "../generic";
-
+// Importamos los hooks genéricos basados en URL
+import { useIdFilter } from "../generic/useIdFilter";
+import { useSelectFilter } from "../generic/useSelectFilter";
+import { useFilterReset } from "../generic";
+import { useUrlPagination } from "../../hooks/pagination"; 
 interface ChildrenProps{
-  children: ReactNode
+ children: ReactNode
 }
 
+// Nota: Este tipo también está definido en el archivo de Contexto
 export type FilterStatus = "ALL" | "PENDIENTE" | "CONFIRMADO" | "CANCELADO";
 
 export function ReservationFilterProvider({ children }: ChildrenProps) {
-  // Hooks genéricos para filtros
-  const { 
-    id: filterId, 
-    setId: setFilterId, 
-    parsedId, 
-    reset: resetId 
-  } = useIdFilter();
+ // 🛑 Hooks de Filtros que leen y escriben en la URL 🛑
+ 
+ // 1. Filtro por ID de Reserva (usa URL param 'id')
+ const { 
+  id: filterId, 
+  setId: setFilterId, 
+  parsedId, 
+  reset: resetId 
+ } = useIdFilter("id"); // Usamos "id" explícitamente, aunque es el default
+ 
+ // 2. Filtro por ID de Usuario (usa URL param 'userId')
+ const { 
+  id: filterUserId, 
+  setId: setFilterUserId, 
+  parsedId: parsedUserId, 
+  reset: resetUserId 
+ } = useIdFilter("userId"); // Usa el parámetro 'userId'
+ 
+ // 3. Filtro de Estado (usa URL param 'status')
+ const { 
+  selected: filterStatus, 
+  setSelected: setFilterStatus, 
+  reset: resetStatus 
+ // Primer argumento es el nombre del parámetro URL ('status')
+ } = useSelectFilter<FilterStatus>("status", "ALL", "ALL");
+
+ // Queries (igual que antes)
+ const allQuery = useReservations();
+ const byIdQuery = useReservationById(parsedId || 0, parsedId !== null && parsedId > 0);
+ const activeQuery = parsedId ? byIdQuery : allQuery;
+
+ // Datos filtrados (sin paginar) - La lógica de filtrado es inmutable
+ const filtered = useMemo((): IReservation[] => {
   
-  const { 
-    id: filterUserId, 
-    setId: setFilterUserId, 
-    parsedId: parsedUserId, 
-    reset: resetUserId 
-  } = useIdFilter();
+  if (parsedId) {
+   // Filtro cuando se busca por un ID de reserva específico
+   if (byIdQuery.error || !byIdQuery.data) {
+    return [];
+   }
+   const reservation = byIdQuery.data;
+   
+   // Aplica filtros secundarios (estado, usuario ID) a la única reserva encontrada
+   if (filterStatus !== "ALL" && reservation.estado !== filterStatus) {
+    return []; 
+   }
+   if (parsedUserId && reservation.usuarioId !== parsedUserId) {
+    return [];
+   }
+   return [reservation];
+  }
   
-  const { 
-    selected: filterStatus, 
-    setSelected: setFilterStatus, 
-    reset: resetStatus 
-  } = useSelectFilter<FilterStatus>("ALL", "ALL");
+  // Filtros aplicados a todas las reservas
+  let allData = allQuery.data || [];
+  
+  // Filtrar por estado
+  if (filterStatus !== "ALL") {
+   allData = allData.filter(r => r.estado === filterStatus);
+  }
+  
+  // Filtrar por usuario ID
+  if (parsedUserId) {
+   allData = allData.filter(r => r.usuarioId === parsedUserId);
+  }
+  
+  return allData;
+ }, [parsedId, byIdQuery.data, byIdQuery.error, filterStatus, parsedUserId, allQuery.data]);
 
-  // Queries
-  const allQuery = useReservations();
-  const byIdQuery = useReservationById(parsedId || 0, parsedId !== null && parsedId > 0);
-  const activeQuery = parsedId ? byIdQuery : allQuery;
+ // 🎯 Paginación ahora usa useUrlPagination (lee/escribe el 'page' en la URL)
+ const { paginatedData, pagination } = useUrlPagination<IReservation>(filtered, {
+  itemsPerPage: 8,
+ });
 
-  // Datos filtrados (sin paginar)
-  const filtered = useMemo((): IReservation[] => {
-    // Filtro por id 
-    if (parsedId) {
-      // Si hay error al buscar por ID (no existe), retornar array vacío
-      if (byIdQuery.error || !byIdQuery.data) {
-        return [];
-      }
-      const reservation = byIdQuery.data;
-      // verifique el estado 
-      if (filterStatus !== "ALL" && reservation.estado !== filterStatus) {
-        return []; 
-      }
-      // verifique el usuario ID
-      if (parsedUserId && reservation.usuarioId !== parsedUserId) {
-        return [];
-      }
-      return [reservation];
-    }
-    
-    // Todas las reservas
-    let allData = allQuery.data || [];
-    
-    // Filtrar por estado
-    if (filterStatus !== "ALL") {
-      allData = allData.filter(r => r.estado === filterStatus);
-    }
-    
-    // Filtrar por usuario ID
-    if (parsedUserId) {
-      allData = allData.filter(r => r.usuarioId === parsedUserId);
-    }
-    
-    return allData;
-  }, [parsedId, byIdQuery.data, byIdQuery.error, filterStatus, parsedUserId, allQuery.data]);
+ // 🛑 Eliminamos el useEffect que reseteaba la página, ya que useUrlPagination
+  // garantiza que la página sea válida para el nuevo conjunto de datos 'filtered'.
+  
+ // Reset combinado
+ // Incluimos resetPage para limpiar el parámetro 'page' de la URL.
+ const reset = useFilterReset(resetId, resetUserId, resetStatus, pagination.resetPage);
 
-  // Paginación con hook genérico
-  const { paginatedData, pagination } = usePagination<IReservation>(filtered, {
-    itemsPerPage: 8,
-  });
-
-  // Resetear a página 1 cuando cambian los filtros
-  useEffect(() => {
-    pagination.resetPage();
-  }, [filterId, filterStatus, filterUserId]);
-
-  // Reset combinado
-  const reset = useFilterReset(resetId, resetUserId, resetStatus, pagination.resetPage);
-
-  return (
-    <ReservationFilterContext.Provider value={{
-      filterId,
-      filterStatus,
-      filterUserId,
-      displayData: paginatedData,
-      totalItems: filtered.length,
-      itemsPerPage: pagination.itemsPerPage,
-      currentPage: pagination.currentPage,
-      totalPages: pagination.totalPages,
-      isLoading: activeQuery.isLoading,
-      setFilterId,
-      setFilterStatus,
-      setFilterUserId,
-      goToNextPage: pagination.goToNextPage,
-      goToPrevPage: pagination.goToPrevPage,
-      goToPage: pagination.goToPage,
-      reset,
-    }}>
-      {children}
-    </ReservationFilterContext.Provider>
-  );
+ return (
+  <ReservationFilterContext.Provider value={{
+   filterId,
+   filterStatus,
+   filterUserId,
+   displayData: paginatedData,
+   totalItems: filtered.length,
+   itemsPerPage: pagination.itemsPerPage,
+   currentPage: pagination.currentPage,
+   totalPages: pagination.totalPages,
+   isLoading: activeQuery.isLoading,
+   setFilterId,
+   setFilterStatus,
+   setFilterUserId,
+   goToPage: pagination.goToPage,
+   reset,
+  }}>
+   {children}
+  </ReservationFilterContext.Provider>
+ );
 }
