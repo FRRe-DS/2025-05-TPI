@@ -1,17 +1,82 @@
 import axios from "axios";
 import { api } from "../client";
-import type { ICreateProduct, IProduct } from "../types";
+import type { IProduct } from "../types";
 
-export async function createProduct(data: ICreateProduct): Promise<IProduct> {
+export async function getAllProducts():Promise<IProduct[]>{
+
   try{
-    const result = await api.post("/product", data)
+    const result = await api.get<IProduct[]>("/products")
 
-    if(!result){
-      throw new Error('Visitor not found')
+    if (!result) {
+      throw new Error ("Products not found")
     }
-    
-    return result.data ;
-  } catch (error) {
+    return result.data
+
+  } catch (error){
+    if (axios.isAxiosError(error)) {
+      if (error.code === "ECONNABORTED") {
+        console.error("La petición tardó demasiado (timeout).");
+      } else {
+        console.error("Error de Axios:", error.message);
+      }
+    }
+
+    throw error;
+  }
+}
+
+export async function getFeaturedProducts():Promise<IProduct[]>{
+  try {
+    const result = await api.get<IProduct[]>("/products/feature/", { params: {is_featured: true}})
+
+    if (!result){
+      throw new Error ("Products not found")
+    }
+
+    return result.data;
+  } catch (error){
+    if (axios.isAxiosError(error)) {
+      if (error.code === "ECONNABORTED") {
+        console.error("La petición tardó demasiado (timeout).");
+      } else {
+        console.error("Error de Axios:", error.message);
+      }
+    }
+
+    throw error;
+  }
+}
+
+export async function getProductById(id:number):Promise<IProduct>{
+ try {
+    const result = await api.get<IProduct>(`/products/${id}`)
+
+    if (!result){
+      throw new Error ("Product not found")
+    }
+    return result.data; 
+  } catch (error){
+    if (axios.isAxiosError(error)) {
+      if (error.code === "ECONNABORTED") {
+        console.error("La petición tardó demasiado (timeout).");
+      } else {
+        console.error("Error de Axios:", error.message);
+      }
+    }
+
+    throw error;
+  }
+}
+
+export async function getProductByName(name: string):Promise<IProduct[]>{
+ try {
+    const result = await api.get<IProduct[]>(`/products/name/${name}`)
+
+    if (!result){
+      throw new Error ("Product not found")
+    }
+    return result.data; 
+  } catch (error){
     if (axios.isAxiosError(error)) {
       if (error.code === "ECONNABORTED") {
         console.error("La petición tardó demasiado (timeout).");

@@ -21,7 +21,6 @@ export default function GenericTableRow<T>({
   onClick 
 }: GenericTableRowProps<T>) {
   
-  // En React, en lugar de un 'for', usamos .map() para iterar y devolver elementos
   // Esto cumple la función del bucle de la imagen pero de forma correcta
   const rowContent = columns.map((col, index) => (
     <td 
