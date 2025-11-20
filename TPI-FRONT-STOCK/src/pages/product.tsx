@@ -1,9 +1,11 @@
-import { useMemo } from 'react';
+import { useMemo, useState, useCallback } from 'react';
 import { ProductTableRow } from "../components/products/ProductTableRow"; 
 import { useProduct } from "../hooks/products.hook"; // Tu hook real
 import { ProductSearchFilters } from "../components/products/ProductSearchFilters";
 import { useIdFilter, useSelectFilter } from "../hooks/filters";
 import { useUrlFilter } from "../hooks/filters/generics/useUrlFilter";
+import { ProductModal } from "../components/products/ProductModal";
+import type { IProduct } from "../types/product.interface";
 
 export default function ProductList() {
     // 1. Estado para el filtro (sincronizado con URL)
@@ -16,6 +18,20 @@ export default function ProductList() {
     // Hooks de filtros genéricos (sincronizados con URL)
     const { id: filterId, setId: setFilterId, parsedId, reset: resetId } = useIdFilter("productId");
     const [filterName, setFilterName, resetName] = useUrlFilter("productName");
+
+    // Estado para el Modal
+    const [selectedProduct, setSelectedProduct] = useState<IProduct | null>(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const handleOpenModal = useCallback((product: IProduct) => {
+        setSelectedProduct(product);
+        setIsModalOpen(true);
+    }, []);
+
+    const handleCloseModal = useCallback(() => {
+        setIsModalOpen(false);
+        setSelectedProduct(null);
+    }, []);
 
     // Función de reset combinada
     const resetFilters = () => {
@@ -126,7 +142,7 @@ export default function ProductList() {
                                     <ProductTableRow
                                         key={product.id}
                                         product={product}
-                                        onViewDetails={(p) => console.log("Ver detalles ID:", p.id)}
+                                        onViewDetails={handleOpenModal}
                                     />
                                 ))}
                             </tbody>
@@ -140,6 +156,13 @@ export default function ProductList() {
                         <p className="text-gray-500 text-lg">No se encontraron productos.</p>
                     </div>
                 )}
+
+                {/* Modal de Detalles */}
+                <ProductModal
+                    product={selectedProduct}
+                    isOpen={isModalOpen}
+                    onClose={handleCloseModal}
+                />
             </div>
         </div>
     );
