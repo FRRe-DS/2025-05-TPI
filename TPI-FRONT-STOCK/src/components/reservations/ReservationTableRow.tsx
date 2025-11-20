@@ -72,7 +72,7 @@ export const ReservationTableRow = memo(function ReservationTableRow({
             e.stopPropagation();
             onViewDetails(r);
           }}
-          className="inline-flex items-center gap-2 px-4 py-2 bg-gray-800 hover:bg-gray-700 text-white text-sm font-medium rounded-lg transition-colors duration-150 shadow-sm hover:shadow-md cursor-pointer"
+          className="inline-flex items-center gap-2 px-4 py-2 bg-gray-900 hover:bg-gray-800 text-white text-sm font-medium rounded-lg transition-colors duration-150 shadow-sm hover:shadow-md cursor-pointer"
         >
           Ver detalles
         </button>

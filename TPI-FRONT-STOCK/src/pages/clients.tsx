@@ -4,8 +4,8 @@ import type { IClient } from "../types/client.interface";
 
 // 1. Mock Data (Datos falsos para visualizar)
 const MOCK_CLIENTS: IClient[] = [
-    { id: 1, firstName: "Juan", lastName: "Pérez", email: "juan.perez@email.com", phone: "+54 11 1234-5678", status: "ACTIVE", lastPurchase: "10/11/2025" },
-    { id: 2, firstName: "María", lastName: "Gómez", email: "maria.gomez@email.com", phone: "+54 11 8765-4321", status: "ACTIVE", lastPurchase: "12/11/2025" },
+    { id: 123, firstName: "Juan", lastName: "Pérez", email: "juan.perez@email.com", phone: "+54 11 1234-5678", status: "ACTIVE", lastPurchase: "10/11/2025" },
+    { id: 12345, firstName: "María", lastName: "Gómez", email: "maria.gomez@email.com", phone: "+54 11 8765-4321", status: "ACTIVE", lastPurchase: "12/11/2025" },
     { id: 3, firstName: "Silver", lastName: "López", email: "carlos.lopez@email.com", phone: "+54 11 1111-2222", status: "INACTIVE" },
     { id: 4, firstName: "Ana", lastName: "Martínez", email: "ana.martinez@email.com", phone: "+54 11 3333-4444", status: "ACTIVE", lastPurchase: "05/11/2025" },
     { id: 5, firstName: "Roberto", lastName: "Díaz", email: "roberto.diaz@email.com", phone: "+54 11 5555-6666", status: "INACTIVE", lastPurchase: "20/10/2025" },
@@ -28,8 +28,8 @@ export default function ClientsPage() {
                 {/* Encabezado */}
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8 gap-4">
                     <div>
-                        <h1 className="text-3xl font-bold text-gray-900">Clientes</h1>
-                        <p className="text-gray-500 mt-1">Listado de usuarios registrados</p>
+                        <h1 className="text-4xl font-bold text-gray-800 mb-2">Clientes</h1>
+                        <p className="text-gray-600 text-lg">Listado de usuarios registrados</p>
                     </div>
                     
                     {/* Buscador */}
@@ -53,7 +53,7 @@ export default function ClientsPage() {
                                 <th className="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Contacto</th>
                                 <th className="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Estado</th>
                                 <th className="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Última Compra</th>
-                                <th className="px-6 py-4 text-right text-xs font-bold text-gray-500 uppercase tracking-wider">Acciones</th>
+                                         <th className="px-6 py-3 text-center text-xs font-bold text-gray-500 uppercase tracking-wider">Acciones</th>
                             </tr>
                         </thead>
                         <tbody className="bg-white divide-y divide-gray-200">
