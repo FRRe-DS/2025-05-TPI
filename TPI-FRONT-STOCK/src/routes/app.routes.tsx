@@ -2,6 +2,7 @@ import { Routes, Route} from "react-router-dom";
 import ReservationsPage from "../pages/reservations";
 import Home from "../pages/home";
 import ProductList from "../pages/product";
+import ClientsPage from "../pages/clients";
 
 export default function AppRouter(){
   return(
@@ -10,7 +11,7 @@ export default function AppRouter(){
       <Route path="/" element={<Home/>}>
         <Route path="/productos" element={<ProductList />}/>
         <Route path="/reservas" element={<ReservationsPage />}/>
-        <Route path="/clientes" element={<h1 className="text-2xl">RUTA DE CLIENTES</h1>}/>
+        <Route path="/clientes" element={<ClientsPage />}/>
       </Route>
       
       {/* Ruta alternativa para reservas */}
