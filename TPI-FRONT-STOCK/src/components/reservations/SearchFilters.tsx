@@ -1,4 +1,5 @@
-import { useReservationFilter, type FilterStatus  } from "../../context/reservation/reservationFilterContext";
+import { useReservationFilter, type FilterStatus } from "../../context/reservation/reservationFilterContext";
+import { GenericFilter, type FilterConfig } from "../common/filters/GenericFilter";
 
 export function SearchFilters() {
   const { 
@@ -8,75 +9,52 @@ export function SearchFilters() {
     setFilterId, 
     setFilterStatus, 
     setFilterUserId, 
-    //reset 
+    // reset 
   } = useReservationFilter();
-  
+
   const handleGlobalReset = () => {
     window.location.href = window.location.pathname;
- };
-  
+  };
+
+  const filters: FilterConfig[] = [
+    {
+      id: "filterId",
+      label: "Buscar por ID de Reserva",
+      type: "number",
+      value: filterId,
+      onChange: (val) => setFilterId(val as string),
+      placeholder: "Ingrese ID de reserva...",
+      min: 1
+    },
+    {
+      id: "filterStatus",
+      label: "Filtrar por Estado",
+      type: "select",
+      value: filterStatus,
+      onChange: (val) => setFilterStatus(val as FilterStatus),
+      options: [
+        { value: "ALL", label: "Todos los estados" },
+        { value: "PENDIENTE", label: "Pendiente" },
+        { value: "CONFIRMADO", label: "Confirmado" },
+        { value: "CANCELADO", label: "Cancelado" }
+      ]
+    },
+    {
+      id: "filterUserId",
+      label: "Buscar por ID de Usuario",
+      type: "number",
+      value: filterUserId,
+      onChange: (val) => setFilterUserId(val as string),
+      placeholder: "Ingrese ID de usuario...",
+      min: 1
+    }
+  ];
+
   return (
-    <div className="bg-white rounded-xl shadow-lg border-2 border-gray-200 p-6 mb-6">
-      <div className="flex items-center justify-between mb-4">
-        <h2 className="text-xl font-bold text-gray-800"> Filtros de Búsqueda</h2>
-        <button
-          onClick={handleGlobalReset}
-          className="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white text-sm font-medium rounded-lg transition-colors cursor-pointer"
-        >
-          Limpiar filtros
-        </button>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {/* Filtro por ID */}
-        <div>
-          <label htmlFor="filterId" className="block text-sm font-semibold text-gray-700 mb-2">
-            Buscar por ID de Reserva
-          </label>
-          <input
-            id="filterId"
-            type="number"
-            min="1"
-            value={filterId}
-            onChange={(e) => setFilterId(e.target.value)}
-            placeholder="Ingrese ID de reserva..."
-            className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 transition-colors"
-          />
-        </div>
-
-        {/* Filtro por Estado */}
-        <div>
-          <label htmlFor="filterStatus" className="block text-sm font-semibold text-gray-700 mb-2">
-            Filtrar por Estado
-          </label>
-          <select
-            id="filterStatus"
-            value={filterStatus}
-            onChange={(e) => setFilterStatus(e.target.value as FilterStatus)}
-            className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 transition-colors cursor-pointer"
-          >
-            <option value="ALL">Todos los estados</option>
-            <option value="PENDIENTE">Pendiente</option>
-            <option value="CONFIRMADO">Confirmado</option>
-            <option value="CANCELADO">Cancelado</option>
-          </select>
-        </div>
-        {/* Filtro por Usuario ID */}
-        <div>
-          <label htmlFor="filterUserId" className="block text-sm font-semibold text-gray-700 mb-2">
-            Buscar por ID de Usuario
-          </label>
-          <input
-            id="filterUserId"
-            type="number"
-            min="1"
-            value={filterUserId}
-            onChange={(e) => setFilterUserId(e.target.value)}
-            placeholder="Ingrese ID de usuario..."
-            className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 transition-colors"
-          />
-        </div>
-      </div>
-    </div>
+    <GenericFilter
+      title="Filtros de Búsqueda"
+      onReset={handleGlobalReset}
+      filters={filters}
+    />
   );
 }
