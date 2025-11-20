@@ -1,117 +1,125 @@
-import { useMemo } from "react";
-import type { ReactNode } from "react";
-import { ReservationFilterContext } from "./reservationFilterContext"; 
-import { useReservations, useReservationById } from "../../hooks/reservation.hook";
-import type { IReservation } from "../../types/reservation.interface";
-// Importamos los hooks genéricos basados en URL
-import { useIdFilter, useSelectFilter } from "../../hooks/filters";
-import { useFilterReset } from "../generic";
-import { useUrlPagination } from "../../hooks/pagination.hook"; 
-interface ChildrenProps{
- children: ReactNode
+import { useState } from "react";
+
+interface ProductFilterProviderProps {
+  children: React.ReactNode;
 }
 
-// Nota: Este tipo también está definido en el archivo de Contexto
-export type FilterStatus = "ALL" | "PENDIENTE" | "CONFIRMADO" | "CANCELADO";
+const ITEMS_PER_PAGE = 8;
 
-export function ReservationFilterProvider({ children }: ChildrenProps) {
- // 🛑 Hooks de Filtros que leen y escriben en la URL 🛑
- 
- // 1. Filtro por ID de Reserva (usa URL param 'id')
- const { 
-  id: filterId, 
-  setId: setFilterId, 
-  parsedId, 
-  reset: resetId 
- } = useIdFilter("id"); // Usamos "id" explícitamente, aunque es el default
- 
- // 2. Filtro por ID de Usuario (usa URL param 'userId')
- const { 
-  id: filterUserId, 
-  setId: setFilterUserId, 
-  parsedId: parsedUserId, 
-  reset: resetUserId 
- } = useIdFilter("userId"); // Usa el parámetro 'userId'
- 
- // 3. Filtro de Estado (usa URL param 'status')
- const { 
-  selected: filterStatus, 
-  setSelected: setFilterStatus, 
-  reset: resetStatus 
- // Primer argumento es el nombre del parámetro URL ('status')
- } = useSelectFilter<FilterStatus>("status", "ALL", "ALL");
 
- // Queries (igual que antes)
- const allQuery = useReservations();
- const byIdQuery = useReservationById(parsedId || 0, parsedId !== null && parsedId > 0);
- const activeQuery = parsedId ? byIdQuery : allQuery;
+export const ProductFilterProvider: React.FC<ProductFilterProviderProps> = ({ children }) => {
+    
+  // --- Estado de Filtros y Paginación ---
+  const [filterId, setFilterId] = useState<number | null>(null);
+  const [filterSearchTerm, setFilterSearchTerm] = useState<string>("");
+  const [filterCategoryId, setFilterCategoryId] = useState<FilterCategoryId>(null);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [isLoading, setIsLoading] = useState<boolean>(false); 
 
- // Datos filtrados (sin paginar) - La lógica de filtrado es inmutable
- const filtered = useMemo((): IReservation[] => {
-  
-  if (parsedId) {
-   // Filtro cuando se busca por un ID de reserva específico
-   if (byIdQuery.error || !byIdQuery.data) {
-    return [];
-   }
-   const reservation = byIdQuery.data;
-   
-   // Aplica filtros secundarios (estado, usuario ID) a la única reserva encontrada
-   if (filterStatus !== "ALL" && reservation.estado !== filterStatus) {
-    return []; 
-   }
-   if (parsedUserId && reservation.usuarioId !== parsedUserId) {
-    return [];
-   }
-   return [reservation];
-  }
-  
-  // Filtros aplicados a todas las reservas
-  let allData = allQuery.data || [];
-  
-  // Filtrar por estado
-  if (filterStatus !== "ALL") {
-   allData = allData.filter(r => r.estado === filterStatus);
-  }
-  
-  // Filtrar por usuario ID
-  if (parsedUserId) {
-   allData = allData.filter(r => r.usuarioId === parsedUserId);
-  }
-  
-  return allData;
- }, [parsedId, byIdQuery.data, byIdQuery.error, filterStatus, parsedUserId, allQuery.data]);
+  // --- Lógica de Filtrado y Paginación ---
+  const { totalItems, totalPages, displayData } = useMemo(() => {
+    setIsLoading(true);
 
- // 🎯 Paginación ahora usa useUrlPagination (lee/escribe el 'page' en la URL)
- const { paginatedData, pagination } = useUrlPagination<IReservation>(filtered, {
-  itemsPerPage: 8,
- });
+    let currentData = MOCK_PRODUCTS;
+    const lowerCaseSearchTerm = filterSearchTerm.toLowerCase().trim();
 
- // 🛑 Eliminamos el useEffect que reseteaba la página, ya que useUrlPagination
-  // garantiza que la página sea válida para el nuevo conjunto de datos 'filtered'.
+    // 1. Filtrar por ID Exacto (prioridad máxima)
+    if (filterId !== null) {
+      currentData = currentData.filter(product => product.id === filterId);
+    } else {
+      // 2. Filtrar por Término de Búsqueda (Nombre y Descripción)
+      if (lowerCaseSearchTerm) {
+        currentData = currentData.filter(product => 
+          product.name.toLowerCase().includes(lowerCaseSearchTerm) ||
+          product.description.toLowerCase().includes(lowerCaseSearchTerm)
+        );
+      }
+
+      // 3. Filtrar por Categoría
+      if (filterCategoryId !== null) {
+        currentData = currentData.filter(product => 
+          product.categories.some(cat => cat.id === filterCategoryId)
+        );
+      }
+    }
+    
+    // Ordenar (opcional, por ID para consistencia)
+    currentData.sort((a, b) => a.id - b.id);
+
+    // 4. Lógica de Paginación
+    const itemsCount = currentData.length;
+    const pageCount = Math.ceil(itemsCount / ITEMS_PER_PAGE);
+
+    // Asegurar que la página actual sea válida después del filtrado
+    const safeCurrentPage = Math.min(currentPage, pageCount === 0 ? 1 : pageCount);
+
+    const startIndex = (safeCurrentPage - 1) * ITEMS_PER_PAGE;
+    const finalDisplayData = currentData.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+
+    // Actualizar el estado de la página si fue ajustada
+    if (currentPage !== safeCurrentPage) {
+      setCurrentPage(safeCurrentPage);
+    }
+
+    setIsLoading(false);
+
+    return {
+      totalItems: itemsCount,
+      totalPages: pageCount,
+      displayData: finalDisplayData,
+    };
+  }, [filterId, filterSearchTerm, filterCategoryId, currentPage]);
+
+
+  // --- Funciones de Control (Callback) ---
   
- // Reset combinado
- // Incluimos resetPage para limpiar el parámetro 'page' de la URL.
- const reset = useFilterReset(resetId, resetUserId, resetStatus, pagination.resetPage);
+  // Función de ayuda para envolver los setters y resetear la página
+  const createFilterSetter = useCallback(<T,>(setter: React.Dispatch<React.SetStateAction<T>>) => (value: T) => {
+    setCurrentPage(1); // Siempre vuelve a la página 1 al cambiar un filtro
+    setter(value);
+  }, []);
 
- return (
-  <ReservationFilterContext.Provider value={{
-   filterId,
-   filterStatus,
-   filterUserId,
-   displayData: paginatedData,
-   totalItems: filtered.length,
-   itemsPerPage: pagination.itemsPerPage,
-   currentPage: pagination.currentPage,
-   totalPages: pagination.totalPages,
-   isLoading: activeQuery.isLoading,
-   setFilterId,
-   setFilterStatus,
-   setFilterUserId,
-   goToPage: pagination.goToPage,
-   reset,
-  }}>
-   {children}
-  </ReservationFilterContext.Provider>
- );
+  const handleSetFilterId = createFilterSetter(setFilterId);
+  const handleSetFilterSearchTerm = createFilterSetter(setFilterSearchTerm);
+  const handleSetFilterCategoryId = createFilterSetter(setFilterCategoryId);
+
+  const goToPage = useCallback((page: number) => {
+    setCurrentPage(page);
+  }, []);
+
+  const reset = useCallback(() => {
+    setCurrentPage(1);
+    setFilterId(null);
+    setFilterSearchTerm("");
+    setFilterCategoryId(null);
+  }, []);
+
+  // --- Objeto de Valor del Contexto ---
+  const contextValue = {
+    // Filtros
+    filterId,
+    filterSearchTerm,
+    filterCategoryId,
+    
+    // Datos y Paginación
+    displayData,
+    totalItems,
+    itemsPerPage: ITEMS_PER_PAGE,
+    currentPage,
+    totalPages,
+    isLoading,
+    
+    // Setters
+    setFilterId: handleSetFilterId,
+    setFilterSearchTerm: handleSetFilterSearchTerm,
+    setFilterCategoryId: handleSetFilterCategoryId,
+    goToPage,
+    reset,
+  };
+
+  return (
+    <ProductFilterContext.Provider value={contextValue}>
+      {children}
+    </ProductFilterContext.Provider>
+  );
 }

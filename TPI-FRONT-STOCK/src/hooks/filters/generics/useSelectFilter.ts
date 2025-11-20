@@ -1,23 +1,27 @@
 import { useUrlFilter } from "./useUrlFilter"; 
+import { useCallback } from 'react';
+
 
 export function useSelectFilter<T extends string>(
-  paramName: string, // <-- Agregamos el nombre del parámetro de la URL
+  paramName: string, 
   initialValue: T,
   allValue: T
 ) {
-  // 1. 🛑 CAMBIO CLAVE: Usamos 'as unknown as' para resolver el error de tipado
-  const [selected, setSelected, reset] = useUrlFilter(paramName, initialValue) as unknown as [
-    T,
-    (newValue: T) => void,
-    () => void
-  ];
+  
+  const [selectedString, setValue, reset] = useUrlFilter(paramName, initialValue);
+
+  const selected = selectedString as T; 
+
+  const setSelected = useCallback((newValue: T) => {
+    setValue(newValue);
+  }, [setValue]);
 
   const isAll = selected === allValue;
 
   return {
-    selected,
-    setSelected,
-    isAll,
-    reset,
+    selected, // Valor seleccionado (tipo T)
+    setSelected, // Función para establecer el valor (acepta tipo T)
+    isAll, // Booleano si está seleccionado el valor "todo"
+    reset, // Función para eliminar el filtro de la URL
   };
 }

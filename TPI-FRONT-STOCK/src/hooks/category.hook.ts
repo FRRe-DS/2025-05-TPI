@@ -15,7 +15,7 @@ export const useCategories = () =>
 // Obtener una reserva por ID
 export const useCateICategoryById = (id: number, enabled = true) => 
   useQuery<ICategory, Error>({
-    queryKey: ["CateICategory", id],
+    queryKey: ["Category", id],
     queryFn: () => getCategoryById(id),
     enabled: enabled && id > 0,
   });
