@@ -1,88 +1,92 @@
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { X, Box, Calendar, Users, Menu, User } from 'lucide-react'; 
-import { Link } from 'react-router-dom';
+"use client"
+
+import { useState } from "react"
+import { motion, AnimatePresence } from "framer-motion"
+import { X, Box, Calendar, Users, Menu, User } from "lucide-react"
+import { Link, useLocation } from "react-router-dom"
 
 export default function SidePanelMobile() {
-  const [stockPanelOpen, setStockPanelOpen] = useState(false);
+  const [stockPanelOpen, setStockPanelOpen] = useState(false)
+  const location = useLocation()
 
   const navItems = [
     { name: "Productos", icon: Box, path: "/productos" },
     { name: "Reservas", icon: Calendar, path: "/reservas" },
     { name: "Clientes", icon: Users, path: "/clientes" },
-  ];
+  ]
 
   return (
-    <div className="relative z-50"> 
+    <div className="relative z-50">
       {/* Barra superior cuando no se muestra la barra lateral en celulares */}
-      <div className='w-full p-2 h-auto flex justify-between items-center bg-[#1f1c1c]'>
+      <div className="w-full p-3 h-auto flex justify-between items-center bg-gradient-to-r from-gray-900 to-gray-950 border-b border-gray-800">
         <button
           onClick={() => setStockPanelOpen(true)}
-          className="p-2 border-2 border-white rounded-md shadow hover:cursor-pointer transition flex items-center"
+          className="p-2 border border-gray-700 rounded-lg shadow hover:cursor-pointer transition hover:border-gray-600 hover:bg-gray-800 flex items-center"
         >
-          <Menu className="h-6 w-6 text-white rouded" />
+          <Menu className="h-6 w-6 text-gray-400" />
         </button>
 
-        <button
-          className="p-2 border-2 border-white rounded-md shadow hover:cursor-pointer transition flex items-center"
-        >
-          <User className="h-6 w-6 text-white rouded" />
+        <button className="p-2 border border-gray-700 rounded-lg shadow hover:cursor-pointer transition hover:border-gray-600 hover:bg-gray-800 flex items-center">
+          <User className="h-6 w-6 text-gray-400" />
         </button>
       </div>
-      
 
       <AnimatePresence>
         {stockPanelOpen && (
-          <div 
-            className="fixed inset-0 z-101 bg-black/50" 
-            onClick={() => setStockPanelOpen(false)} 
-          >
+          <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm" onClick={() => setStockPanelOpen(false)}>
             <motion.div
-              initial={{ x: "-100%" }} 
-              animate={{ x: 0 }} 
-              exit={{ x: "-100%" }} 
-              transition={{ duration: 0.3 }}
-              onClick={(e) => e.stopPropagation()} 
-              className="absolute left-0 top-0 h-full w-[90%] max-w-md bg-[#1f1c1c] shadow-2xl" 
+              initial={{ x: "-100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "-100%" }}
+              transition={{ duration: 0.15 }}
+              onClick={(e) => e.stopPropagation()}
+              className="absolute left-0 top-0 h-full w-[90%] max-w-md bg-gradient-to-b from-gray-900 to-gray-950 shadow-2xl"
             >
               <div className="flex flex-col h-full">
-                
                 {/* Titulo */}
-                <div className="flex items-center justify-between p-6 border-b border-gray-200 bg-[#1f1c1c]">
-                  <h3 className="text-xl font-bold text-white"> STOCK </h3>
+                <div className="flex items-center justify-between p-6 border-b border-gray-800 bg-gray-900/50 backdrop-blur">
+                  <h3 className="text-2xl font-bold text-gray-100">STOCK</h3>
                   <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
                     <button
-                      onClick={() => setStockPanelOpen(false)} 
-                      className="p-2 rounded-full hover:bg-cyan-200 transition"
+                      onClick={() => setStockPanelOpen(false)}
+                      className="p-2 rounded-full hover:bg-gray-800 transition"
                       aria-label="Cerrar panel de stock"
                     >
-                      <X className="h-6 w-6 text-white" />
+                      <X className="h-6 w-6 text-gray-400" />
                     </button>
                   </motion.div>
                 </div>
 
                 {/* Navegacion */}
-                <div className="flex-1 overflow-y-auto p-4 space-y-2">
-                  <p className="text-sm font-semibold text-white uppercase mb-4 px-2">Navegación</p>
-                  {navItems.map((item) => (
-                    <motion.div 
-                      key={item.name}
-                      whileHover={{ scale: 1.01, backgroundColor: '#f3f4f6' }}
-                      whileTap={{ scale: 0.99 }}
-                      className="rounded-lg"
-                    >
-                      <Link to={item.path}
-                        className="flex items-center w-full p-3 text-lg text-white transition duration-150 rounded-lg"
+                <div className="flex-1 overflow-y-auto p-4 space-y-3">
+                  <p className="text-xs font-semibold text-gray-500 uppercase mb-6 px-3 tracking-widest">Navegación</p>
+                  {navItems.map((item) => {
+                    const isActive = location.pathname === item.path
+                    return (
+                      <motion.div
+                        key={item.name}
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        className="rounded-lg"
                       >
-                        <item.icon className="h-5 w-5 mr-3" />
-                        {item.name}
-                      </Link>
-                    </motion.div>
-                  ))}
+                        <Link
+                          to={item.path}
+                          className={`flex items-center w-full px-4 py-3 rounded-lg transition-all duration-100 ${
+                            isActive
+                              ? "bg-gray-800 text-gray-100 border-l-4 border-gray-700"
+                              : "text-gray-400 hover:bg-gray-800/60 hover:text-gray-200"
+                          }`}
+                        >
+                          <item.icon className="h-5 w-5 mr-3" />
+                          <span className="font-medium">{item.name}</span>
+                        </Link>
+                      </motion.div>
+                    )
+                  })}
                 </div>
-                
-                {/* Footer (Hice algo simple pero se puede reemplazar por botones, una seccion, etc) */}
-                <div className="border-t border-gray-200 p-4 bg-[#1f1c1c] text-sm text-center text-white">
+
+                {/* Footer */}
+                <div className="border-t border-gray-800 p-4 bg-gray-900/50 text-xs text-center text-gray-600">
                   Sistema de Gestión de Stock v1.0
                 </div>
               </div>
@@ -91,5 +95,5 @@ export default function SidePanelMobile() {
         )}
       </AnimatePresence>
     </div>
-  );
-};
+  )
+}
