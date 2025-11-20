@@ -4,10 +4,9 @@ import { ReservationFilterContext } from "./reservationFilterContext";
 import { useReservations, useReservationById } from "../../hooks/reservation.hook";
 import type { IReservation } from "../../types/reservation.interface";
 // Importamos los hooks genéricos basados en URL
-import { useIdFilter } from "../generic/useIdFilter";
-import { useSelectFilter } from "../generic/useSelectFilter";
+import { useIdFilter, useSelectFilter } from "../../hooks/filters";
 import { useFilterReset } from "../generic";
-import { useUrlPagination } from "../../hooks/pagination"; 
+import { useUrlPagination } from "../../hooks/pagination.hook"; 
 interface ChildrenProps{
  children: ReactNode
 }

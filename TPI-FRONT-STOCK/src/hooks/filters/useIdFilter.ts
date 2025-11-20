@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 // Importamos el nuevo hook basado en URL
-import { useUrlFilter } from "./useUrlFilter"; 
+import { useUrlFilter } from "./generics/useUrlFilter"; 
 
 // Nombre del parámetro en la URL
 const URL_PARAM_NAME = "id";

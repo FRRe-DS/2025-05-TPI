@@ -1,4 +1,4 @@
-import { useReservationFilter, type FilterStatus  } from "../../context/filter/reservationFilterContext";
+import { useReservationFilter, type FilterStatus  } from "../../context/reservation/reservationFilterContext";
 
 export function SearchFilters() {
   const { 

@@ -1,10 +1,7 @@
 // Product Hooks
-export { 
-  useCreateProduct,
-} from "./products";
+export * from "./products.hook";
 
 // Reservation Hooks
-export {
-  useReservations,
-  useReservationById,
-} from "./reservation.hook";
+export * from "./reservation.hook";
+
+export * from "./category.hook"
