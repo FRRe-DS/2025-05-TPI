@@ -3,9 +3,9 @@ import { api } from "../client";
 import type { IProduct } from "../types";
 
 export async function getAllProducts():Promise<IProduct[]>{
-
   try{
-    const result = await api.get<IProduct[]>("/products")
+    // CAMBIO: /products -> /productos
+    const result = await api.get<IProduct[]>("/productos")
 
     if (!result) {
       throw new Error ("Products not found")
@@ -27,7 +27,8 @@ export async function getAllProducts():Promise<IProduct[]>{
 
 export async function getFeaturedProducts():Promise<IProduct[]>{
   try {
-    const result = await api.get<IProduct[]>("/products/feature/", { params: {is_featured: true}})
+    // CAMBIO: /products -> /productos
+    const result = await api.get<IProduct[]>("/productos/feature/", { params: {is_featured: true}})
 
     if (!result){
       throw new Error ("Products not found")
@@ -49,7 +50,8 @@ export async function getFeaturedProducts():Promise<IProduct[]>{
 
 export async function getProductById(id:number):Promise<IProduct>{
  try {
-    const result = await api.get<IProduct>(`/products/${id}`)
+    // CAMBIO: /products -> /productos
+    const result = await api.get<IProduct>(`/productos/${id}`)
 
     if (!result){
       throw new Error ("Product not found")
@@ -70,7 +72,8 @@ export async function getProductById(id:number):Promise<IProduct>{
 
 export async function getProductByName(name: string):Promise<IProduct[]>{
  try {
-    const result = await api.get<IProduct[]>(`/products/name/${name}`)
+    // CAMBIO: /products -> /productos
+    const result = await api.get<IProduct[]>(`/productos/name/${name}`)
 
     if (!result){
       throw new Error ("Product not found")

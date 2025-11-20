@@ -1,8 +1,7 @@
 import { memo, useMemo } from "react";
-import type { IProduct } from "../../types/product.interface"; // Usamos la interfaz global
+import type { IProduct } from "../../types/product.interface";
 import GenericTableRow from "../common/ui/table/tablerow";
 import type { TableColumn } from "../common/ui/table/tablerow"; 
-
 
 interface ProductTableRowProps {
   product: IProduct;
@@ -17,39 +16,47 @@ export const ProductTableRow = memo(function ProductTableRow({
   const columns: TableColumn<IProduct>[] = useMemo(() => [
     {
       header: "Producto",
-      render: (p: IProduct) => (
-        <div className="flex items-center">
-          <div>
-            <div className="text-sm font-bold text-gray-900">
-              {p.name}
-            </div>
-            <div className="text-xs text-gray-500 uppercase">
-              {/* Mapeamos las categorías para mostrar sus nombres separados por coma */}
-              Categoría: {p.categories && p.categories.length > 0 
-                ? p.categories.map(c => c.name).join(', ') 
-                : 'Sin categoría'}
+      render: (p: IProduct) => {
+        // Lógica defensiva para categorías: busca en 'categorias' O 'categories'
+        const cats = p.categorias || [];
+        
+        return (
+          <div className="flex items-center">
+            <div>
+              <div className="text-sm font-bold text-gray-900">
+                {p.nombre}
+              </div>
+              <div className="text-xs text-gray-500 uppercase">
+                Categoría: {cats.length > 0 
+                  ? cats.map(c => c.nombre).join(', ') 
+                  : 'Sin categoría'}
+              </div>
             </div>
           </div>
-        </div>
-      )
+        );
+      }
     },
     {
       header: "Stock",
-      render: (p: IProduct) => (
-        <div className="flex items-center">
-          {/* Usamos availableStock del back */}
-          <span className={`text-sm font-bold ${p.availableStock > 0 ? 'text-gray-900' : 'text-red-600'}`}>
-            {p.availableStock} unidades
-          </span>
-        </div>
-      )
+      render: (p: IProduct) => {
+        // Lógica defensiva para stock: busca en todas las variantes posibles
+        // El operador ?? 0 asegura que si es null/undefined sea 0
+        const stock = p.stockDisponible ?? p.stock_disponible ?? p.stock ?? 0;
+
+        return (
+          <div className="flex items-center">
+            <span className={`text-sm font-bold ${stock > 0 ? 'text-gray-900' : 'text-red-600'}`}>
+              {stock} unidades
+            </span>
+          </div>
+        );
+      }
     },
     {
       header: "Precio",
       render: (p: IProduct) => (
         <div className="text-sm font-bold text-green-700">
-          {/* Usamos unitPrice del back */}
-          $ {Number(p.unitPrice).toFixed(2)}
+          $ {Number(p.precio).toFixed(2)}
         </div>
       )
     },

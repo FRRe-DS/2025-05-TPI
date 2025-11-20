@@ -1,7 +1,6 @@
 import { useState, useMemo } from 'react';
 import { ProductTableRow } from "../components/products/ProductTableRow"; 
 import { useProduct } from "../hooks/products.hook"; // Tu hook real
-import type { IProduct } from "../types/product.interface"; 
 
 export default function ProductList() {
     // 1. Estado para el filtro (lo hacemos en cliente ya que traemos todos los productos)
@@ -17,7 +16,7 @@ export default function ProductList() {
         
         return products.filter(p => {
             // Verificamos si el producto tiene categorías y si ALGUNA (.some) coincide con la seleccionada
-            return p.categories?.some(cat => cat.name.toLowerCase() === selectedCategory);
+            return p.categorias?.some(cat => cat.nombre.toLowerCase() === selectedCategory);
         });
     }, [products, selectedCategory]);
 
@@ -28,8 +27,8 @@ export default function ProductList() {
         
         products.forEach(p => {
             // Recorremos el array de categorías de cada producto
-            p.categories?.forEach(cat => {
-                if (cat.name) cats.add(cat.name.toLowerCase());
+            p.categorias?.forEach(cat => {
+                if (cat.nombre) cats.add(cat.nombre.toLowerCase());
             });
         });
         

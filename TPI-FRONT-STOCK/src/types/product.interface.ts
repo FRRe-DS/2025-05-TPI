@@ -3,22 +3,25 @@ import type { ICategory } from "./category.interface";
 
 export interface IProduct {
     id: number;
-    name: string;
-    description: string;
-    unitPrice: number;
-    availableStock: number;
-    weightKg: number;
-    dimensions: IDimension;
-    location: IWarehouseLocation;
-    categories: ICategory[];
-    images: IImageProduct[];
+    nombre: string;      
+    descripcion: string; 
+    precio: number;      
+    stockDisponible?: number; // Como está en la clase Entity
+    stock_disponible?: number; // Como está en la columna DB
+    stock?: number; // Fallback antiguo
+    pesoKg?: number;
+    dimensiones?: IDimension;
+    ubicacion?: IWarehouseLocation;
+    categorias?: ICategory[];
+    categories?: ICategory[];
+    imagenes?: IImageProduct[];
 }
 
 export interface IProductInput {
-    name: string;
-    unitPrice: number;
-    availableStock: number; 
-    description?: string;
+    nombre: string;
+    precio: number;
+    stock: number; 
+    descripcion?: string;
     weightKg?: number;
     dimensions?: IDimension;
     location?: IWarehouseLocation;
