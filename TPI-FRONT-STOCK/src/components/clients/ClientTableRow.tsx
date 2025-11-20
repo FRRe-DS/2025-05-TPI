@@ -1,24 +1,26 @@
 import { memo, useMemo } from "react";
-import type { IClient } from "../../types/client.interface.ts";
+import { useNavigate } from "react-router-dom"; // Importamos el hook de navegación
+import type { IClient } from "../../types/client.interface";
 import GenericTableRow from "../common/ui/table/tablerow";
 import type { TableColumn } from "../common/ui/table/tablerow";
 
 interface ClientTableRowProps {
   client: IClient;
-  onEdit: (client: IClient) => void;
+  // Ya no necesitamos onEdit obligatorio, pero lo dejamos opcional por si acaso
+  onEdit?: (client: IClient) => void; 
 }
 
 export const ClientTableRow = memo(function ClientTableRow({ 
   client, 
   onEdit 
 }: ClientTableRowProps) {
+  const navigate = useNavigate(); // Hook para redirigir
 
   const columns: TableColumn<IClient>[] = useMemo(() => [
     {
       header: "Cliente",
       render: (c: IClient) => (
         <div className="flex items-center">
-          {/* Avatar con iniciales */}
           <div className="h-10 w-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-700 font-bold mr-3">
             {c.firstName[0]}{c.lastName[0]}
           </div>
@@ -69,15 +71,18 @@ export const ClientTableRow = memo(function ClientTableRow({
         <button
           onClick={(e) => {
             e.stopPropagation();
-            onEdit(c);
+            // Redirigimos a /reservas con el filtro id
+            navigate(`/reservas?id=${c.id}`);
           }}
-          className="text-indigo-600 hover:text-indigo-900 font-medium text-sm"
+          className="inline-flex items-center gap-2 px-3 py-1.5 bg-blue-50 text-blue-700 hover:bg-blue-100 border border-blue-200 rounded-md text-sm font-medium transition-colors"
         >
-          Editar
+          {/* Icono de lista/ojo opcional */}
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
+          Ver reservas
         </button>
       )
     }
-  ], [onEdit]);
+  ], [navigate, onEdit]); // Agregamos navigate a las dependencias
 
   return (
     <GenericTableRow 

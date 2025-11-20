@@ -61,7 +61,7 @@ export default function ClientsPage() {
                                 <ClientTableRow
                                     key={client.id}
                                     client={client}
-                                    onEdit={(c) => console.log("Editar cliente:", c.firstName)}
+                                    // Ya no es necesario pasar onEdit, el botón lo maneja internamente
                                 />
                             ))}
                         </tbody>
