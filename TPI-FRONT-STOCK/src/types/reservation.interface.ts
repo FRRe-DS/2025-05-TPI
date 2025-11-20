@@ -1,57 +1,57 @@
-// src/interfaces/reservation.interface.ts
-
-import type { IReservationProduct, IReservationProductInput } from ".";
-
-enum ReservationStatus {
-    PENDING = 'PENDING',
-    CONFIRMED = 'CONFIRMED',
-    CANCELLED = 'CANCELLED'
-}
-
 export interface IReservation {
-  id: number;
-  idPurchase: string;
-  userId: number;
-  status: ReservationStatus;
-  reservationDate: Date;
-  expiredAt: Date;
-  updatedAt: Date;
-  totalQuantity: number;
-  products: IReservationProduct[];
+  idReserva: number;
+  idCompra: string;
+  usuarioId: number;
+  estado: 'PENDIENTE' | 'CONFIRMADO' | 'CANCELADO' | 'EXPIRADO';
+  fechaCreacion: string;
+  fechaActualizacion: string;
+  expiraEn: string;
+  items: IReservationItem[];
 }
 
-export interface IReservationInput {
-  idPurchase: string; 
-  userId: number; 
-  products: IReservationProductInput[]; 
+export interface IReservationItem {
+  id: number;
+  productoId: number;
+  nombre: string;
+  cantidad: number;
+  precioUnitario: string;
+  producto: IReservationProductDetail;
+}
+
+export interface IReservationProductDetail {
+  id: number;
+  nombre: string;
+  descripcion: string;
+  precio: string;
+  stockDisponible: number;
+  pesoKg: string;
+  dimensiones: {
+    largoCm: string;
+    anchoCm: string;
+    altoCm: string;
+  };
+  ubicacion: {
+    calle: string;
+    ciudad: string;
+    provincia: string;
+    codigoPostal: string;
+    pais: string;
+  };
+}
+
+export interface IReservaInput {
+  idCompra: string;
+  usuarioId: number;
+  productos: {
+    productoId: number;
+    cantidad: number;
+  }[];
 }
 
 export interface IReservaOutput {
-  id: number;
-  idPurchase: string;
-  userId: number;
-  status: ReservationStatus;
-  expiredAt: Date; 
-  reservationDate: Date;
-}
-
-export interface IReservationUpdate {
-    userId: number; 
-    status: ReservationStatus;
-}
-
-export interface IReservationCanceled {
-  reason: string; 
-}
-
-export interface IReleaseInput {
-  idReservation: number; 
-  userId: number;
-  reason: string; 
-}
-
-export interface IReleaseOutput {
-  message: string;
-  idReservation: number;
-  status: 'liberado';
+  idReserva: number;
+  idCompra: string;
+  estado: string;
+  fechaCreacion: string;
+  expiraEn: string;
 }

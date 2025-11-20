@@ -1,73 +1,17 @@
-version: '3.8'
 services:
-  # -----------------------------------------------------
-  # 1. BASES DE DATOS (MySQL -> PostgreSQL)
-  # -----------------------------------------------------
-  logistica_postgres_db: # ⬅️ CAMBIO DE NOMBRE
-    image: postgres:16.2 # ⬅️ IMAGEN CAMBIADA
-    container_name: logistica_postgres_db
-    ports:
-      - "5432:5432" # ⬅️ PUERTO POR DEFECTO DE POSTGRES
-    environment:
-      POSTGRES_DB: logistica # ⬅️ VARIABLES DE ENTORNO DE POSTGRES
-      POSTGRES_USER: usr_logistica
-      POSTGRES_PASSWORD: ds2025
-    volumes:
-      - logistica_postgres_db_data:/var/lib/postgresql/data # ⬅️ VOLUMEN CAMBIADO
-    restart: always
-    networks:
-      - tpi_network
-
-  compras_postgres_db: # ⬅️ CAMBIO DE NOMBRE
-    image: postgres:16.2 # ⬅️ IMAGEN CAMBIADA
-    container_name: compras_postgres_db
-    ports:
-      - "5433:5432" # ⬅️ PUERTO HOST 5433 para evitar conflicto con logistica
-    environment:
-      POSTGRES_DB: compras # ⬅️ VARIABLES DE ENTORNO DE POSTGRES
-      POSTGRES_USER: usr_compras
-      POSTGRES_PASSWORD: ds2025
-    volumes:
-      - compras_postgres_db_data:/var/lib/postgresql/data # ⬅️ VOLUMEN CAMBIADO
-    restart: always
-    networks:
-      - tpi_network
-
-  stock_postgres_db: # ⬅️ CAMBIO DE NOMBRE
-    image: postgres:16.2 # ⬅️ IMAGEN CAMBIADA
-    container_name: stock_postgres_db
-    ports:
-      - "5434:5432" # ⬅️ PUERTO HOST 5434
-    environment:
-      POSTGRES_DB: stock # ⬅️ VARIABLES DE ENTORNO DE POSTGRES
-      POSTGRES_USER: usr_stock
-      POSTGRES_PASSWORD: ds2025
-    volumes:
-      - stock_postgres_db_data:/var/lib/postgresql/data # ⬅️ VOLUMEN CAMBIADO
-    restart: always
-    networks:
-      - tpi_network
-    healthcheck: # ⬅️ AÑADIR ESTE BLOQUE
-      test: ["CMD-SHELL", "pg_isready -U usr_stock"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
-      
-  # Keycloak DB (se mantiene como estaba)
   keycloak_db:
     image: postgres:16.2
     volumes:
       - keycloak_db_data:/var/lib/postgresql/data
     environment:
-      POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}              # keycloak_db
+      POSTGRES_USER: ${POSTGRES_USER}          # keycloak_db_user
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}  # keycloak_db_user_password
     networks:
       - tpi_network
-  # Keycloak (se mantiene como estaba)
+
   keycloak:
     image: quay.io/keycloak/keycloak:23.0.6
-    #command: start
     command: start --import-realm
     environment:
       KC_HOSTNAME: localhost
@@ -76,14 +20,14 @@ services:
       KC_HTTP_ENABLED: true
       KC_HOSTNAME_STRICT_HTTPS: false
       KC_HEALTH_ENABLED: true
-      KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
-      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
+      KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}              # admin
+      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}  # ds2025
       KC_DB: postgres
       KC_DB_URL: jdbc:postgresql://keycloak_db/${POSTGRES_DB}
       KC_DB_USERNAME: ${POSTGRES_USER}
       KC_DB_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
-      - 8080:8080
+      - "8080:8080"
     volumes:
       - ./realm-config:/opt/keycloak/data/import:ro
     restart: always
@@ -92,9 +36,6 @@ services:
     networks:
       - tpi_network
 
-  # -----------------------------------------------------
-  # 2. BACKEND (Node.js)
-  # -----------------------------------------------------
   stock_backend_api:
     build:
       context: ../TPI-BACK-STOCK
@@ -105,38 +46,25 @@ services:
     environment:
       NODE_ENV: production
       PORT: 8000
-      # ⬅️ CAMBIOS DE CONFIGURACIÓN DE DB A POSTGRES
-      DB_HOST: stock_postgres_db # ⬅️ Nuevo nombre del servicio
-      DB_PORT: 5432              # ⬅️ Puerto interno de PostgreSQL
-      DB_NAME: stock
-      DB_USER: usr_stock
-      DB_PASSWORD: ds2025
+      
+      # Configuración Supabase - Session Pooler
+      DB_HOST: aws-1-us-east-2.pooler.supabase.com
+      DB_PORT: 5432
+      DB_NAME: postgres
+      DB_USER: postgres.vzabfnzrcynffhdjdddv
+      DB_PASSWORD: ${SUPABASE_DB_PASSWORD}  # 7[454ATMEpV5
       
       # Configuración para Keycloak:
       KEYCLOAK_ISSUER_URL: http://keycloak:8080/realms/ds-2025-realm
       KEYCLOAK_AUDIENCE: grupo-02
     depends_on:
-      stock_postgres_db:
-        condition: service_healthy # ⬅️ CAMBIO: Ahora espera a que el servicio esté "HEALTHY"
       keycloak:
         condition: service_started
     networks:
       - tpi_network
     restart: unless-stopped
 
-  # -----------------------------------------------------
-  # 3. FRONTEND (Node/React)
-  # -----------------------------------------------------
-  
-
 volumes:
-  # ⬅️ VOLÚMENES DE POSTGRES AÑADIDOS
-  logistica_postgres_db_data:
-    driver: local
-  compras_postgres_db_data:
-    driver: local
-  stock_postgres_db_data:
-    driver: local
   keycloak_db_data:
     driver: local
 

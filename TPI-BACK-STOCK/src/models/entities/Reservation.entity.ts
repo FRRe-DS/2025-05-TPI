@@ -1,33 +1,36 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, CreateDateColumn, UpdateDateColumn, BeforeInsert } from 'typeorm';
 import { ReservationItem } from './';
+import { EstadoReserva } from '../../types/reservation';
+import { addDays } from 'date-fns';
 
-export enum ReservationState {
-    CONFIRMED = 'CONFIRMED',
-    PENDING = 'PENDING',
-    CANCELED = 'CANCELED'
-}
-
-@Entity('reservations')
+@Entity('reservas') 
 export class Reservation {
-    @PrimaryGeneratedColumn()
-    id!: number;
+	@PrimaryGeneratedColumn()
+	idReserva!: number;
 
-    @Column({ name: 'purchase_id', type: 'varchar', length: 50, unique: true })
-    purchaseId!: string; // ID of the purchase in the Shopping Portal
+	@Column({ name: 'id_compra', type: 'varchar', length: 50, unique: true })
+	idCompra!: string; 
 
-    @Column({ name: 'user_id', type: 'integer'})
-    userId!: number; // ID of the buyer
+	@Column({ name: 'usuario_id', type: 'integer' }) 
+	usuarioId!: number; 
 
-    @Column({ name: 'state', type: 'enum', enum: ReservationState, default: ReservationState.PENDING})
-    state!: ReservationState; 
+	@Column({ name: 'estado', type: 'enum', enum: EstadoReserva, default: EstadoReserva.PENDIENTE }) 
+	estado!: EstadoReserva; 
 
-    @Column({ name: 'created_at', type: 'timestamp', default: () => 'CURRENT_TIMESTAMP'})
-    createdAt!: Date;
+	@CreateDateColumn({ name: 'fecha_creacion' }) 
+	fechaCreacion!: Date; 
 
-    @Column({ name: 'expires_at', type: 'timestamp' })
-    expiresAt!: Date; // For timeout logic
+	@UpdateDateColumn({ name: 'fecha_actualizacion' }) 
+	fechaActualizacion!: Date;
 
-    // RELATION: One reservation has many items.
-    @OneToMany(() => ReservationItem, (item: ReservationItem) => item.reservation, { cascade: true }) 
-    items!: ReservationItem[];
+	@Column({ name: 'expira_en', type: 'timestamp' }) 
+	expiraEn!: Date; 
+
+	@OneToMany(() => ReservationItem, (item: ReservationItem) => item.reserva, { cascade: true }) 
+	items!: ReservationItem[];
+
+	@BeforeInsert()
+	setExpirationDate() {
+		this.expiraEn = addDays(new Date(), 20); 
+	}
 }
