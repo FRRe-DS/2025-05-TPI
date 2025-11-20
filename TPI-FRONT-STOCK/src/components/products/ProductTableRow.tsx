@@ -3,6 +3,9 @@ import type { IProduct } from "../../types/product.interface";
 import GenericTableRow from "../common/ui/table/tablerow";
 import type { TableColumn } from "../common/ui/table/tablerow"; 
 
+// 1. IMPORTA TU COMPONENTE AQUÍ (Ajusta la ruta si es necesario)
+import StockStatus from "./stockStatus";
+
 interface ProductTableRowProps {
   product: IProduct;
   onViewDetails: (product: IProduct) => void;
@@ -17,9 +20,7 @@ export const ProductTableRow = memo(function ProductTableRow({
     {
       header: "Producto",
       render: (p: IProduct) => {
-        // Lógica defensiva para categorías: busca en 'categorias' O 'categories'
         const cats = p.categorias || [];
-        
         return (
           <div className="flex items-center">
             <div>
@@ -39,15 +40,14 @@ export const ProductTableRow = memo(function ProductTableRow({
     {
       header: "Stock",
       render: (p: IProduct) => {
-        // Lógica defensiva para stock: busca en todas las variantes posibles
-        // El operador ?? 0 asegura que si es null/undefined sea 0
+        // Mantenemos la lógica defensiva que ya tenías para obtener el número
         const stock = p.stockDisponible ?? p.stock_disponible ?? p.stock ?? 0;
 
+        // 2. REEMPLAZAMOS EL RENDERIZADO ANTERIOR POR TU COMPONENTE
         return (
           <div className="flex items-center">
-            <span className={`text-sm font-bold ${stock > 0 ? 'text-gray-900' : 'text-red-600'}`}>
-              {stock} unidades
-            </span>
+             {/* Le pasamos el número limpio a tu componente */}
+             <StockStatus stock={stock} />
           </div>
         );
       }

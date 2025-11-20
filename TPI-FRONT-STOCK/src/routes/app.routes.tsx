@@ -4,6 +4,7 @@ import Home from "../pages/home";
 import ProductList from "../pages/product";
 import ClientsPage from "../pages/clients";
 
+
 export default function AppRouter(){
   return(
     <Routes>
@@ -16,6 +17,7 @@ export default function AppRouter(){
       
       {/* Ruta alternativa para reservas */}
       <Route path="/reservations" element={<ReservationsPage />} />
+
     </Routes>
   );
 }
