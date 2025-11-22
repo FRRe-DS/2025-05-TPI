@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react';
+import { Suspense } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Canvas } from '@react-three/fiber';
 import { Environment, ContactShadows } from '@react-three/drei';
@@ -97,7 +97,7 @@ const Home = () => {
               </button>
               
               <button 
-                onClick={() => navigate('/productos')}
+                onClick={() => navigate('/admin/productos')}
                 className="px-8 py-4 bg-indigo-600/20 text-indigo-300 border border-indigo-500/50 rounded-lg font-bold hover:bg-indigo-600/30 transition-all flex items-center gap-2 backdrop-blur-sm"
               >
                 <Database className="w-5 h-5" />
