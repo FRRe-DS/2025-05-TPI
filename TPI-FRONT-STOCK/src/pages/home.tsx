@@ -90,7 +90,8 @@ const Home = () => {
           <pointLight position={[-10, -10, -10]} />
           <Suspense fallback={null}>
             <StockNode3D />
-            <Environment preset="city" />
+            {/* CAMBIO: Reemplazamos preset="city" por una URL directa para evitar el error 429 de GitHub */}
+            <Environment files="https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/1k/potsdamer_platz_1k.hdr" />
           </Suspense>
           <ContactShadows resolution={512} scale={10} blur={2} opacity={0.5} far={10} color="#000000" />
         </Canvas>
