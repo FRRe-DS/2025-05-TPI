@@ -5,9 +5,9 @@ export default function SidePanelDesktop() {
   const location = useLocation()
 
   const navItems = [
-    { name: "Productos", icon: Box, path: "/productos" },
-    { name: "Reservas", icon: Calendar, path: "/reservas" },
-    { name: "Clientes", icon: Users, path: "/clientes" },
+    { name: "Productos", icon: Box, path: "/admin/productos" },
+    { name: "Reservas", icon: Calendar, path: "/admin/reservas" },
+    { name: "Clientes", icon: Users, path: "/admin/clientes" },
   ]
 
   return (
