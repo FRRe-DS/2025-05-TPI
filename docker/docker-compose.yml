@@ -51,7 +51,7 @@ services:
       DB_PORT: 5432
       DB_NAME: postgres
       DB_USER: postgres.vzabfnzrcynffhdjdddv
-      DB_PASSWORD: ${SUPABASE_DB_PASSWORD}  # 7[454ATMEpV5
+      DB_PASSWORD: ${SUPABASE_DB_PASSWORD}  
 
       # Keycloac config
       KEYCLOAK_TOKEN_URL: ${KEYCLOAK_TOKEN_URL}
