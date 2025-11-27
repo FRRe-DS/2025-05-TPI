@@ -51,8 +51,9 @@ services:
       DB_HOST: aws-1-us-east-2.pooler.supabase.com
       DB_PORT: 5432
       DB_NAME: postgres
-      DB_USER: postgres.vzabfnzrcynffhdjdddv
-      DB_PASSWORD: ${SUPABASE_DB_PASSWORD}  # 7[454ATMEpV5
+      DB_USER: ${SUPABASE_DB_USER}
+      DB_PASSWORD: ${SUPABASE_DB_PASSWORD}
+      DB_OPTIONS: ${SUPABASE_DB_OPTIONS}
       
       # Configuración para Keycloak:
       KEYCLOAK_ISSUER_URL: http://keycloak:8080/realms/ds-2025-realm

@@ -1,0 +1,667 @@
+INSERT INTO producto_imagenes (url, es_principal, producto_id)
+VALUES 
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id1_laptop_pro_x_1.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQxX2xhcHRvcF9wcm9feF8xLndlYnAiLCJpYXQiOjE3NjQyMDQ4MTAsImV4cCI6MTc5NTc0MDgxMH0.U6yJg7On-T_qcfvowTfx4_PyOCl0lahGEMunrOiU-vc', 
+    FALSE,
+    1
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id1_laptop_pro_x_2.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQxX2xhcHRvcF9wcm9feF8yLndlYnAiLCJpYXQiOjE3NjQyMDQ4MjEsImV4cCI6MTc5NTc0MDgyMX0.ktsCBhiroaKI6e1vKwsTpTBKBaa6tdzWJ_yENJ4WTe8', 
+    FALSE,
+    1
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id1_laptop_pro_x_3.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQxX2xhcHRvcF9wcm9feF8zLndlYnAiLCJpYXQiOjE3NjQyMDQ4MzcsImV4cCI6MTc5NTc0MDgzN30.lWrRCG9fs0RtD0UjDmsPeEmZII9a3irh4rLav6gTeaE', 
+    FALSE,
+    1
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id2_mouse_silent_1.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQyX21vdXNlX3NpbGVudF8xLndlYnAiLCJpYXQiOjE3NjQyMDQ4NjksImV4cCI6MTc5NTc0MDg2OX0.3Y9ZgQVtSFjM6eeKY5YI_2WJwyy6hogxWN2XZRLf_iM', 
+    FALSE,
+    2
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id2_mouse_silent_2.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQyX21vdXNlX3NpbGVudF8yLndlYnAiLCJpYXQiOjE3NjQyMDQ4NzUsImV4cCI6MTc5NTc0MDg3NX0.6J2j2G-iDWeuuKmyxNAgnIieogVSQoTwukcmZJTYHZk', 
+    FALSE,
+    2
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id2_mouse_silent_3.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQyX21vdXNlX3NpbGVudF8zLndlYnAiLCJpYXQiOjE3NjQyMDQ4ODcsImV4cCI6MTc5NTc0MDg4N30._0AhMurUdCPmcPvYL-eK_CnaX1k2h-8Q61Z4wUNndnM', 
+    FALSE,
+    2
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id2_mouse_silent_4.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQyX21vdXNlX3NpbGVudF80LndlYnAiLCJpYXQiOjE3NjQyMDQ4OTksImV4cCI6MTc5NTc0MDg5OX0.o5OHVVtuAkwVajYKtlF3tk_MIRCOLR3wWq3dXd2WZME', 
+    FALSE,
+    2
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id3_monitor_32_1.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQzX21vbml0b3JfMzJfMS53ZWJwIiwiaWF0IjoxNzY0MjA0OTc2LCJleHAiOjE3OTU3NDA5NzZ9.KyzX5ScvoaKGIcxqcJ-gEc16SDQwDxV_bD0XCE8Jz1o', 
+    FALSE,
+    3
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id3_monitor_32_2.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQzX21vbml0b3JfMzJfMi53ZWJwIiwiaWF0IjoxNzY0MjA0OTgzLCJleHAiOjE3OTU3NDA5ODN9.Ul--WsceFoP0tnJ0eTDRxfglhPGQ9otvmlDX_X1yr5Q', 
+    FALSE,
+    3
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id3_monitor_32_3.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQzX21vbml0b3JfMzJfMy53ZWJwIiwiaWF0IjoxNzY0MjA0OTg4LCJleHAiOjE3OTU3NDA5ODh9.wsBuW9Eu_eJ0-ShOc4uIMQJvHCyaHglJAvMJLKnXJRQ', 
+    FALSE,
+    3
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id3_monitor_32_4.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQzX21vbml0b3JfMzJfNC53ZWJwIiwiaWF0IjoxNzY0MjA0OTk1LCJleHAiOjE3OTU3NDA5OTV9.RWA9rS7sPnJudgfLJjO9RT0lpRcs5oGPPz5JqGrgf4U', 
+    FALSE,
+    3
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id3_monitor_32_5.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQzX21vbml0b3JfMzJfNS53ZWJwIiwiaWF0IjoxNzY0MjA1MDA0LCJleHAiOjE3OTU3NDEwMDR9.J0VDcxSAKyRMA7r7tdAF1AGf2X_wxXXDITbVk2YVudQ', 
+    FALSE,
+    3
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id4_teclado_inalambrico_rgb_1.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQ0X3RlY2xhZG9faW5hbGFtYnJpY29fcmdiXzEud2VicCIsImlhdCI6MTc2NDIwNTA1MiwiZXhwIjoxNzk1NzQxMDUyfQ._GDFHOMT4sALIu5LjP8nUfa4OOuTyaD323xIN3cqHNw', 
+    FALSE,
+    4
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id4_teclado_inalambrico_rgb_2.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQ0X3RlY2xhZG9faW5hbGFtYnJpY29fcmdiXzIud2VicCIsImlhdCI6MTc2NDIwNTA2MSwiZXhwIjoxNzk1NzQxMDYxfQ.S7E_JxSryQK4TK618o90cSf-zzdaOhbnYh7r6FQ7gqQ', 
+    FALSE,
+    4
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id4_teclado_inalambrico_rgb_3.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQ0X3RlY2xhZG9faW5hbGFtYnJpY29fcmdiXzMud2VicCIsImlhdCI6MTc2NDIwNTA2NSwiZXhwIjoxNzk1NzQxMDY1fQ.W_XW1wrECNHv2-LYGQddscJoVDZG07K6c-DkHhp-TmY', 
+    FALSE,
+    4
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id4_teclado_inalambrico_rgb_4.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQ0X3RlY2xhZG9faW5hbGFtYnJpY29fcmdiXzQud2VicCIsImlhdCI6MTc2NDIwNTA3NiwiZXhwIjoxNzk1NzQxMDc2fQ.7o5miDMLlLLS75H7pOfGrFwYvx1f3sDTWgMW_77Sg2E', 
+    FALSE,
+    4
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id4_teclado_inalambrico_rgb_5.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQ0X3RlY2xhZG9faW5hbGFtYnJpY29fcmdiXzUud2VicCIsImlhdCI6MTc2NDIwNTA5NCwiZXhwIjoxNzk1NzQxMDk0fQ.r8xHiNjP5BxmKVfaIYoyFAAyRvmMBaUqoRsjx7B5Wn8', 
+    FALSE,
+    4
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id4_teclado_inalambrico_rgb_6.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQ0X3RlY2xhZG9faW5hbGFtYnJpY29fcmdiXzYud2VicCIsImiaWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQ0X3RlY2xhZG9faW5hbGFtYnJpY29fcmdiXzYud2VicCIsImlhdCI6MTc2NDIwNTEwMywiZXhwIjoxNzk1NzQxMTAzfQ.fclGcqfN6MYTtT_vriLBvRm8kfF0kUaLwn-G0Kjo_4Q', 
+    FALSE,
+    4
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id4_teclado_inalambrico_rgb_7.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQ0X3RlY2xhZG9faW5hbGFtYnJpY29fcmdiXzcud2VicCIsImlhdCI6MTc2NDIwNTExMSwiZXhwIjoxNzk1NzQxMTExfQ.Fq4_REMOsd1q78IZQbMMsfe3RsOuSyE3zccFrCiSdCA', 
+    FALSE,
+    4
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id5_cafetera_espresso_1.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQ1X2NhZmV0ZXJhX2VzcHJlc3NvXzEud2VicCIsImlhdCI6MTc2NDIwNTEyNiwiZXhwIjoxNzk1NzQxMTI2fQ.4K_vnNClPGInIYz-QZsjqF-vm5vjo1LBMEaKl_564ko', 
+    FALSE,
+    5
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id5_cafetera_espresso_2.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQ1X2NhZmV0ZXJhX2VzcHJlc3NvXzIud2VicCIsImlhdCI6MTc2NDIwNTEzMiwiZXhwIjoxNzk1NzQxMTMyfQ.L3Pzr1mm-0jC2mlEVjXDYNDq_oaqfX7eRq0hVKub4TA', 
+    FALSE,
+    5
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id5_cafetera_espresso_3.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQ1X2NhZmV0ZXJhX2VzcHJlc3NvXzMud2VicCIsImlhdCI6MTc2NDIwNTEzOCwiZXhwIjoxNzk1NzQxMTM4fQ.mrpAEfA1khol8mY3iq-Xs_4j3fGp7WFPa_5_euih6Ak', 
+    FALSE,
+    5
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id5_cafetera_espresso_4.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQ1X2NhZmV0ZXJhX2VzcHJlc3NvXzQud2VicCIsImlhdCI6MTc2NDIwNTE0NiwiZXhwIjoxNzk1NzQxMTQ2fQ.iSJJBTgtggYXKjCLRjk6FRhxJFBWdIDRPTElME-JDbY', 
+    FALSE,
+    5
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id6_silla_ergonomica_1.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQ2X3NpbGxhX2VyZ29ub21pY2FfMS53ZWJwIiwiaWF0IjoxNzY0MjA1MTg0LCJleHAiOjE3OTU3NDExODR9.1oiUAPN9RpxCtW3XwkB-Q4mZU2rKCIzI1uNEvJiUbBo', 
+    FALSE,
+    6
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id6_silla_ergonomica_2.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQ2X3NpbGxhX2VyZ29ub21pY2FfMi53ZWJwIiwiaWF0IjoxNzY0MjA1MTkyLCJleHAiOjE3OTU3NDExOTJ9.3b6qo4QCgoYIeZryfqw6RBqGJlEzyHdLns-Gs7tQtuA', 
+    FALSE,
+    6
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id6_silla_ergonomica_3.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQ2X3NpbGxhX2VyZ29ub21pY2FfMy53ZWJwIiwiaWF0IjoxNzY0MjA1MTk4LCJleHAiOjE3OTU3NDExOTh9.cMUufHm6GmlHeGOd-G-MGhVYD8SCPye1Js-Ayn6EorA', 
+    FALSE,
+    6
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id6_silla_ergonomica_4.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQ2X3NpbGxhX2VyZ29ub21pY2FfNC53ZWJwIiwiaWF0IjoxNzY0MjA1MjA0LCJleHAiOjE3OTU3NDEyMDR9.-1bRli2atqXIwbHklSG0gbjrM1k5Y_hzKY1_daO1-Ok', 
+    FALSE,
+    6
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id6_silla_ergonomica_5.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQ2X3NpbGxhX2VyZ29ub21pY2FfNS53ZWJwIiwiaWF0IjoxNzY0MjA1MjEwLCJleHAiOjE3OTU3NDEyMTB9.dihuikOmdYNcMFX8WCoLivPvZMMIHV5V5Sokx2ejx3w', 
+    FALSE,
+    6
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id7_taladro_percutor_1.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQ3X3RhbGFkcm9fcGVyY3V0b3JfMS53ZWJwIiwiaWF0IjoxNzY0MjA1MjMwLCJleHAiOjE3OTU3NDEyMzB9.mdG46PdLZABvmlYKdna-VudmdPdYSUhNIYEfaWo2u8w', 
+    FALSE,
+    7
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id7_taladro_percutor_2.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQ3X3RhbGFkcm9fcGVyY3V0b3JfMi53ZWJwIiwiaWF0IjoxNzY0MjA1MjM3LCJleHAiOjE3OTU3NDEyMzd9.6c5_eUVWXF3Khtly1NH4s-uQTXfH1FpEv0XuMin8vF4', 
+    FALSE,
+    7
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id7_taladro_percutor_3.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQ3X3RhbGFkcm9fcGVyY3V0b3JfMy53ZWJwIiwiaWF0IjoxNzY0MjA1MjQ1LCJleHAiOjE3OTU3NDEyNDV9.KtkdyvW4MjcDrlIn7GZTuw5uvf0VtQSyFGQHFcO5Itw', 
+    FALSE,
+    7
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id7_taladro_percutor_4.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQ3X3RhbGFkcm9fcGVyY3V0b3JfNC53ZWJwIiwiaWF0IjoxNzY0MjA1MjUxLCJleHAiOjE3OTU3NDEyNTF9.Fn81DG1c9IfYg2SaFYR8pN5ZjHBFTRUvhYQ4BWh05DY', 
+    FALSE,
+    7
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id8_destornillador_precision_1.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQ4X2Rlc3Rvcm5pbGxhZG9yX3ByZWNpc2lvbl8xLndlYnAiLCJpYXQiOjE3NjQyMDUyNjUsImV4cCI6MTc5NTc0MTI2NX0.J2c1CTTF106Ul5O_wIn_DOpoZV9fUzNcbecZAfM-bQU', 
+    FALSE,
+    8
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id8_destornillador_precision_2.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQ4X2Rlc3Rvcm5pbGxhZG9yX3ByZWNpc2lvbl8yLndlYnAiLCJpYXQiOjE3NjQyMDUyNzAsImV4cCI6MTc5NTc0MTI3MH0.reH_1zF8mfEOpwQq74nBQNoKP2Bn-DPDcDLQa04ib2s', 
+    FALSE,
+    8
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id8_destornillador_precision_3.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQ4X2Rlc3Rvcm5pbGxhZG9yX3ByZWNpc2lvbl8zLndlYnAiLCJpYXQiOjE3NjQyMDUyNzYsImV4cCI6MTc5NTc0MTI3Nn0.DTuLKhBlDbzOMSCwfkL9LpCkX2x9pPTtMfxxCajbbQA', 
+    FALSE,
+    8
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id8_destornillador_precision_4.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQ4X2Rlc3Rvcm5pbGxhZG9yX3ByZWNpc2lvbl80LndlYnAiLCJpYXQiOjE3NjQyMDUyODMsImV4cCI6MTc5NTc0MTI4M30.zphCIrIFwrugSAxXgAK7DRaGDLSD56RtDmWFBfowNC0', 
+    FALSE,
+    8
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id8_destornillador_precision_5.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQ4X2Rlc3Rvcm5pbGxhZG9yX3ByZWNpc2lvbl81LndlYnAiLCJpYXQiOjE3NjQyMDUyOTAsImV4cCI6MTc5NTc0MTI5MH0.BgjQwWmIGDR3jz5oUZIwfq_9vctvS0SGnQw4JtUazZc', 
+    FALSE,
+    8
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id8_destornillador_precision_6.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQ4X2Rlc3Rvcm5pbGxhZG9yX3ByZWNpc2lvbl82LndlYnAiLCJpYXQiOjE3NjQyMDUyOTksImV4cCI6MTc5NTc0MTI5OX0.agnBc8j4cDz4L00KqWqVosHle7hAddzgrmUhv-H4uhc', 
+    FALSE,
+    8
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id8_destornillador_precision_7.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQ4X2Rlc3Rvcm5pbGxhZG9yX3ByZWNpc2lvbl83LndlYnAiLCJpYXQiOjE3NjQyMDUzMTUsImV4cCI6MTc5NTc0MTMxNX0.XPY3xSE0y3rJyj6UNdujVi8Xplfda0sgNPEGFB_N6uI', 
+    FALSE,
+    8
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id9_aspiradora_robot_1.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQ5X2FzcGlyYWRvcmFfcm9ib3RfMS53ZWJwIiwiaWF0IjoxNzY0MjA1MzI1LCJleHAiOjE3OTU3NDEzMjV9.HXwUcX4tA2hmiZV5s44CQLFJqZQoWHK-XTynFmsIwrI', 
+    FALSE,
+    9
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id9_aspiradora_robot_2.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQ5X2FzcGlyYWRvcmFfcm9ib3RfMi53ZWJwIiwiaWF0IjoxNzY0MjA1MzM2LCJleHAiOjE3OTU3NDEzMzZ9.0_xeW5kd45b5b_Mtr7FqZZ6r4Fu-PtOLMVUSlvqmRII', 
+    FALSE,
+    9
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id9_aspiradora_robot_3.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQ5X2FzcGlyYWRvcmFfcm9ib3RfMy53ZWJwIiwiaWF0IjoxNzY0MjA1MzU1LCJleHAiOjE3OTU3NDEzNTV9.NVX2Q8LRqVvKRIbKOU9Sj_E4w9N4hWLogJpBeiY6NqM', 
+    FALSE,
+    9
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id9_aspiradora_robot_4.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQ5X2FzcGlyYWRvcmFfcm9ib3RfNC53ZWJwIiwiaWF0IjoxNzY0MjA1MzY3LCJleHAiOjE3OTU3NDEzNjd9.F_rQZfy3aFdeVCvjZ0-SWUq_g6XJ3cJXj4haRRzl2mI', 
+    FALSE,
+    9
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id9_aspiradora_robot_5.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQ5X2FzcGlyYWRvcmFfcm9ib3RfNS53ZWJwIiwiaWF0IjoxNzY0MjA1Mzc1LCJleHAiOjE3OTU3NDEzNzV9.72M4jFMFsV8G_g_xiLMO7f0VN_pDFVEvVcyuoUrLqPE', 
+    FALSE,
+    9
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id9_aspiradora_robot_6.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQ5X2FzcGlyYWRvcmFfcm9ib3RfNi53ZWJwIiwiaWF0IjoxNzY0MjA1MzgwLCJleHAiOjE3OTU3NDEzODB9.LusISPy2R5Xmtnn_JPRmGyrso1S-u48htZH9dSsQqPM', 
+    FALSE,
+    9
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id10_tablet_11_1.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQxMF90YWJsZXRfMTFfMS53ZWJwIiwiaWF0IjoxNzY0MjA1ODQxLCJleHAiOjE3OTU3NDE4NDF9.Lp9dX9JenDFWoTRltsFU66iww9_x189e6HdQSxT8f5w', 
+    FALSE,
+    10
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id10_tablet_11_2.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQxMF90YWJsZXRfMTFfMi53ZWJwIiwiaWF0IjoxNzY0MjA1ODUzLCJleHAiOjE3OTU3NDE4NTN9.CVmRJ9PtBQWR2-sMZ2o5_FzIzG9UBzYWRyoWv2qycWg', 
+    FALSE,
+    10
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id10_tablet_11_3.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQxMF90YWJsZXRfMTFfMy53ZWJwIiwiaWF0IjoxNzY0MjA1ODY1LCJleHAiOjE3OTU3NDE4NjV9.R6JVdSYfL0Pq3eFYvMxH1_RvKY2tkWAuTIm5OXd-VhI', 
+    FALSE,
+    10
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id10_tablet_11_4.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQxMF90YWJsZXRfMTFfNC53ZWJwIiwiaWF0IjoxNzY0MjA1ODcwLCJleHAiOjE3OTU3NDE4NzB9.tq4tAy79v5MRSPBzJlMlyCl5UwyaogsOrwTrbFPYclM', 
+    FALSE,
+    10
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id11_disco_externo_1.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQxMV9kaXNjb19leHRlcm5vXzEud2VicCIsImlhdCI6MTc2NDIwNTkwNCwiZXhwIjoxNzk1NzQxOTA0fQ.TGTs0GG-OyVDFj6jK8Zr8_HAhXKcYcxIFDFGR1w2Nj4', 
+    FALSE,
+    11
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id11_disco_externo_2.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQxMV9kaXNjb19leHRlcm5vXzIud2VicCIsImlhdCI6MTc2NDIwNTkzOCwiZXhwIjoxNzk1NzQxOTM4fQ.pAv9ULoHlPZcr7x7cV2vRL0ucfM0mhQWia4cWcvo0_U', 
+    FALSE,
+    11
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id11_disco_externo_3.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQxMV9kaXNjb19leHRlcm5vXzMud2VicCIsImlhdCI6MTc2NDIwNTk0NCwiZXhwIjoxNzk1NzQxOTQ0fQ.WXSuCONpg2yKjgGsDI7dj-rx1ohcV30weJaKAQcs8g4', 
+    FALSE,
+    11
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id11_disco_externo_4.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQxMV9kaXNjb19leHRlcm5vXzQud2VicCIsImlhdCI6MTc2NDIwNTk0OSwiZXhwIjoxNzk1NzQxOTQ5fQ.fbQBNeB2tfvc4nz8xjE1py6eyxGb8h387gk6EF6M514', 
+    FALSE,
+    11
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id12_licuadora_1.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQxMl9saWN1YWRvcmFfMS53ZWJwIiwiaWF0IjoxNzY0MjA1OTk5LCJleHAiOjE3OTU3NDE5OTl9.5dSmQlgl0UypagPY74cKdoI9K3Zoc-zHWZwIPD58rn0', 
+    FALSE,
+    12
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id12_licuadora_2.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQxMl9saWN1YWRvcmFfMi53ZWJwIiwiaWF0IjoxNzY0MjA2MDExLCJleHAiOjE3OTU3NDIwMTF9.uFqiHPRRl18uAB2vuciOuQ3N23Mws3h9OUHFZHnKIuM', 
+    FALSE,
+    12
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id12_licuadora_3.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQxMl9saWN1YWRvcmFfMy53ZWJwIiwiaWF0IjoxNzY0MjA2MDE4LCJleHAiOjE3OTU3NDIwMTh9.p819DVOOptLW81nlWpbE4Qxx8c6feICiDYlj-62GAbc', 
+    FALSE,
+    12
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id13_termo_sensor_1.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQxM190ZXJtb19zZW5zb3JfMS53ZWJwIiwiaWF0IjoxNzY0MjA2MDMyLCJleHAiOjE3OTU3NDIwMzJ9.Pzi5e85UuXiAcdyG6htSkMDv-YYJ3eQc5CEDgqPaWsE', 
+    FALSE,
+    13
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id13_termo_sensor_2.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQxM190ZXJtb19zZW5zb3JfMi53ZWJwIiwiaWF0IjoxNzY0MjA2MDQyLCJleHAiOjE3OTU3NDIwNDJ9.juNZ5-L-70Yy16OfSN3yVYzjN3qVYJWi6yGtCqKcf9E', 
+    FALSE,
+    13
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id13_termo_sensor_3.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQxM190ZXJtb19zZW5zb3JfMy53ZWJwIiwiaWF0IjoxNzY0MjA2MDQ3LCJleHAiOjE3OTU3NDIwNDd9.oRlbsP5U6SbWBDRP404GiBBWCtv3xrw1YUUJ8IFt-UU', 
+    FALSE,
+    13
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id13_termo_sensor_4.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQxM190ZXJtb19zZW5zb3JfNC53ZWJwIiwiaWF0IjoxNzY0MjA2MDUyLCJleHAiOjE3OTU3NDIwNTJ9.0DLyv9-vEvtCWOP6yEUI92wgy3qYYM6uDdrGtGXHJyM', 
+    FALSE,
+    13
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id14_sierra_circular_1.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQxNF9zaWVycmFfY2lyY3VsYXJfMS53ZWJwIiwiaWF0IjoxNzY0MjA2MDYxLCJleHAiOjE3OTU3NDIwNjF9.LEkUEnCh2p-SSmcEswNZWxMy-cjfuZCvizR0z7K3sd4', 
+    FALSE,
+    14
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id14_sierra_circular_2.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQxNF9zaWVycmFfY2lyY3VsYXJfMi53ZWJwIiwiaWF0IjoxNzY0MjA2MDY3LCJleHAiOjE3OTU3NDIwNjd9.HHV-ZETy-x-ZcAQAzU-iNve_nx6EO91frQLWrkCZURc', 
+    FALSE,
+    14
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id14_sierra_circular_3.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQxNF9zaWVycmFfY2lyY3VsYXJfMy53ZWJwIiwiaWF0IjoxNzY0MjA2MDczLCJleHAiOjE3OTU3NDIwNzN9.iCaCuqWwme6OWBu4SfBSAcSnuTXpoZ-JgQ6RVQgchFw', 
+    FALSE,
+    14
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id15_wifi_router_6_1.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQxNV93aWZpX3JvdXRlcl82XzEud2VicCIsImlhdCI6MTc2NDIwNjE5MCwiZXhwIjoxNzk1NzQyMTkwfQ.RKaZLwuRseaArNJcWfdaeuBqOOTwNkztYtfkZXpuCIc', 
+    FALSE,
+    15
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id15_wifi_router_6_2.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQxNV93aWZpX3JvdXRlcl82XzIud2VicCIsImlhdCI6MTc2NDIwNjIwMCwiZXhwIjoxNzk1NzQyMjAwfQ.ATiSp2yWMUPNNkuA9PjJ1qwK3njz7O7sACR4dhjSkNM', 
+    FALSE,
+    15
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id15_wifi_router_6_3.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQxNV93aWZpX3JvdXRlcl82XzMud2VicCIsImlhdCI6MTc2NDIwNjIwNywiZXhwIjoxNzk1NzQyMjA3fQ.OLLYr_0HJtQX-awpwFyBfH57UJvaHr5OnBpFwcl2V_0', 
+    FALSE,
+    15
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id15_wifi_router_6_4.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQxNV93aWZpX3JvdXRlcl82XzQud2VicCIsImlhdCI6MTc2NDIwNjIxMywiZXhwIjoxNzk1NzQyMjEzfQ.HrpowwfPEZoS1h8fwx2U-XgzZUuRCdK4IARRc4HOADE', 
+    FALSE,
+    15
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id16_camara_exterior_1.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQxNl9jYW1hcmFfZXh0ZXJpb3JfMS53ZWJwIiwiaWF0IjoxNzY0MjA2MjIxLCJleHAiOjE3OTU3NDIyMjF9.Ixw4SaJllL1nkbzHHVCFJ_fSb06jgGMwTR1EjrietXo', 
+    FALSE,
+    16
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id16_camara_exterior_2.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQxNl9jYW1hcmFfZXh0ZXJpb3JfMi53ZWJwIiwiaWF0IjoxNzY0MjA2MjI3LCJleHAiOjE3OTU3NDIyMjd9.Dd5LGDvggQ6__8HxepciFMrOIwo7bMFz5C6DnBDHeIw', 
+    FALSE,
+    16
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id16_camara_exterior_3.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQxNl9jYW1hcmFfZXh0ZXJpb3JfMy53ZWJwIiwiaWF0IjoxNzY0MjA2MjMzLCJleHAiOjE3OTU3NDIyMzN9.bzd6Jhs5vDKRMOU2UjcuZDCuKfJY_DJl8aMr7pzkii0', 
+    FALSE,
+    16
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id16_camara_exterior_4.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQxNl9jYW1hcmFfZXh0ZXJpb3JfNC53ZWJwIiwiaWF0IjoxNzY0MjA2MjM4LCJleHAiOjE3OTU3NDIyMzh9.cRJ8DnCIciDlwT2rOBIbaMhxbacJwrkQluZHwN2Clsw', 
+    FALSE,
+    16
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id17_set_toalla_1.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQxN19zZXRfdG9hbGxhXzEud2VicCIsImlhdCI6MTc2NDIwNjI1NiwiZXhwIjoxNzk1NzQyMjU2fQ.mJBaAbQoxgU5EgrxgUO9llbFpNizaoI6LwJ4thW5E_k', 
+    FALSE,
+    17
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id17_set_toalla_2.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQxN19zZXRfdG9hbGxhXzIud2VicCIsImlhdCI6MTc2NDIwNjI2MiwiZXhwIjoxNzk1NzQyMjYyfQ.utp4-n62R5ChTpm2AhcQVeaUsl1i1MHJFafkz9rcv8s', 
+    FALSE,
+    17
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id17_set_toalla_3.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQxN19zZXRfdG9hbGxhXzMud2VicCIsImlhdCI6MTc2NDIwNjI3MCwiZXhwIjoxNzk1NzQyMjcwfQ.N-80LAns--XVGrEFPaRHlPC-ntF5Dt-h2Y190EGCepU', 
+    FALSE,
+    17
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id18_olla_presion_1.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQxOF9vbGxhX3ByZXNpb25fMS53ZWJwIiwiaWF0IjoxNzY0MjA2MzA0LCJleHAiOjE3OTU3NDIzMDR9.t3vWOVYWeyO02Pis9VnUny7j4i5Eln_SzKMz0UIfS0c', 
+    FALSE,
+    18
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id18_olla_presion_2.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQxOF9vbGxhX3ByZXNpb25fMi53ZWJwIiwiaWF0IjoxNzY0MjA2MzEzLCJleHAiOjE3OTU3NDIzMTN9.6Bs9U4x-js4f_8hXp57glmsl4nmxIIRpLOLsrNS9T0A', 
+    FALSE,
+    18
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id18_olla_presion_3.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQxOF9vbGxhX3ByZXNpb25fMy53ZWJwIiwiaWF0IjoxNzY0MjA2MzIwLCJleHAiOjE3OTU3NDIzMjB9.tP---pTSNTqCfes3WykHyHtkLckHheLl7aw-rjscX9s', 
+    FALSE,
+    18
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id18_olla_presion_4.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQxOF9vbGxhX3ByZXNpb25fNC53ZWJwIiwiaWF0IjoxNzY0MjA2MzI2LCJleHAiOjE3OTU3NDIzMjZ9.CIRnkhqTwjtiGVW5iu6zza8qDrng_RAm4viSXjSwr5U', 
+    FALSE,
+    18
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id19_candado_inteligente_1.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQxOV9jYW5kYWRvX2ludGVsaWdlbnRlXzEud2VicCIsImlhdCI6MTc2NDIwNjMzOSwiZXhwIjoxNzk1NzQyMzM5fQ.b4_8e1_iD-88CfIv4PC9loROk4h2jrr8lvO1cOUBuXA', 
+    FALSE,
+    19
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id19_candado_inteligente_2.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQxOV9jYW5kYWRvX2ludGVsaWdlbnRlXzIud2VicCIsImlhdCI6MTc2NDIwNjM0NSwiZXhwIjoxNzk1NzQyMzQ1fQ.zHQLzaEFrTvQ-_jPio9Ss3_FVyj0l4vUOjXZ16Hvvro', 
+    FALSE,
+    19
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id19_candado_inteligente_3.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQxOV9jYW5kYWRvX2ludGVsaWdlbnRlXzMud2VicCIsImlhdCI6MTc2NDIwNjM2MSwiZXhwIjoxNzk1NzQyMzYxfQ.twYQd4Vt1kV7Pd9fn508E1fkNwUa38Se6pnuH_z2Aw0', 
+    FALSE,
+    19
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id19_candado_inteligente_4.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQxOV9jYW5kYWRvX2ludGVsaWdlbnRlXzQud2VicCIsImlhdCI6MTc2NDIwNjM3MywiZXhwIjoxNzk1NzQyMzczfQ.zlSKM8qDLOvnYXCsRR4gAVO-8emiVAy96rjEwxx0OoE', 
+    FALSE,
+    19
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id20_mesa_auxiliar_madera_1.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQyMF9tZXNhX2F1eGlsaWFyX21hZGVyYV8xLndlYnAiLCJpYXQiOjE3NjQyMDY4NDgsImV4cCI6MTc5NTc0Mjg0OH0.0gtnpWleyncNWG_hTAZmzuI5JKel6-mp2aqikqJAweI', 
+    FALSE,
+    20
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id20_mesa_auxiliar_madera_2.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQyMF9tZXNhX2F1eGlsaWFyX21hZGVyYV8yLndlYnAiLCJpYXQiOjE3NjQyMDY4NjMsImV4cCI6MTc5NTc0Mjg2M30.ORs31MISD1jJLpexlrmCC5pc_yH00O1XzKIllasOBGM', 
+    FALSE,
+    20
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id20_mesa_auxiliar_madera_3.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQyMF9tZXNhX2F1eGlsaWFyX21hZGVyYV8zLndlYnAiLCJpYXQiOjE3NjQyMDY5MDgsImV4cCI6MTc5NTc0MjkwOH0.nxBTEJPmNDL2M_3j-BaaQkaW96dL9u5_MkAcIXC9mr8', 
+    FALSE,
+    20
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id36_auricular_bluetooth_1.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQzNl9hdXJpY3VsYXJfYmx1ZXRvb3RoXzEud2VicCIsImlhdCI6MTc2NDIwNjkyNSwiZXhwIjoxNzk1NzQyOTI1fQ.2OP1dYvDLLMKnA-QK-YYBTfTQYOZNGyDqDLGe8hJErY', 
+    FALSE,
+    36
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id36_auricular_bluetooth_2.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQzNl9hdXJpY3VsYXJfYmx1ZXRvb3RoXzIud2VicCIsImlhdCI6MTc2NDIwNjkzMywiZXhwIjoxNzk1NzQyOTMzfQ.sO7lPgT4_pXtrdQQtmrXIuTsYDNoGVffGAm6VPsHf1U', 
+    FALSE,
+    36
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id36_auricular_bluetooth_3.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQzNl9hdXJpY3VsYXJfYmx1ZXRvb3RoXzMud2VicCIsImlhdCI6MTc2NDIwNjkzOSwiZXhwIjoxNzk1NzQyOTM5fQ.mL00wsekYKw1nXLbYj4vl3BpPRuMwIYOIRqLqFCCeRk', 
+    FALSE,
+    36
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id36_auricular_bluetooth_4.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQzNl9hdXJpY3VsYXJfYmx1ZXRvb3RoXzQud2VicCIsImlhdCI6MTc2NDIwNjk0NiwiZXhwIjoxNzk1NzQyOTQ2fQ.F-2bB18DLf-kW5QgkKMwVFwniubU8l0GyMD5bOYWnTw', 
+    FALSE,
+    36
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id37_smartwatch_fitness_1.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQzN19zbWFydHdhdGNoX2ZpdG5lc3NfMS53ZWJwIiwiaWF0IjoxNzY0MjA2OTU3LCJleHAiOjE3OTU3NDI5NTd9.KMnwP5fcl7fcnNVjWHibYQDfWwsdLGjh3-Lfhjoh7TQ', 
+    FALSE,
+    37
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id37_smartwatch_fitness_2.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQzN19zbWFydHdhdGNoX2ZpdG5lc3NfMi53ZWJwIiwiaWF0IjoxNzY0MjA2OTYzLCJleHAiOjE3OTU3NDI5NjN9.j8fy3v5JtGiNKx_pENopCqWMi3pyzjLGen6NKaUvTaI', 
+    FALSE,
+    37
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id37_smartwatch_fitness_3.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQzN19zbWFydHdhdGNoX2ZpdG5lc3NfMy53ZWJwIiwiaWF0IjoxNzY0MjA2OTY5LCJleHAiOjE3OTU3NDI5Njl9.79fs29imDTH2O9PEj9HCb2uuxuY9dBssZeI23apLZVs', 
+    FALSE,
+    37
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id38_mochila_antirrobo_1.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQzOF9tb2NoaWxhX2FudGlycm9ib18xLndlYnAiLCJpYXQiOjE3NjQyMDY5NzgsImV4cCI6MTc5NTc0Mjk3OH0.Ea3DsvmDSkfSBamUK_2MUOnvwS3vJLBPbj656ZD4Ppk', 
+    FALSE,
+    38
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id38_mochila_antirrobo_2.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQzOF9tb2NoaWxhX2FudGlycm9ib18yLndlYnAiLCJpYXQiOjE3NjQyMDY5OTQsImV4cCI6MTc5NTc0Mjk5NH0.v0ShTvTlM5ipfQa-myra88mvyOzsTd_Z47Gg9ZTia2I', 
+    FALSE,
+    38
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id38_mochila_antirrobo_3.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQzOF9tb2NoaWxhX2FudGlycm9ib18zLndlYnAiLCJpYXQiOjE3NjQyMDcwMDAsImV4cCI6MTc5NTc0MzAwMH0.lnCLhF8sfUewnvRZOL--X2zgNiCgSzb7XU5wr67jivA', 
+    FALSE,
+    38
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id38_mochila_antirrobo_4.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQzOF9tb2NoaWxhX2FudGlycm9ib180LndlYnAiLCJpYXQiOjE3NjQyMDcwMDksImV4cCI6MTc5NTc0MzAwOX0.sc1brWY-mmcahE14ytoWD-wehUgduUXmgPtpG5Gu2Tk', 
+    FALSE,
+    38
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id39_camara_profesional_1.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQzOV9jYW1hcmFfcHJvZmVzaW9uYWxfMS53ZWJwIiwiaWF0IjoxNzY0MjA3MDE3LCJleHAiOjE3OTU3NDMwMTd9.sB7sx3hhgwhYRVvAIMEUc5JdN0fFsYgCeWiSqbGSy8w', 
+    FALSE,
+    39
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id39_camara_profesional_2.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQzOV9jYW1hcmFfcHJvZmVzaW9uYWxfMi53ZWJwIiwiaWF0IjoxNzY0MjA3MDI0LCJleHAiOjE3OTU3NDMwMjR9.4Avnz09dGjBr5-axMAdSpIYuWpHaSEO2TFU63a7KyTs', 
+    FALSE,
+    39
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id39_camara_profesional_3.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQzOV9jYW1hcmFfcHJvZmVzaW9uYWxfMy53ZWJwIiwiaWF0IjoxNzY0MjA3MDM1LCJleHAiOjE3OTU3NDMwMzV9.ozLID3iYQHph0-vSMQYVm9h60M5TxHAMPfJ_vUHWQds', 
+    FALSE,
+    39
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id39_camara_profesional_4.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQzOV9jYW1hcmFfcHJvZmVzaW9uYWxfNC53ZWJwIiwiaWF0IjoxNzY0MjA3MDQzLCJleHAiOjE3OTU3NDMwNDN9.EZExGllsIb59Um0jmj4JEi6RhZTx03Hw_rWQ_-YnyQg', 
+    FALSE,
+    39
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id40_parlante_bluetooth_1.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQ0MF9wYXJsYW50ZV9ibHVldG9vdGhfMS53ZWJwIiwiaWF0IjoxNzY0MjA3MzIyLCJleHAiOjE3OTU3NDMzMjJ9.muKyqXrVFic7Dl2W_qtdQUjInZ4ykgkXY8wVMXpCNGo', 
+    FALSE,
+    40
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id40_parlante_bluetooth_2.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQ0MF9wYXJsYW50ZV9ibHVldG9vdGhfMi53ZWJwIiwiaWF0IjoxNzY0MjA3MzI2LCJleHAiOjE3OTU3NDMzMjZ9.KF_RZ3DjzU866eHlbewsXoQ3GAJZeLeZteazKKHWZZU', 
+    FALSE,
+    40
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id40_parlante_bluetooth_3.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQ0MF9wYXJsYW50ZV9ibHVldG9vdGhfMy53ZWJwIiwiaWF0IjoxNzY0MjA3MzMzLCJleHAiOjE3OTU3NDMzMzN9.-wkzzSQ4fUwTRdkRQc14gvNU2nxuVa5xycoNr-sX1YI', 
+    FALSE,
+    40
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id40_parlante_bluetooth_4.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQ0MF9wYXJsYW50ZV9ibHVldG9vdGhfNC53ZWJwIiwiaWF0IjoxNzY0MjA3MzQzLCJleHAiOjE3OTU3NDMzNDN9.g9OQBJo4IfTCRBbS_2ZoWvJ1UYsPpB2JvKRjKhXYAeA', 
+    FALSE,
+    40
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id41_set_lego_1.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQ0MV9zZXRfbGVnb18xLndlYnAiLCJpYXQiOjE3NjQyMDczNTIsImV4cCI6MTc5NTc0MzM1Mn0.aJxafQ_fi-96hneyY0-B3xT8jh8Ld37UyvzSbPuVZig', 
+    FALSE,
+    41
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id41_set_lego_2.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQ0MV9zZXRfbGVnb18yLndlYnAiLCJpYXQiOjE3NjQyMDczNTksImV4cCI6MTc5NTc0MzM1OX0.ndMup5yPlgPQ6zHdrVOQAKzxOaIYhYxENrrF_a-XRws', 
+    FALSE,
+    41
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id41_set_lego_3.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQ0MV9zZXRfbGVnb18zLndlYnAiLCJpYXQiOjE3NjQyMDczNzEsImV4cCI6MTc5NTc0MzM3MX0.gUpFadh5X9jm8zC4xqzk60uJUHjV9GMXC8HK7WcZ2rs', 
+    FALSE,
+    41
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id42_bicicleta_mountain_bike_1.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQ0Ml9iaWNpY2xldGFfbW91bnRhaW5fYmlrZV8xLndlYnAiLCJpYXQiOjE3NjQyMDczODAsImV4cCI6MTc5NTc0MzM4MH0.kO7l2vPKv38COugl93oi3Ow_T1jG40-16gBLIChUsXo', 
+    FALSE,
+    42
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id42_bicicleta_mountain_bike_2.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQ0Ml9iaWNpY2xldGFfbW91bnRhaW5fYmlrZV8yLndlYnAiLCJpYXQiOjE3NjQyMDczODgsImV4cCI6MTc5NTc0MzM4OH0.jmXCIRX-9SH-y8Ex7kz_NnOmRWOhWDj6va6dNeWzifI', 
+    FALSE,
+    42
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id42_bicicleta_mountain_bike_3.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQ0Ml9iaWNpY2xldGFfbW91bnRhaW5fYmlrZV8zLndlYnAiLCJpYXQiOjE3NjQyMDczOTUsImV4cCI6MTc5NTc0MzM5NX0.zVYiq7t-YMJfzn0_XAL13XwSXPwKtwgKDaUfXaBvEXU', 
+    FALSE,
+    42
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id43_maquillaje_profesional_1.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQ0M19tYXF1aWxsYWplX3Byb2Zlc2lvbmFsXzEud2VicCIsImlhdCI6MTc2NDIwNzQxNSwiZXhwIjoxNzk1NzQzNDE1fQ.JpLVPltPD19Rg6busAcgponykwgGwg3fzMtsvLc6rSE', 
+    FALSE,
+    43
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id43_maquillaje_profesional_2.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQ0M19tYXF1aWxsYWplX3Byb2Zlc2lvbmFsXzIud2VicCIsImlhdCI6MTc2NDIwNzQyMSwiZXhwIjoxNzk1NzQzNDIxfQ.cD4ZQtAENNJarOTZWUFq0P4GufudUvucgcaLZhrgFuY', 
+    FALSE,
+    43
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id43_maquillaje_profesional_3.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQ0M19tYXF1aWxsYWplX3Byb2Zlc2lvbmFsXzMud2VicCIsImlhdCI6MTc2NDIwNzQzMywiZXhwIjoxNzk1NzQzNDMzfQ.lcTH_zWvNiYRnUqTVarpn8s9AmAmA9bZ0ZO7D0pjXEY', 
+    FALSE,
+    43
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id44_comedero_mascotas_1.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQ0NF9jb21lZGVyb19tYXNjb3Rhc18xLndlYnAiLCJpYXQiOjE3NjQyMDc0NjIsImV4cCI6MTc5NTc0MzQ2Mn0.H2vaQo3quxOoxwh9FpFsAh17RfsmqNFbfO1LyYVXAqo', 
+    FALSE,
+    44
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id44_comedero_mascotas_2.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQ0NF9jb21lZGVyb19tYXNjb3Rhc18yLndlYnAiLCJpYXQiOjE3NjQyMDc0NjcsImV4cCI6MTc5NTc0MzQ2N30.bAMv8qqEILLGaRKPeJGx58_8u0JCaHlePCIAXYcJs9Y', 
+    FALSE,
+    44
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id44_comedero_mascotas_3.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQ0NF9jb21lZGVyb19tYXNjb3Rhc18zLndlYnAiLCJpYXQiOjE3NjQyMDc0NzMsImV4cCI6MTc5NTc0MzQ3M30.IBQCWUdZsqvUYMiizNnYj--1kPQStKNqPTNS31MaqzQ', 
+    FALSE,
+    44
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id45_clean_code_1.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQ0NV9jbGVhbl9jb2RlXzEud2VicCIsImlhdCI6MTc2NDIwNzQ5NCwiZXhwIjoxNzk1NzQzNDk0fQ.MIIHSdJIk7DBDDrLGRJeMgNbZk1cqU3jJVrX9_J6GpM', 
+    FALSE,
+    45
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id46_dron_camara_1.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQ0Nl9kcm9uX2NhbWFyYV8xLndlYnAiLCJpYXQiOjE3NjQyMDc1MDksImV4cCI6MTc5NTc0MzUwOX0.JoGeuCO4aP2am2XJzyDdWU_4HewF_phLNky7IGO4lDc', 
+    FALSE,
+    46
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id46_dron_camara_2.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQ0Nl9kcm9uX2NhbWFyYV8yLndlYnAiLCJpYXQiOjE3NjQyMDc1MTYsImV4cCI6MTc5NTc0MzUxNn0.lRABtzOnO7b6rSJYh2FDJG-kBx_kAUH_kFeYS-VQOGg', 
+    FALSE,
+    46
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id46_dron_camara_3.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQ0Nl9kcm9uX2NhbWFyYV8zLndlYnAiLCJpYXQiOjE3NjQyMDc1MjIsImV4cCI6MTc5NTc0MzUyMn0.eZLfZ5_K7i7Sme6AIQyMOTE2kUKaZDu0B9Zos9arWY0', 
+    FALSE,
+    46
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id47_consola_videojuegos_1.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQ0N19jb25zb2xhX3ZpZGVvanVlZ29zXzEud2VicCIsImlhdCI6MTc2NDIwNzUzMCwiZXhwIjoxNzk1NzQzNTMwfQ.PZeK_PUmhVmgiJKJqnzXhnVv3Ov9Kf6RgkMq4zzc0kg', 
+    FALSE,
+    47
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id47_consola_videojuegos_2.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQ0N19jb25zb2xhX3ZpZGVvanVlZ29zXzIud2VicCIsImlhdCI6MTc2NDIwNzUzOCwiZXhwIjoxNzk1NzQzNTM4fQ.xlObFH_tWkBy8zemfWFnc3upzEKUFMyFaHxAwQredLU', 
+    FALSE,
+    47
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id48_kit_jardineria_1.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQ0OF9raXRfamFyZGluZXJpYV8xLndlYnAiLCJpYXQiOjE3NjQyMDc1NDYsImV4cCI6MTc5NTc0MzU0Nn0.GCNnAdf4gDsI6z5_cb1WLrtdb0ViJIPBaPCMn7ZUpC4', 
+    FALSE,
+    48
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id48_kit_jardineria_2.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQ0OF9raXRfamFyZGluZXJpYV8yLndlYnAiLCJpYXQiOjE3NjQyMDc1NTIsImV4cCI6MTc5NTc0MzU1Mn0.zEWWkfZHsgQk6zA0XYmdBFjndzUayskYFxzTeZ28nIY', 
+    FALSE,
+    48
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id48_kit_jardineria_3.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQ0OF9raXRfamFyZGluZXJpYV8zLndlYnAiLCJpYXQiOjE3NjQyMDc1NTksImV4cCI6MTc5NTc0MzU1OX0.7LDJy8MrBDGdaQgLB5HAtxancyL_nvMSAB-qd7wzICA', 
+    FALSE,
+    48
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id48_kit_jardineria_4.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQ0OF9raXRfamFyZGinuXJpYV80LndlYnAiLCJpYXQiOjE3NjQyMDc1NzUsImV4cCI6MTc5NTc0MzU3NX0.9ycV-Nzw53_LaWH2viLP3wHCwtnyQ8PQtgVPMw7iCvg', 
+    FALSE,
+    48
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id49_mesa_plegable_1.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQ0OV9tZXNhX3BsZWdhYmxlXzEud2VicCIsImlhdCI6MTc2NDIwNzU2NywiZXhwIjoxNzk1NzQzNTY3fQ.fh3vNvSyLG_EfbbmVqM33bB3FA9EeCzN_wZ4aJhGSAs', 
+    FALSE,
+    49
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id49_mesa_plegable_2.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQ0OV9tZXNhX3BsZWdhYmxlXzIud2VicCIsImlhdCI6MTc2NDIwNzU5NSwiZXhwIjoxNzk1NzQzNTk1fQ.gYyiPeYQTfLZvCWrIQowRAZIji2ERSpEuA-v5SDuaac', 
+    FALSE,
+    49
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id49_mesa_plegable_3.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQ0OV9tZXNhX3BsZWdhYmxlXzMud2VicCIsImlhdCI6MTc2NDIwNzYwNSwiZXhwIjoxNzk1NzQzNjA1fQ.PEfEi2Cr1bXGSTct6Yk4rOdVkS4BqAiNma1HgkL4yOU', 
+    FALSE,
+    49
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id50_cargador_solar_1.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQ1MF9jYXJnYWRvcl9zb2xhcl8xLndlYnAiLCJpYXQiOjE3NjQyMDc2MjEsImV4cCI6MTc5NTc0MzYyMX0.oRGbn-YjyTsqegqSuHTe_RRkdFa3yLPWJEzSJ7HaVW0', 
+    FALSE,
+    50
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id50_cargador_solar_2.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQ1MF9jYXJnYWRvcl9zb2xhcl8yLndlYnAiLCJpYXQiOjE3NjQyMDc2MjgsImV4cCI6MTc5NTc0MzYyOH0.ak4Biq9Iqio2hO8BaQAeGUbtSZWVujuMPjvA1Y25dBM', 
+    FALSE,
+    50
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id50_cargador_solar_3.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQ1MF9jYXJnYWRvcl9zb2xhcl8zLndlYnAiLCJpYXQiOjE3NjQyMDc2MzUsImV4cCI6MTc5NTc0MzYzNX0.y1f40cLW9Kp4Fl4U1tOACFl-qBefKiXtWjbRnx0Puig', 
+    FALSE,
+    50
+),
+(
+    'https://vzabfnzrcynffhdjdddv.supabase.co/storage/v1/object/sign/productos/id50_cargador_solar_4.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83ZTI2MGIzMi0wM2RjLTRiMDQtYTZjNC05ZTQzMDk3M2Q4ZmEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwcm9kdWN0b3MvaWQ1MF9jYXJnYWRvcl9zb2xhcl80LndlYnAiLCJpYXQiOjE3NjQyMDc2NDMsImV4cCI6MTc5NTc0MzY0M30.YAHg_57Sg4zebkaYA1JENShdijORmg_Fc8FnGemTlTU', 
+    FALSE,
+    50
+);
