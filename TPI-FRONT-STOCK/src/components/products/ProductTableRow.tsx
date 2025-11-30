@@ -4,7 +4,7 @@ import GenericTableRow from "../common/ui/table/tablerow";
 import type { TableColumn } from "../common/ui/table/tablerow"; 
 
 // 1. IMPORTA TU COMPONENTE AQUÍ (Ajusta la ruta si es necesario)
-import StockStatus from "./stockStatus";
+import StockStatus from "./StockStatus";
 
 interface ProductTableRowProps {
   product: IProduct;

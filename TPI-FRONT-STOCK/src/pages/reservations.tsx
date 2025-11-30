@@ -1,5 +1,4 @@
 import { useState, useCallback } from "react";
-// Importamos el Provider y el Hook Consumidor
 import { ReservationFilterProvider } from "../context/reservation/reservationFilterProvider";
 import { useReservationFilter } from "../context/reservation/reservationFilterContext";
 import Pagination from "../components/common/ui/pagination";
@@ -72,7 +71,12 @@ function ReservationsContent() {
       <table className="min-w-full divide-y divide-gray-200">
        <thead className="bg-gradient-to-r from-gray-50 to-gray-100">
         <tr>
-         {/* ... Thead content ... */}
+         <th className="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">ID Reserva</th>
+         <th className="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Fecha</th>
+         <th className="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Usuario</th>
+         <th className="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Estado</th>
+         <th className="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Productos</th>
+         <th className="px-6 py-3 text-center text-xs font-bold text-gray-500 uppercase tracking-wider">Acciones</th>
         </tr>
        </thead>
        <tbody className="bg-white divide-y divide-gray-200">

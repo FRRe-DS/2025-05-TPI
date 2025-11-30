@@ -1,10 +1,44 @@
-import { useState, useMemo } from 'react';
+import { useMemo, useState, useCallback } from 'react';
 import { ProductTableRow } from "../components/products/ProductTableRow"; 
 import { useProduct } from "../hooks/products.hook"; // Tu hook real
+import { ProductSearchFilters } from "../components/products/ProductSearchFilters";
+import { useIdFilter, useSelectFilter } from "../hooks/filters";
+import { useUrlFilter } from "../hooks/filters/generics/useUrlFilter";
+import { ProductModal } from "../components/products/ProductModal";
+import type { IProduct } from "../types/product.interface";
 
 export default function ProductList() {
-    // 1. Estado para el filtro (lo hacemos en cliente ya que traemos todos los productos)
-    const [selectedCategory, setSelectedCategory] = useState<string>('all');
+    // 1. Estado para el filtro (sincronizado con URL)
+    const { 
+        selected: selectedCategory, 
+        setSelected: setSelectedCategory, 
+        reset: resetCategory 
+    } = useSelectFilter<string>("category", "all", "all");
+
+    // Hooks de filtros genéricos (sincronizados con URL)
+    const { id: filterId, setId: setFilterId, parsedId, reset: resetId } = useIdFilter("productId");
+    const [filterName, setFilterName, resetName] = useUrlFilter("productName");
+
+    // Estado para el Modal
+    const [selectedProduct, setSelectedProduct] = useState<IProduct | null>(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const handleOpenModal = useCallback((product: IProduct) => {
+        setSelectedProduct(product);
+        setIsModalOpen(true);
+    }, []);
+
+    const handleCloseModal = useCallback(() => {
+        setIsModalOpen(false);
+        setSelectedProduct(null);
+    }, []);
+
+    // Función de reset combinada
+    const resetFilters = () => {
+        resetId();
+        resetName();
+        resetCategory();
+    };
 
     // 2. Usamos tu hook real (useProduct)
     const { data: products, isLoading, isError } = useProduct();
@@ -12,13 +46,29 @@ export default function ProductList() {
     // 3. Lógica de filtrado simple en el cliente
     const filteredProducts = useMemo(() => {
         if (!products) return [];
-        if (selectedCategory === 'all') return products;
         
-        return products.filter(p => {
-            // Verificamos si el producto tiene categorías y si ALGUNA (.some) coincide con la seleccionada
-            return p.categorias?.some(cat => cat.nombre.toLowerCase() === selectedCategory);
-        });
-    }, [products, selectedCategory]);
+        let result = products;
+
+        // Filtro por ID
+        if (parsedId) {
+            result = result.filter(p => p.id === parsedId);
+        }
+
+        // Filtro por Nombre
+        if (filterName) {
+            const lowerName = filterName.toLowerCase();
+            result = result.filter(p => p.nombre.toLowerCase().includes(lowerName));
+        }
+
+        // Filtro por Categoría
+        if (selectedCategory !== 'all') {
+            result = result.filter(p => 
+                p.categorias?.some(cat => cat.nombre.toLowerCase() === selectedCategory)
+            );
+        }
+        
+        return result;
+    }, [products, selectedCategory, parsedId, filterName]);
 
     // Extraemos las categorías únicas
     const categories = useMemo(() => {
@@ -36,33 +86,30 @@ export default function ProductList() {
     }, [products]);
     
     return (
-        <div className="w-full min-h-screen bg-gray-50 p-6">
-            <div className="max-w-7xl mx-auto">
+        <div className="min-h-screen bg-gray-50 py-8">
+            <div className="container mx-auto px-4 max-w-7xl">
                 
-                {/* Encabezado y Filtros */}
-                <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8 gap-4">
-                    <div>
-                        <h1 className="text-3xl font-bold text-gray-900">
-                            Catálogo de Productos
-                        </h1>
-                        <p className="text-gray-500 mt-1">Gestiona el inventario y precios</p>
-                    </div>
-                    
-                    {/* Selector de Categoría Dinámico */}
-                    <div className="w-full md:w-auto">
-                        <select
-                            value={selectedCategory}
-                            onChange={(e) => setSelectedCategory(e.target.value)}
-                            className="w-full md:w-64 p-2 border border-gray-300 rounded-lg bg-white shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                            disabled={isLoading || !products}
-                        >
-                            <option value="all">Todas las categorías</option>
-                            {categories.map(c => (
-                                <option key={c} value={c}>{c.toUpperCase()}</option>
-                            ))}
-                        </select>
-                    </div>
+                {/* Encabezado */}
+                <div className="mb-8">
+                    <h1 className="text-4xl font-bold text-gray-800 mb-2">
+                        Catálogo de Productos
+                    </h1>
+                    <p className="text-gray-600 text-lg">
+                        Gestiona el inventario y precios
+                    </p>
                 </div>
+
+                {/* Filtros Genéricos (ID, Nombre y Categoría) */}
+                <ProductSearchFilters 
+                    filterId={filterId}
+                    setFilterId={setFilterId}
+                    filterName={filterName}
+                    setFilterName={setFilterName}
+                    selectedCategory={selectedCategory}
+                    setSelectedCategory={setSelectedCategory}
+                    categories={categories}
+                    reset={resetFilters}
+                />
 
                 {/* Estados de Carga y Error */}
                 {isLoading && (
@@ -87,7 +134,7 @@ export default function ProductList() {
                                     <th className="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Producto</th>
                                     <th className="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Stock</th>
                                     <th className="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Precio</th>
-                                    <th className="px-6 py-4 text-right text-xs font-bold text-gray-500 uppercase tracking-wider">Acciones</th>
+                                    <th className="px-6 py-3 text-center text-xs font-bold text-gray-500 uppercase tracking-wider">Acciones</th>
                                 </tr>
                             </thead>
                             <tbody className="bg-white divide-y divide-gray-200">
@@ -95,7 +142,7 @@ export default function ProductList() {
                                     <ProductTableRow
                                         key={product.id}
                                         product={product}
-                                        onViewDetails={(p) => console.log("Ver detalles ID:", p.id)}
+                                        onViewDetails={handleOpenModal}
                                     />
                                 ))}
                             </tbody>
@@ -109,6 +156,13 @@ export default function ProductList() {
                         <p className="text-gray-500 text-lg">No se encontraron productos.</p>
                     </div>
                 )}
+
+                {/* Modal de Detalles */}
+                <ProductModal
+                    product={selectedProduct}
+                    isOpen={isModalOpen}
+                    onClose={handleCloseModal}
+                />
             </div>
         </div>
     );

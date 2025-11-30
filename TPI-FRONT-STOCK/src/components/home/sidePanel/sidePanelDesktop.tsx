@@ -1,8 +1,11 @@
 import { Box, Calendar, Users } from "lucide-react"
 import { Link, useLocation } from "react-router-dom"
+// IMPORTACIÓN: Ajusta esto a la ruta real de tu archivo NotificationContext.tsx
+import { useNotification } from "../../../context/notifications/notificactions"
 
 export default function SidePanelDesktop() {
   const location = useLocation()
+  const { showNotification } = useNotification()
 
   const navItems = [
     { name: "Productos", icon: Box, path: "/productos" },
@@ -38,6 +41,44 @@ export default function SidePanelDesktop() {
             </div>
           )
         })}
+
+        {/* ======================================================================== */}
+        {/* === AREA DE PRUEBAS (NOTIFICACIONES) - BORRAR ESTE BLOQUE AL TERMINAR === */}
+        {/* ======================================================================== */}
+        <div className="mt-10 pt-4 border-t border-gray-800">
+            <p className="text-[10px] font-bold text-gray-600 uppercase mb-3 px-3 tracking-widest flex items-center gap-2">
+                🚧 DEV TOOLS
+            </p>
+            <div className="px-2 space-y-2">
+                <button 
+                    onClick={() => showNotification('Producto guardado correctamente', 'success')}
+                    className="w-full text-left px-3 py-2 rounded text-xs font-medium text-green-400 border border-green-900/30 hover:bg-green-900/20 transition-colors cursor-pointer"
+                >
+                    ✅ Test Success
+                </button>
+                <button 
+                    onClick={() => showNotification('Error de conexión con el servidor', 'error')}
+                    className="w-full text-left px-3 py-2 rounded text-xs font-medium text-red-400 border border-red-900/30 hover:bg-red-900/20 transition-colors cursor-pointer"
+                >
+                    ❌ Test Error
+                </button>
+                <button 
+                    onClick={() => showNotification('Bienvenido al Sistema v1.0', 'info')}
+                    className="w-full text-left px-3 py-2 rounded text-xs font-medium text-blue-400 border border-blue-900/30 hover:bg-blue-900/20 transition-colors cursor-pointer"
+                >
+                    ℹ️ Test Info
+                </button>
+                {/* NUEVO BOTÓN PARA WARNING (ELIMINAR) */}
+                <button 
+                    onClick={() => showNotification('Producto eliminado del sistema', 'warning')}
+                    className="w-full text-left px-3 py-2 rounded text-xs font-medium text-orange-400 border border-orange-900/30 hover:bg-orange-900/20 transition-colors cursor-pointer"
+                >
+                    ⚠️ Test Warning
+                </button>
+            </div>
+        </div>
+        {/* ======================================================================== */}
+      
       </div>
 
       {/* Footer */}
