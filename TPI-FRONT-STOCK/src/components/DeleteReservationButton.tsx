@@ -23,7 +23,7 @@ export const DeleteReservationButton = ({
   const handleCancel = () => {
     setShowConfirm(false);
   };
-
+  
   if (showConfirm) {
     return (
       <div className="flex gap-2 items-center">

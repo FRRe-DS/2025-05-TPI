@@ -4,8 +4,9 @@ import qs from 'querystring';
 
 dotenv.config();
 
-const MAX_RETRIES = 15;
-const RETRY_DELAY_MS = 5000;
+const MAX_RETRIES = 10;
+const INITIAL_RETRY_DELAY_MS = 2000;
+const MAX_DELAY_MS = 60000;
 
 let currentAccessToken: string | null = null;
 let tokenExpiryTime: number = 0; 
@@ -84,9 +85,16 @@ export const initAuthM2M = async () => {
                 throw new Error("No se pudo conectar y autenticar con Keycloak M2M. Abortando inicio.");
             }
             
-            console.warn(`⚠️ Intento fallido (${retries}/${MAX_RETRIES}). Causa: ${errorMessage}. Reintentando en ${RETRY_DELAY_MS / 1000}s...`);
+            let delay = Math.min(
+                Math.pow(2, retries) * INITIAL_RETRY_DELAY_MS,
+                MAX_DELAY_MS // Asegura que el retraso no crezca infinitamente
+            );
+            // Si queremos añadir un poco de "jitter" (aleatoriedad) para evitar avalanchas:
+            delay = delay + Math.random() * 1000; 
+
+            console.warn(`⚠️ Intento fallido (${retries}/${MAX_RETRIES}). Causa: ${errorMessage}. Reintentando en ${Math.round(delay / 1000)}s...`);
             
-            await new Promise(resolve => setTimeout(resolve, RETRY_DELAY_MS));
+            await new Promise(resolve => setTimeout(resolve, delay));
         }
     }
 };

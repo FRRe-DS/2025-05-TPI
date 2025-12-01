@@ -8,18 +8,18 @@ const categoryController = container.categoryController;
 
 // POST /categorias
 categoryRouter.post("/", 
-    //requireAnyRole(["stock-be"]), 
+    requireAnyRole(["stock-be"]), 
     categoryController.createCategory
 );
 
 // GET /categorias
 categoryRouter.get("/", 
-    //requireAnyRole(["stock-be", "compras-be", "logistica-be"]),
+    requireAnyRole(["stock-be", "compras-be", "logistica-be"]),
     categoryController.listCategories
 );
 
 // DELETE /categorias/:id
 categoryRouter.delete("/:id", 
-    //requireAnyRole(["stock-be"]),
+    requireAnyRole(["stock-be"]),
     categoryController.deleteCategory
 );

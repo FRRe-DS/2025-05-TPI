@@ -8,6 +8,8 @@ dns.setDefaultResultOrder("ipv4first");
 dotenv.config();
 
 const isProduction = process.env.NODE_ENV === "production"
+const dbOptions = process.env.DB_OPTIONS;
+const extraOptions = dbOptions ? { options: dbOptions } : {};
 
 export const AppDataSource = new DataSource({
   type: "postgres", 
@@ -16,6 +18,7 @@ export const AppDataSource = new DataSource({
   username: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
+  extra:extraOptions,
   /*ssl: {
     rejectUnauthorized: false, 
   },*/ 
