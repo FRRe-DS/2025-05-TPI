@@ -3,17 +3,19 @@ import type { IProduct } from "../../types/product.interface";
 import GenericTableRow from "../common/ui/table/tablerow";
 import type { TableColumn } from "../common/ui/table/tablerow"; 
 
-// 1. IMPORTA TU COMPONENTE AQUÍ (Ajusta la ruta si es necesario)
+// 1. IMPORTA TU COMPONENTE AQUÍ
 import StockStatus from "./StockStatus";
 
 interface ProductTableRowProps {
   product: IProduct;
   onViewDetails: (product: IProduct) => void;
+  onEdit: (product: IProduct) => void;
 }
 
 export const ProductTableRow = memo(function ProductTableRow({ 
   product, 
-  onViewDetails 
+  onViewDetails, 
+  onEdit // <--- Recibimos la función
 }: ProductTableRowProps) {
 
   const columns: TableColumn<IProduct>[] = useMemo(() => [
@@ -40,13 +42,9 @@ export const ProductTableRow = memo(function ProductTableRow({
     {
       header: "Stock",
       render: (p: IProduct) => {
-        // Mantenemos la lógica defensiva que ya tenías para obtener el número
         const stock = p.stockDisponible ?? p.stock_disponible ?? p.stock ?? 0;
-
-        // 2. REEMPLAZAMOS EL RENDERIZADO ANTERIOR POR TU COMPONENTE
         return (
           <div className="flex items-center">
-             {/* Le pasamos el número limpio a tu componente */}
              <StockStatus stock={stock} />
           </div>
         );
@@ -64,18 +62,37 @@ export const ProductTableRow = memo(function ProductTableRow({
       header: "Acciones",
       className: "text-right",
       render: (p: IProduct) => (
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            onViewDetails(p);
-          }}
-          className="inline-flex items-center gap-2 px-4 py-2 bg-gray-900 hover:bg-gray-800 text-white text-sm font-medium rounded-lg transition-colors duration-150 shadow-sm hover:shadow-md cursor-pointer"
-        >
-          Ver detalles
-        </button>
+        <div className="flex justify-end items-center gap-2">
+            
+            {/* --- BOTÓN EDITAR (NUEVO) --- */}
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                onEdit(p); // Ejecutamos la función de editar
+              }}
+              className="p-2 text-yellow-600 hover:bg-yellow-50 rounded-lg transition-colors cursor-pointer"
+              title="Editar producto"
+            >
+              {/* Icono Lápiz */}
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+              </svg>
+            </button>
+
+            {/* --- BOTÓN VER DETALLES (EXISTENTE) --- */}
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                onViewDetails(p);
+              }}
+              className="inline-flex items-center gap-2 px-4 py-2 bg-gray-900 hover:bg-gray-800 text-white text-sm font-medium rounded-lg transition-colors duration-150 shadow-sm hover:shadow-md cursor-pointer"
+            >
+              Ver detalles
+            </button>
+        </div>
       )
     }
-  ], [onViewDetails]);
+  ], [onViewDetails, onEdit]); // <--- IMPORTANTE: Agregamos onEdit a las dependencias
 
   return (
     <GenericTableRow 

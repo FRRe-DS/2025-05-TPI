@@ -1,95 +1,147 @@
 import { useMemo, useState, useCallback } from 'react';
 import { ProductTableRow } from "../components/products/ProductTableRow"; 
-import { useProduct } from "../hooks/products.hook"; // Tu hook real
+import { useProduct } from "../hooks/products.hook"; 
 import { ProductSearchFilters } from "../components/products/ProductSearchFilters";
 import { useIdFilter, useSelectFilter } from "../hooks/filters";
 import { useUrlFilter } from "../hooks/filters/generics/useUrlFilter";
 import { ProductModal } from "../components/products/ProductModal";
-import type { IProduct } from "../types/product.interface";
+import type { IProduct, IProductInput } from "../types/product.interface";
+import { CreateProductModal } from "../components/products/CreateProductModal";
+import { EditProductModal } from "../components/products/EditProductModal";
+import { useNotification } from "../context/notifications/notificactions"; 
 
 export default function ProductList() {
-    // 1. Estado para el filtro (sincronizado con URL)
+    
+    // --- HOOK DE NOTIFICACIONES ---
+    const { showNotification } = useNotification();
+
+    // --- HOOKS DE DATOS ---
+    const { 
+        data: products, 
+        isLoading, 
+        isError,
+        createProduct, 
+        isCreating,
+        updateProduct, 
+        isUpdating     
+    } = useProduct();
+
+    // --- HOOKS DE FILTROS ---
     const { 
         selected: selectedCategory, 
         setSelected: setSelectedCategory, 
         reset: resetCategory 
     } = useSelectFilter<string>("category", "all", "all");
 
-    // Hooks de filtros genéricos (sincronizados con URL)
     const { id: filterId, setId: setFilterId, parsedId, reset: resetId } = useIdFilter("productId");
     const [filterName, setFilterName, resetName] = useUrlFilter("productName");
 
-    // Estado para el Modal
+    // --- ESTADOS DE LOS MODALES ---
     const [selectedProduct, setSelectedProduct] = useState<IProduct | null>(null);
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
+    const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+    const [productToEdit, setProductToEdit] = useState<IProduct | null>(null);
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
-    const handleOpenModal = useCallback((product: IProduct) => {
+    // --- HANDLERS ---
+
+    const handleOpenDetailModal = useCallback((product: IProduct) => {
         setSelectedProduct(product);
-        setIsModalOpen(true);
+        setIsDetailModalOpen(true);
     }, []);
 
-    const handleCloseModal = useCallback(() => {
-        setIsModalOpen(false);
+    const handleCloseDetailModal = useCallback(() => {
+        setIsDetailModalOpen(false);
         setSelectedProduct(null);
     }, []);
 
-    // Función de reset combinada
+    // --- CREAR PRODUCTO CON NOTIFICACIÓN ---
+    const handleCreateProduct = async (newProductData: IProductInput) => {
+        try {
+            await createProduct(newProductData); 
+            
+            // Notificación de Éxito
+            showNotification("Producto creado correctamente", "success");
+            
+            setIsCreateModalOpen(false);
+        } catch (error) {
+            console.error(error);
+            // Notificación de Error
+            showNotification("Error al crear el producto", "error");
+        }
+    };
+
+    const handleOpenEditModal = useCallback((product: IProduct) => {
+        setProductToEdit(product);
+        setIsEditModalOpen(true);
+    }, []);
+
+    // --- EDITAR PRODUCTO CON NOTIFICACIÓN ---
+    const handleUpdateProduct = async (id: number, updatedData: any) => {
+        try {
+            await updateProduct({ id, data: updatedData });
+            
+            // Notificación de Éxito
+            showNotification("Producto actualizado con éxito", "success");
+            
+            setIsEditModalOpen(false);
+        } catch (error) {
+            console.error(error);
+            // Notificación de Error
+            showNotification("No se pudo actualizar el producto", "error");
+        }
+    };
+
     const resetFilters = () => {
         resetId();
         resetName();
         resetCategory();
     };
 
-    // 2. Usamos tu hook real (useProduct)
-    const { data: products, isLoading, isError } = useProduct();
-
-    // 3. Lógica de filtrado simple en el cliente
+    // --- LÓGICA DE FILTRADO ---
     const filteredProducts = useMemo(() => {
         if (!products) return [];
         
         let result = products;
 
-        // Filtro por ID
         if (parsedId) {
             result = result.filter(p => p.id === parsedId);
         }
 
-        // Filtro por Nombre
         if (filterName) {
             const lowerName = filterName.toLowerCase();
             result = result.filter(p => p.nombre.toLowerCase().includes(lowerName));
         }
 
-        // Filtro por Categoría
         if (selectedCategory !== 'all') {
             result = result.filter(p => 
-                p.categorias?.some(cat => cat.nombre.toLowerCase() === selectedCategory)
+                // Agregamos ?. para evitar errores si la categoría es null tras la edición
+                p.categorias?.some(cat => cat.nombre?.toLowerCase() === selectedCategory)
             );
         }
         
         return result;
     }, [products, selectedCategory, parsedId, filterName]);
 
-    // Extraemos las categorías únicas
     const categories = useMemo(() => {
         if (!products) return [];
-        const cats = new Set<string>();
-        
+        const uniqueCategories = new Map<number, { id: number; nombre: string }>();
         products.forEach(p => {
-            // Recorremos el array de categorías de cada producto
             p.categorias?.forEach(cat => {
-                if (cat.nombre) cats.add(cat.nombre.toLowerCase());
+                if (!uniqueCategories.has(cat.id)) {
+                    uniqueCategories.set(cat.id, { id: cat.id, nombre: cat.nombre });
+                }
             });
         });
-        
-        return Array.from(cats);
+        return Array.from(uniqueCategories.values());
     }, [products]);
+
+    const categoryNamesForFilter = useMemo(() => categories.map(c => c.nombre.toLowerCase()), [categories]);
     
     return (
         <div className="min-h-screen bg-gray-50 py-8">
             <div className="container mx-auto px-4 max-w-7xl">
                 
-                {/* Encabezado */}
                 <div className="mb-8">
                     <h1 className="text-4xl font-bold text-gray-800 mb-2">
                         Catálogo de Productos
@@ -99,7 +151,6 @@ export default function ProductList() {
                     </p>
                 </div>
 
-                {/* Filtros Genéricos (ID, Nombre y Categoría) */}
                 <ProductSearchFilters 
                     filterId={filterId}
                     setFilterId={setFilterId}
@@ -107,11 +158,27 @@ export default function ProductList() {
                     setFilterName={setFilterName}
                     selectedCategory={selectedCategory}
                     setSelectedCategory={setSelectedCategory}
-                    categories={categories}
+                    categories={categoryNamesForFilter}
                     reset={resetFilters}
                 />
 
-                {/* Estados de Carga y Error */}
+                <div className="flex justify-start my-4">
+                    <button
+                        onClick={() => setIsCreateModalOpen(true)}
+                        disabled={isCreating} 
+                        className={`bg-black hover:bg-gray-800 text-white font-bold py-2 px-4 rounded-lg flex items-center gap-2 transition-colors shadow-sm cursor-pointer ${isCreating ? 'opacity-50 cursor-not-allowed' : ''}`}
+                    >
+                        {isCreating ? (
+                           <div className="animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full"></div>
+                        ) : (
+                           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                           </svg>
+                        )}
+                        {isCreating ? "GUARDANDO..." : "AGREGAR PRODUCTO"}
+                    </button>
+                </div>
+
                 {isLoading && (
                     <div className="p-12 text-center">
                         <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 mb-2"></div>
@@ -125,7 +192,6 @@ export default function ProductList() {
                     </div>
                 )}
 
-                {/* Tabla de Productos */}
                 {!isLoading && !isError && filteredProducts && filteredProducts.length > 0 && (
                     <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
                         <table className="min-w-full divide-y divide-gray-200">
@@ -142,7 +208,8 @@ export default function ProductList() {
                                     <ProductTableRow
                                         key={product.id}
                                         product={product}
-                                        onViewDetails={handleOpenModal}
+                                        onViewDetails={handleOpenDetailModal}
+                                        onEdit={handleOpenEditModal}
                                     />
                                 ))}
                             </tbody>
@@ -150,18 +217,31 @@ export default function ProductList() {
                     </div>
                 )}
 
-                {/* Estado Vacío */}
                 {!isLoading && !isError && filteredProducts.length === 0 && (
                     <div className="text-center py-12 bg-white rounded-xl border border-gray-200 border-dashed">
                         <p className="text-gray-500 text-lg">No se encontraron productos.</p>
                     </div>
                 )}
 
-                {/* Modal de Detalles */}
                 <ProductModal
                     product={selectedProduct}
-                    isOpen={isModalOpen}
-                    onClose={handleCloseModal}
+                    isOpen={isDetailModalOpen}
+                    onClose={handleCloseDetailModal}
+                />
+
+                <CreateProductModal 
+                    isOpen={isCreateModalOpen}
+                    onClose={() => setIsCreateModalOpen(false)}
+                    onCreate={handleCreateProduct}
+                    availableCategories={categories}
+                />
+
+                <EditProductModal 
+                    isOpen={isEditModalOpen}
+                    onClose={() => setIsEditModalOpen(false)}
+                    productToEdit={productToEdit}
+                    onUpdate={handleUpdateProduct}
+                    availableCategories={categories}
                 />
             </div>
         </div>

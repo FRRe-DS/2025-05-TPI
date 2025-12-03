@@ -6,16 +6,10 @@ const LIMITE_STOCK_CRITICO = 3;
 
 // --- DEFINICIÓN DE PROPS ---
 type StockStatusProps = {
-  /** Cantidad actual de producto disponible */
   stock: number;
-  /** Determina el diseño visual del componente */
   variant?: 'list' | 'detail';
 };
 
-/**
- * Componente inteligente para mostrar el estado del stock.
- * Usa condicionales en línea (Template Literals) para cambiar estilos de Tailwind.
- */
 export default function StockStatus({ stock, variant = 'list' }: StockStatusProps) {
   
   // 1. LÓGICA DE ESTADO
@@ -61,8 +55,6 @@ export default function StockStatus({ stock, variant = 'list' }: StockStatusProp
 
   // -----------------------------------------------------------------------
   // ESCENARIO 3: ALERTA DE STOCK BAJO
-  // Aquí usamos los condicionales en línea dentro de los `backticks`.
-  // Sintaxis: `clases-fijas ${ condicion ? 'clases-true' : 'clases-false' }`
   // -----------------------------------------------------------------------
 
   // 3.A: VISTA DETALLE (MODAL)
