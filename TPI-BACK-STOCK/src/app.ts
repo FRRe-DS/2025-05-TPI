@@ -1,33 +1,38 @@
 import express, { json } from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-dotenv.config();
+dotenv.config(); // Configuración de variables de entorno (se hace una sola vez al principio)
+
 import { AppDataSource } from "./config/appDataSource";
 import { categoryRouter, productRouter, reservationRouter } from "./routes";
+
+// Imports de tus compañeros (Keycloak y Session)
 import session from "express-session";
 import { keycloak, memoryStore } from "./config/keycloak";
-import {initAuthM2M } from "./services/keykcloak.service"
+import { initAuthM2M } from "./services/keykcloak.service";
+
+// Import de tu tarea (Error Handler)
+import { errorHandler } from "./middlewares/errorHandler";
 
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-//configuracion de la session
+// Configuración de la session (Agregado por tus compañeros)
 app.use(
   session({
-    secret: "MiclaveDeDesarrollo",   //completar
+    secret: "MiclaveDeDesarrollo",   // completar si es necesario
     resave: false,
     saveUninitialized: true,
     store: memoryStore,
   })
 );
 
-// Esto engancha Keycloak a todas las requests
+// Esto engancha Keycloak a todas las requests (Agregado por tus compañeros)
 app.use(keycloak.middleware());
 
 /*
-  Configuracion para orgigenes y permisos 
-  (Acepta cualquier peticion que venga las urls establecidas y con el header de credenciales)
+  Configuracion para origenes y permisos 
 */
 const corsOptions = {
   origin: true,
@@ -35,19 +40,17 @@ const corsOptions = {
 }
 
 app.use(cors(corsOptions));
-app.use(json());
+// app.use(json()); // Ya tienes app.use(express.json()) arriba, pero lo dejo por si acaso lo usan así.
 
 const initApp = async () => {
   try {
-
-    //
     console.log("🔄 ENTRO AL TRY...");
 
     // Conexion a base de datos
     await AppDataSource.initialize();
-    console.log("✅ Conexion establecida")
+    console.log("✅ Conexion establecida");
     
-    // JWT keycloak
+    // JWT keycloak (Agregado por tus compañeros)
     await initAuthM2M();
     console.log("✅ Autenticación M2M (Token de servicio) lista y disponible.");
 
@@ -57,6 +60,8 @@ const initApp = async () => {
     app.use("/v1/productos", productRouter);
     app.use("/v1/reservas", reservationRouter);
     
+    // 👇 TU MANEJADOR DE ERRORES (Aquí está perfecto)
+    app.use(errorHandler);
 
     // Iniciar servidor
     const PORT = process.env.PORT || 8080;
