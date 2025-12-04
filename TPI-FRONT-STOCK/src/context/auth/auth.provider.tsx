@@ -49,7 +49,7 @@ export default function KeycloakAuthProvider({ children }: KeycloakAuthProviderP
               localStorage.setItem("kc_token", keycloakInstance.token!);
               localStorage.setItem("kc_refresh", keycloakInstance.refreshToken!);
 
-              console.log("🔐 LOGGED IN, ", keycloakInstance.token );
+              console.log("🔐 LOGGED IN" );
           }
       })
       .catch((err) => {

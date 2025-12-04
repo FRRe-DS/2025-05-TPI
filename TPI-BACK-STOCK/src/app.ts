@@ -62,10 +62,6 @@ const initApp = async () => {
     // Conexion a base de datos
     await AppDataSource.initialize();
     console.log("✅ Conexion establecida");
-    
-    // JWT keycloak (Agregado por tus compañeros)
-    await initAuthM2M();
-    console.log("✅ Autenticación M2M (Token de servicio) lista y disponible.");
 
     // Rutas
     app.get('/', (req, res) => res.send('Prueba api node'));
