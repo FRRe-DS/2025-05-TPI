@@ -9,10 +9,11 @@ import type { IProduct, IProductInput } from "../../types/product.interface";
 import { CreateProductModal } from "../../components/products/CreateProductModal";
 import { EditProductModal } from "../../components/products/EditProductModal";
 import { useNotification } from "../../context/notifications/notificactions"; 
+import { useUrlPagination } from "../../hooks/pagination.hook";
+import Pagination from "../../components/common/ui/pagination";
 
 export default function ProductList() {
     
-    // --- HOOK DE NOTIFICACIONES ---
     const { showNotification } = useNotification();
 
     // --- HOOKS DE DATOS ---
@@ -42,62 +43,7 @@ export default function ProductList() {
     const [productToEdit, setProductToEdit] = useState<IProduct | null>(null);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
-    // --- HANDLERS ---
-
-    const handleOpenDetailModal = useCallback((product: IProduct) => {
-        setSelectedProduct(product);
-        setIsDetailModalOpen(true);
-    }, []);
-
-    const handleCloseDetailModal = useCallback(() => {
-        setIsDetailModalOpen(false);
-        setSelectedProduct(null);
-    }, []);
-
-    // --- CREAR PRODUCTO CON NOTIFICACIÓN ---
-    const handleCreateProduct = async (newProductData: IProductInput) => {
-        try {
-            await createProduct(newProductData); 
-            
-            // Notificación de Éxito
-            showNotification("Producto creado correctamente", "success");
-            
-            setIsCreateModalOpen(false);
-        } catch (error) {
-            console.error(error);
-            // Notificación de Error
-            showNotification("Error al crear el producto", "error");
-        }
-    };
-
-    const handleOpenEditModal = useCallback((product: IProduct) => {
-        setProductToEdit(product);
-        setIsEditModalOpen(true);
-    }, []);
-
-    // --- EDITAR PRODUCTO CON NOTIFICACIÓN ---
-    const handleUpdateProduct = async (id: number, data: IProductInput) => {
-        try {
-            await updateProduct({ id, data: data });
-            
-            // Notificación de Éxito
-            showNotification("Producto actualizado con éxito", "success");
-            
-            setIsEditModalOpen(false);
-        } catch (error) {
-            console.error(error);
-            // Notificación de Error
-            showNotification("No se pudo actualizar el producto", "error");
-        }
-    };
-
-    const resetFilters = () => {
-        resetId();
-        resetName();
-        resetCategory();
-    };
-
-    // --- LÓGICA DE FILTRADO ---
+    // --- LÓGICA DE FILTRADO (PRIMERO) ---
     const filteredProducts = useMemo(() => {
         if (!products) return [];
         
@@ -114,7 +60,6 @@ export default function ProductList() {
 
         if (selectedCategory !== 'all') {
             result = result.filter(p => 
-                // Agregamos ?. para evitar errores si la categoría es null tras la edición
                 p.categorias?.some(cat => cat.nombre?.toLowerCase() === selectedCategory)
             );
         }
@@ -122,6 +67,19 @@ export default function ProductList() {
         return result.sort((a, b) => a.id - b.id);
     }, [products, selectedCategory, parsedId, filterName]);
 
+    // --- PAGINACIÓN (DESPUÉS DEL FILTRADO) ---
+    const { 
+        paginatedData, 
+        pagination: { 
+            currentPage, 
+            totalPages, 
+            totalItems, 
+            itemsPerPage, 
+            goToPage 
+        } 
+    } = useUrlPagination(filteredProducts, { itemsPerPage: 10 });
+
+    // --- CATEGORÍAS PARA EL FILTRO ---
     const categories = useMemo(() => {
         if (!products) return [];
         const uniqueCategories = new Map<number, { id: number; nombre: string }>();
@@ -136,6 +94,50 @@ export default function ProductList() {
     }, [products]);
 
     const categoryNamesForFilter = useMemo(() => categories.map(c => c.nombre.toLowerCase()), [categories]);
+
+    // --- HANDLERS ---
+    const handleOpenDetailModal = useCallback((product: IProduct) => {
+        setSelectedProduct(product);
+        setIsDetailModalOpen(true);
+    }, []);
+
+    const handleCloseDetailModal = useCallback(() => {
+        setIsDetailModalOpen(false);
+        setSelectedProduct(null);
+    }, []);
+
+    const handleCreateProduct = async (newProductData: IProductInput) => {
+        try {
+            await createProduct(newProductData); 
+            showNotification("Producto creado correctamente", "success");
+            setIsCreateModalOpen(false);
+        } catch (error) {
+            console.error(error);
+            showNotification("Error al crear el producto", "error");
+        }
+    };
+
+    const handleOpenEditModal = useCallback((product: IProduct) => {
+        setProductToEdit(product);
+        setIsEditModalOpen(true);
+    }, []);
+
+    const handleUpdateProduct = async (id: number, data: IProductInput) => {
+        try {
+            await updateProduct({ id, data: data });
+            showNotification("Producto actualizado con éxito", "success");
+            setIsEditModalOpen(false);
+        } catch (error) {
+            console.error(error);
+            showNotification("No se pudo actualizar el producto", "error");
+        }
+    };
+
+    const resetFilters = () => {
+        resetId();
+        resetName();
+        resetCategory();
+    };
     
     return (
         <div className="min-h-screen bg-gray-50 py-8">
@@ -148,6 +150,12 @@ export default function ProductList() {
                     <p className="text-gray-600 text-lg">
                         Gestiona el inventario y precios
                     </p>
+                    <div className="mt-4 flex items-center gap-2">
+                        <span className="text-sm text-gray-500">Total de productos:</span>
+                        <span className="px-3 py-1 bg-blue-100 text-blue-800 font-semibold rounded-full text-sm">
+                            {totalItems || 0}
+                        </span>
+                    </div>
                 </div>
 
                 <ProductSearchFilters 
@@ -191,7 +199,7 @@ export default function ProductList() {
                     </div>
                 )}
 
-                {!isLoading && !isError && filteredProducts && filteredProducts.length > 0 && (
+                {!isLoading && paginatedData && paginatedData.length > 0 && (
                     <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
                         <table className="min-w-full divide-y divide-gray-200">
                             <thead className="bg-gray-50">
@@ -203,7 +211,7 @@ export default function ProductList() {
                                 </tr>
                             </thead>
                             <tbody className="bg-white divide-y divide-gray-200">
-                                {filteredProducts.map((product) => (
+                                {paginatedData.map((product) => (
                                     <ProductTableRow
                                         key={product.id}
                                         product={product}
@@ -213,6 +221,14 @@ export default function ProductList() {
                                 ))}
                             </tbody>
                         </table>
+
+                        <Pagination
+                            currentPage={currentPage}
+                            totalPages={totalPages}
+                            totalItems={totalItems}
+                            itemsPerPage={itemsPerPage}
+                            onPageChange={goToPage}
+                        />
                     </div>
                 )}
 
