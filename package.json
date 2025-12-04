@@ -1,9 +1,0 @@
-{
-  "dependencies": {
-    "express-session": "^1.18.2",
-    "keycloak-connect": "^26.1.1"
-  },
-  "devDependencies": {
-    "@types/express-session": "^1.18.2"
-  }
-}

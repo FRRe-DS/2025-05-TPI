@@ -8,7 +8,7 @@ const memoryStore = new session.MemoryStore();
 const keycloak = new Keycloak(
     { store: memoryStore },
     {
-        realm: "ds-2025-realm",
+        realm: "ds-2025-05-realm",
         "auth-server-url": "http://localhost:8080/",
         "bearer-only": true, 
         "ssl-required": "none",

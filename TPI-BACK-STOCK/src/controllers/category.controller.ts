@@ -32,6 +32,7 @@ export class CategoryController {
     try {
       const categories = await this.categoryService.listCategories();
       res.status(200).json(categories);
+      
     } catch (error) {
       next(error); 
     }

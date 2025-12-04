@@ -1,6 +1,4 @@
-import axios from 'axios';
 import dotenv from 'dotenv';
-import qs from 'querystring';
 
 dotenv.config();
 
@@ -15,8 +13,6 @@ const KEYCLOAK_TOKEN_URL = process.env.KEYCLOAK_TOKEN_URL;
 const CLIENT_ID = process.env.KEYCLOAK_CLIENT_ID; 
 const CLIENT_SECRET = process.env.KEYCLOAK_CLIENT_SECRET; 
 
-
-// Peticion para obtener el token
 
 const solicitarToken = async (): Promise<string> => {
     if (!KEYCLOAK_TOKEN_URL || !CLIENT_ID || !CLIENT_SECRET) {
@@ -102,7 +98,7 @@ export const initAuthM2M = async () => {
 /**
  * Devuelve el token actual, solicitando uno nuevo si está expirado o cerca de expirar.
  * Se llama ANTES de cualquier llamada saliente a otra API.
- */
+*/
 
 export const getValidToken = async (): Promise<string> => {
     // Si el token expiró (o está cerca de expirar, gracias al margen de 5s)

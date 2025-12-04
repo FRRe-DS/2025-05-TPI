@@ -5,16 +5,11 @@ import { requireAnyRole } from "../middleware/requireRole";
 export const reservationRouter = Router();
 const reservationController = container.reservationyController;
 
-<<<<<<< HEAD
-// GET /v1/reservas - Obtener todas las reservas o filtrar por usuarioId
-reservationRouter.get("/", reservationController.getReservations);
-=======
 // GET /v1/reservas - Listar reservas de un usuario
 reservationRouter.get("/", 
     requireAnyRole(["stock-be", "compras-be", "logistica-be"]),
-    reservationController.getReservationsByUserId
+    reservationController.getReservations
 );
->>>>>>> prubeba-keycloak
 
 // GET /v1/reservas/:idReserva - Obtener una reserva específica
 reservationRouter.get("/:idReserva", 

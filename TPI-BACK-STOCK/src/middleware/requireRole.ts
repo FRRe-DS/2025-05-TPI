@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import jwt, { JwtPayload } from "jsonwebtoken";
+import { decode } from "punycode";
 
 export function requireAnyRole(allowedRoles: string[]) {
     return (req: Request, res: Response, next: NextFunction) => {
@@ -12,7 +13,7 @@ export function requireAnyRole(allowedRoles: string[]) {
         const token = authHeader.split(" ")[1];
         const decoded = jwt.decode(token) as JwtPayload | null;
 
-        const roles = decoded?.roles || [];
+        const roles = decoded?.roles || decoded?.realm_access?.roles || [];
 
         console.log("ROLES DETECTADOS:", roles);
 
