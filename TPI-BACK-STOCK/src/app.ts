@@ -1,3 +1,6 @@
+import dns from 'dns';
+dns.setDefaultResultOrder('ipv4first');
+import "reflect-metadata";
 import express, { json } from "express";
 import cors from "cors";
 import dotenv from "dotenv";
@@ -36,6 +39,16 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 app.use(json());
+
+const PORT = process.env.PORT || 8080;
+
+AppDataSource.initialize()
+  .then(() => {
+    console.log("✅ Conectado a Supabase correctamente");
+  })
+  .catch(error => {
+    console.error("❌ Error conectando a Supabase:", error);
+  });
 
 const initApp = async () => {
   try {

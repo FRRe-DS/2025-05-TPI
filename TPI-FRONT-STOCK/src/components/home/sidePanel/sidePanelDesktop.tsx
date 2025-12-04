@@ -1,8 +1,10 @@
 import { Box, Calendar, Users } from "lucide-react"
 import { Link, useLocation } from "react-router-dom"
+import { useNotification } from "../../../context/notifications/notificactions"
 
 export default function SidePanelDesktop() {
   const location = useLocation()
+  const { showNotification } = useNotification()
 
   const navItems = [
     { name: "Productos", icon: Box, path: "/admin/productos" },
@@ -41,7 +43,6 @@ export default function SidePanelDesktop() {
           )
         })}
       </div>
-
       {/* Footer */}
       <div className="border-t border-gray-800 p-4 bg-gray-900/50 text-xs text-center text-gray-600">
         Sistema de Gestión de Stock v1.0

@@ -1,3 +1,4 @@
+// src/config/appDataSource.ts - VERSIÓN CORREGIDA
 import { DataSource } from "typeorm";
 import dotenv from 'dotenv';
 import dns from "dns";
@@ -18,13 +19,15 @@ export const AppDataSource = new DataSource({
   username: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
-  extra:extraOptions,
-  /*ssl: {
-    rejectUnauthorized: false, 
-  },*/ 
-  synchronize: !isProduction, 
+  ssl: true,
+  extra: {
+    ssl: {
+      rejectUnauthorized: false
+    }
+  },
+  synchronize: false, // ← CAMBIAR A FALSE
   logging: true,
-  entities: [Product, Category, Reservation, ReservationItem, ProductImage], //<-- Aca van las entidades o modelos
+  entities: [Product, Category, Reservation, ReservationItem, ProductImage],
   migrations: ["src/migrations/*.ts"],
   subscribers: [],
 });

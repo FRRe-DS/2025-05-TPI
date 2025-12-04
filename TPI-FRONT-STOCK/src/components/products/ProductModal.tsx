@@ -1,5 +1,7 @@
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import type { IProduct } from "../../types/product.interface";
+import StockStatus from "./StockStatus";
+import { useNotification } from "../../context/notifications/notificactions";
 
 interface ProductModalProps {
   product: IProduct | null;
@@ -8,6 +10,11 @@ interface ProductModalProps {
 }
 
 export function ProductModal({ product, isOpen, onClose }: ProductModalProps) {
+  
+  // --- 1. HOOKS (Siempre arriba) ---
+  const { showNotification } = useNotification();
+
+  // Handlers memorizados
   const handleBackdropClick = useCallback(() => {
     onClose();
   }, [onClose]);
@@ -16,11 +23,29 @@ export function ProductModal({ product, isOpen, onClose }: ProductModalProps) {
     e.stopPropagation();
   }, []);
 
+  // --- 2. LÓGICA Y VARIABLES DERIVADAS ---
+  
+  const currentStock = product?.stockDisponible ?? product?.stock_disponible ?? product?.stock ?? 0;
+
+  // --- 3. EFECTOS ---
+  
+  useEffect(() => {
+    // Si no está abierto o no hay producto, no hacemos nada
+    if (!isOpen || !product) return;
+
+    if (currentStock == 0) {
+      showNotification('Stock Agotado', 'error');
+    }else{
+      if (currentStock <= 10) {
+        showNotification('Stock Bajo', 'warning');
+      }
+    }
+  }, [isOpen, product, currentStock, showNotification]);
+
+  // --- 4. EARLY RETURN (Renderizado Condicional) ---
   if (!isOpen || !product) return null;
 
-  // Helper para obtener stock (maneja las variantes de nombre)
-  const stock = product.stockDisponible ?? product.stock_disponible ?? product.stock ?? 0;
-
+  // --- 5. RENDERIZADO (JSX) ---
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto" onClick={handleBackdropClick}>
       {/* Backdrop */}
@@ -68,9 +93,10 @@ export function ProductModal({ product, isOpen, onClose }: ProductModalProps) {
               
               <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
                 <p className="text-xs text-gray-500 font-semibold uppercase mb-1">Stock Disponible</p>
-                <p className={`text-lg font-bold ${stock > 0 ? 'text-gray-900' : 'text-red-600'}`}>
-                  {stock} unidades
-                </p>
+                <div className="mt-1">
+                  {/* Usamos la variable calculada 'currentStock' */}
+                  <StockStatus stock={currentStock} variant="detail" />
+                </div>
               </div>
 
               <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
