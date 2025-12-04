@@ -83,42 +83,125 @@
   ],
 
   "users": [
-   {
-    "username": "valentino_stock",
-    "enabled": true,
-    "credentials": [
-     {
-       "type": "password",
-       "value": "pass1234",
-       "temporary": false
-     }
-    ],
-    "realmRoles": ["stock-be"]
-   },
-   {
-    "username": "usuario2_stock",
-    "enabled": true,
-    "credentials": [
-     {
-       "type": "password",
-       "value": "pass1234",
-       "temporary": false
-     }
-    ],
-    "realmRoles": ["stock-be"]
-   },
-   {
-    "username": "admin_stock",
-    "email": "admin@grupo05.com",
-    "enabled": true,
-    "credentials": [
-     {
-       "type": "password",
-       "value": "admin123",
-       "temporary": false
-     }
-    ],
-    "realmRoles": ["stock-be"]
-   }
+    {
+      "username": "valentino_stock",
+      "enabled": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "pass1234",
+          "temporary": false
+        }
+      ],
+      "realmRoles": ["stock-be"]
+    },
+    {
+      "username": "agustin_stock",
+      "enabled": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "pass1234",
+          "temporary": false
+        }
+      ],
+      "realmRoles": ["stock-be"]
+    },
+    {
+      "username": "ivo_stock",
+      "enabled": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "pass1234",
+          "temporary": false
+        }
+      ],
+      "realmRoles": ["stock-be"]
+    },
+    {
+      "username": "elias_stock",
+      "enabled": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "pass1234",
+          "temporary": false
+        }
+      ],
+      "realmRoles": ["stock-be"]
+    },
+    {
+      "username": "facu_stock",
+      "enabled": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "pass1234",
+          "temporary": false
+        }
+      ],
+      "realmRoles": ["stock-be"]
+    },
+    {
+      "username": "gaston_stock",
+      "enabled": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "pass1234",
+          "temporary": false
+        }
+      ],
+      "realmRoles": ["stock-be"]
+    },
+    {
+      "username": "ian_stock",
+      "enabled": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "pass1234",
+          "temporary": false
+        }
+      ],
+      "realmRoles": ["stock-be"]
+    },
+    {
+      "username": "juan_stock",
+      "enabled": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "pass1234",
+          "temporary": false
+        }
+      ],
+      "realmRoles": ["stock-be"]
+    },
+    {
+      "username": "lautaro_stock",
+      "enabled": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "pass1234",
+          "temporary": false
+        }
+      ],
+      "realmRoles": ["stock-be"]
+    },
+    {
+      "username": "nahuel_stock",
+      "enabled": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "pass1234",
+          "temporary": false
+        }
+      ],
+      "realmRoles": ["stock-be"]
+    }
   ]
 }

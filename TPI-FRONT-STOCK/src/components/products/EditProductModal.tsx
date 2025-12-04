@@ -31,7 +31,7 @@ interface EditProductModalProps {
   isOpen: boolean;
   onClose: () => void;
   productToEdit: IProduct | null; 
-  onUpdate: (id: number, data: IProductInput) => void; 
+  onUpdate: (id: number, data: IProductInput) => void | Promise<void>; 
   availableCategories?: { id: number; nombre: string }[]; 
 }
 

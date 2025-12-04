@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import type { IProduct } from "../types";
+import type { IProduct, IProductInput } from "../types";
 import { getAllProducts, getProductByName, createProduct, updateProduct } from "../services/productServices";
 
 export const useProduct = () => {
@@ -21,7 +21,7 @@ export const useProduct = () => {
 
   // 3. UPDATE (Asegúrate de tener este bloque)
   const updateMutation = useMutation({
-    mutationFn: (vars: { id: number; data: any }) => updateProduct(vars.id, vars.data),
+    mutationFn: (vars: { id: number; data: IProductInput }) => updateProduct(vars.id, vars.data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["products"] });
     },

@@ -5,7 +5,7 @@ import { ProductSearchFilters } from "../../components/products/ProductSearchFil
 import { useIdFilter, useSelectFilter } from "../../hooks/filters";
 import { useUrlFilter } from "../../hooks/filters/generics/useUrlFilter";
 import { ProductModal } from "../../components/products/ProductModal";
-import type { IProduct, IProductInput, IProductUpdate } from "../../types/product.interface";
+import type { IProduct, IProductInput } from "../../types/product.interface";
 import { CreateProductModal } from "../../components/products/CreateProductModal";
 import { EditProductModal } from "../../components/products/EditProductModal";
 import { useNotification } from "../../context/notifications/notificactions"; 
@@ -76,9 +76,9 @@ export default function ProductList() {
     }, []);
 
     // --- EDITAR PRODUCTO CON NOTIFICACIÓN ---
-    const handleUpdateProduct = async (id: number, updatedData: IProductUpdate) => {
+    const handleUpdateProduct = async (id: number, data: IProductInput) => {
         try {
-            await updateProduct({ id, data: updatedData });
+            await updateProduct({ id, data: data });
             
             // Notificación de Éxito
             showNotification("Producto actualizado con éxito", "success");
@@ -119,7 +119,7 @@ export default function ProductList() {
             );
         }
         
-        return result;
+        return result.sort((a, b) => a.id - b.id);
     }, [products, selectedCategory, parsedId, filterName]);
 
     const categories = useMemo(() => {
