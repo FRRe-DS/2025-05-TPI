@@ -124,6 +124,7 @@ export default function CategoriesPage() {
         onClose={() => setIsCreateOpen(false)}
         onCreate={handleCreate}
         isSubmitting={isCreating}
+        existingCategories={sortedCategories}
       />
 
       <DeleteCategoryModal
