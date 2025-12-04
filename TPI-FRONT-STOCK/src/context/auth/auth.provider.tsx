@@ -24,6 +24,7 @@ export default function KeycloakAuthProvider({ children }: KeycloakAuthProviderP
       initialized: false,
   });
 
+
   // Lógica de inicialización (el corazón del Contexto)
   useEffect(() => {
       const keycloakInstance = new Keycloak(keycloakConfig);
@@ -50,6 +51,7 @@ export default function KeycloakAuthProvider({ children }: KeycloakAuthProviderP
               localStorage.setItem("kc_refresh", keycloakInstance.refreshToken!);
 
               console.log("🔐 LOGGED IN" );
+              console.log("KEYCLOAK:", keycloakInstance)
           }
       })
       .catch((err) => {
@@ -111,16 +113,19 @@ export default function KeycloakAuthProvider({ children }: KeycloakAuthProviderP
   // 🛑 Implementación de funciones que llaman a los métodos reales de Keycloak
   const login = (redirectUri: string) => {
     if (kcState.keycloak) {
-      // Llama al login real, redirigiendo al servidor Keycloak
       kcState.keycloak.login({ redirectUri });
-  }
+    }
   };
   
   const logout = (redirectUri?: string) => {
-    if (kcState.keycloak) {
-      // Llama al logout real, redirigiendo al servidor Keycloak
-      kcState.keycloak.logout({ redirectUri });
-  }
+    if (!kcState.keycloak) return;
+
+    localStorage.removeItem("kc_token");
+    localStorage.removeItem("kc_refresh");
+
+    kcState.keycloak.logout({ 
+        redirectUri: redirectUri || window.location.origin 
+    });
   };
   
   // Valores derivados (memoizados para optimización)

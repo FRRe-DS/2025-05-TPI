@@ -4,12 +4,12 @@ import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { X, Box, Calendar, Users, Menu, Tags, LogOut } from "lucide-react"
 import { Link, useLocation } from "react-router-dom"
-import { useKeycloak } from "../../../hooks/keycloak.hook"
+import { useAuth } from "../../../context/auth/auth.context"
 
 export default function SidePanelMobile() {
   const [stockPanelOpen, setStockPanelOpen] = useState(false)
   const location = useLocation()
-  const { logout, user } = useKeycloak()
+  const { logout } = useAuth()
 
   const navItems = [
     { name: "Productos", icon: Box, path: "/admin/productos" },
@@ -18,10 +18,6 @@ export default function SidePanelMobile() {
     { name: "Clientes", icon: Users, path: "/admin/clientes" },
   ]
 
-  const handleLogout = () => {
-    setStockPanelOpen(false)
-    logout()
-  }
 
   return (
     <div className="relative z-50">
@@ -33,12 +29,6 @@ export default function SidePanelMobile() {
         >
           <Menu className="h-6 w-6 text-gray-400" />
         </button>
-
-        {user && (
-          <div className="text-xs text-gray-400 max-w-[150px] truncate">
-            {user.username || user.email}
-          </div>
-        )}
       </div>
 
       <AnimatePresence>
@@ -93,18 +83,10 @@ export default function SidePanelMobile() {
 
                 {/* Sesión + Logout - SIEMPRE VISIBLE */}
                 <div className="border-t border-gray-800 p-4 space-y-3">
-                  {user && (
-                    <div className="px-3 py-2 bg-gray-800/50 rounded-lg border border-gray-700">
-                      <p className="text-xs text-gray-500 mb-1">Sesión activa</p>
-                      <p className="text-sm text-gray-200 font-medium truncate">
-                        {user.username || user.email || 'Usuario'}
-                      </p>
-                    </div>
-                  )}
 
                   <motion.button
                     whileTap={{ scale: 0.95 }}
-                    onClick={handleLogout}
+                    onClick={()=> logout("localhost:5173/")}
                     className="flex items-center cursor-pointer justify-center w-full px-4 py-3 rounded-lg bg-red-600/10 border border-red-500/30 text-red-400 hover:bg-red-600/20 transition-all"
                   >
                     <LogOut className="h-5 w-5 mr-2" />
