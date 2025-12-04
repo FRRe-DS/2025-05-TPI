@@ -5,16 +5,18 @@ export default function SidePanelDesktop() {
   const location = useLocation()
 
   const navItems = [
-    { name: "Productos", icon: Box, path: "/productos" },
-    { name: "Reservas", icon: Calendar, path: "/reservas" },
-    { name: "Clientes", icon: Users, path: "/clientes" },
+    { name: "Productos", icon: Box, path: "/admin/productos" },
+    { name: "Reservas", icon: Calendar, path: "/admin/reservas" },
+    { name: "Clientes", icon: Users, path: "/admin/clientes" },
   ]
 
   return (
     <div className="w-full flex flex-col h-full bg-gradient-to-b from-gray-900 to-gray-950">
       {/* Titulo */}
       <div className="flex items-center justify-between p-6 border-b border-gray-800 bg-gray-900/50 backdrop-blur">
-        <h3 className="text-2xl font-bold text-gray-100">STOCK</h3>
+        <Link to="/" className="cursor-pointer hover:opacity-80 transition-opacity">
+            <h3 className="text-2xl font-bold text-gray-100">STOCK</h3>
+        </Link>
       </div>
 
       {/* Navegacion */}

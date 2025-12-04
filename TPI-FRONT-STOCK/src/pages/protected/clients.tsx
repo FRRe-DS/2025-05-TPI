@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { ClientTableRow } from "../components/clients/ClientTableRow";
-import type { IClient } from "../types/client.interface";
+import { ClientTableRow } from "../../components/clients/ClientTableRow";
+import type { IClient } from "../../types/client.interface";
 
 // 1. Mock Data (Datos falsos para visualizar)
 const MOCK_CLIENTS: IClient[] = [
@@ -53,7 +53,7 @@ export default function ClientsPage() {
                                 <th className="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Contacto</th>
                                 <th className="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Estado</th>
                                 <th className="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Última Compra</th>
-                                         <th className="px-6 py-3 text-center text-xs font-bold text-gray-500 uppercase tracking-wider">Acciones</th>
+                                <th className="px-6 py-3 text-center text-xs font-bold text-gray-500 uppercase tracking-wider">Acciones</th>
                             </tr>
                         </thead>
                         <tbody className="bg-white divide-y divide-gray-200">

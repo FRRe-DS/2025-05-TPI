@@ -1,11 +1,11 @@
 import { useMemo, useState, useCallback } from 'react';
-import { ProductTableRow } from "../components/products/ProductTableRow"; 
-import { useProduct } from "../hooks/products.hook"; // Tu hook real
-import { ProductSearchFilters } from "../components/products/ProductSearchFilters";
-import { useIdFilter, useSelectFilter } from "../hooks/filters";
-import { useUrlFilter } from "../hooks/filters/generics/useUrlFilter";
-import { ProductModal } from "../components/products/ProductModal";
-import type { IProduct } from "../types/product.interface";
+import { ProductTableRow } from "../../components/products/ProductTableRow"; 
+import { useProduct } from "../../hooks/products.hook"; // Tu hook real
+import { ProductSearchFilters } from "../../components/products/ProductSearchFilters";
+import { useIdFilter, useSelectFilter } from "../../hooks/filters";
+import { useUrlFilter } from "../../hooks/filters/generics/useUrlFilter";
+import { ProductModal } from "../../components/products/ProductModal";
+import type { IProduct } from "../../types/product.interface";
 
 export default function ProductList() {
     // 1. Estado para el filtro (sincronizado con URL)

@@ -1,0 +1,16 @@
+<html>
+<body>
+    <!--
+    Este archivo debe colocarse en el directorio 'public/' de tu aplicación.
+    No debe ser manejado por React Router.
+    Su única función es cargar el script del adaptador de Keycloak
+    para que Keycloak pueda verificar silenciosamente el estado de la sesión
+    dentro de un iframe oculto.
+    -->
+    <script src="http://localhost:8080/js/keycloak.js"></script>
+    <script>
+        // Inicializa el adaptador de Keycloak si es necesario
+        // window.parent.postMessage(JSON.stringify({ ... }), '*')
+    </script>
+</body>
+</html>

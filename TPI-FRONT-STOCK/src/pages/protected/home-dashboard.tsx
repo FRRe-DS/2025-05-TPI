@@ -1,8 +1,8 @@
-import SidePanel from "../components/home/sidePanel/sidePanel";
+import SidePanel from "../../components/home/sidePanel/sidePanel";
 import { Outlet } from "react-router-dom";
 
 
-export default function Home(){
+export default function HomeDashboard(){
   return (
     <>
       <div className="block lg:flex lg:flex-row">

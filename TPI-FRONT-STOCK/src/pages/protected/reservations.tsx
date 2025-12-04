@@ -1,7 +1,7 @@
 import { useState, useCallback } from "react";
-import { ReservationFilterProvider } from "../context/reservation/reservationFilterProvider";
-import { useReservationFilter } from "../context/reservation/reservationFilterContext";
-import Pagination from "../components/common/ui/pagination";
+import { ReservationFilterProvider } from "../../context/reservation/reservationFilterProvider";
+import { useReservationFilter } from "../../context/reservation/reservationFilterContext";
+import Pagination from "../../components/common/ui/pagination";
 
 import {
  ReservationModal,
@@ -9,8 +9,8 @@ import {
  ReservationTableRow,
  LoadingState,
  EmptyState,
-} from "../components/reservations";
-import type { IReservation } from "../types/reservation.interface";
+} from "../../components/reservations";
+import type { IReservation } from "../../types/reservation.interface";
 
 function ReservationsContent() {
  // Desestructuramos las props del Contexto
