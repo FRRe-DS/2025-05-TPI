@@ -92,52 +92,38 @@ export async function createProduct(productData: IProductInput): Promise<IProduc
 
 export async function updateProduct(id: number, productData: IProductInput): Promise<IProduct> {
   try {
-    // 1. Sanitización de datos
-    const pesoFinal = productData.pesoKg;
-    const stockFinal = productData.stock;
-    
-    // 2. ID de Categoría
+    // Construir el payload exactamente igual que en createProduct
     const categoriaId = productData.categorias?.[0] ? Number(productData.categorias[0]) : null;
 
-    // 3. Payload
     const payload = {
       nombre: productData.nombre,
       precio: Number(productData.precio),
+      stockDisponible: Number(productData.stock),
       descripcion: productData.descripcion,
-      stockDisponible: Number(stockFinal),
-      pesoKg: pesoFinal ? Number(pesoFinal) : 0, 
+      pesoKg: Number(productData.pesoKg),
       
       dimensiones: {
-        altoCm: Number(productData.dimensiones?.altoCm || 0),
-        anchoCm: Number(productData.dimensiones?.anchoCm || 0),
-        largoCm: Number(productData.dimensiones?.largoCm || 0),
+        altoCm: Number(productData.dimensiones?.altoCm),
+        anchoCm: Number(productData.dimensiones?.anchoCm),
+        largoCm: Number(productData.dimensiones?.largoCm),
       },
-      
-      ubicacion: {
-          calle: productData.ubicacion?.calle || "",
-          ciudad: productData.ubicacion?.ciudad || "",
-          provincia: productData.ubicacion?.provincia || "",
-          codigoPostal: productData.ubicacion?.codigoPostal || "",
-          pais: productData.ubicacion?.pais || ""
-      },
-      
-      // --- SOLUCIÓN DE CATEGORÍAS ---
+  
+      ubicacion: productData.ubicacion,
+
       categorias: categoriaId ? [{ id: categoriaId }] : [],
-      
-      categoria_id: categoriaId 
+      categoria_id: categoriaId
     };
 
     console.log("Payload Actualizar:", payload);
-
-    const result = await api.patch<IProduct>(`/productos/${id}`, payload);
     
-    if (!result) throw new Error("Error updating product");
-
+    // IMPORTANTE: Usa PATCH o PUT según lo que espere tu backend
+    const result = await api.patch<IProduct>(`/productos/${id}`, payload);
     return result.data;
 
   } catch (error) {
     if (axios.isAxiosError(error)) {
-        console.error("Error Backend (Update):", error.response?.data);
+      console.error("Error Backend (Actualizar):", error.response?.data);
+      throw new Error(error.response?.data?.message || "Error al actualizar producto");
     }
     throw error;
   }

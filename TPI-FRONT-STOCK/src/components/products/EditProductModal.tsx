@@ -2,30 +2,10 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import type { IProduct } from "../../types/product.interface";
+import type { IProduct, IProductInput } from "../../types/product.interface"; // ✅ Importar la global
 
-
-export interface IProductInput {
-    nombre: string;
-    precio: number;
-    stockDisponible: number; 
-    descripcion?: string;
-    pesoKg?: number;      
-    dimensiones?: {
-        altoCm: number;
-        anchoCm: number;
-        largoCm: number;
-    };
-    ubicacion?: {
-        calle: string;
-        codigoPostal: string;
-        ciudad?: string;
-        provincia?: string;
-        pais?: string;
-    };
-    
-    categoryIds?: number[];
-}
+// ❌ ELIMINAR ESTA INTERFAZ DUPLICADA (Líneas 7-28 aprox)
+// export interface IProductInput { ... }
 
 interface EditProductModalProps {
   isOpen: boolean;
@@ -35,10 +15,11 @@ interface EditProductModalProps {
   availableCategories?: { id: number; nombre: string }[]; 
 }
 
+// ✅ Schema actualizado para coincidir con la interfaz global
 const productSchema = z.object({
   nombre: z.string().min(3, "El nombre es muy corto"),
   precio: z.coerce.number().min(0.01, "Precio inválido"),
-  stockDisponible: z.coerce.number().int().min(0),
+  stock: z.coerce.number().int().min(0), // ✅ Cambiar 'stockDisponible' → 'stock'
   descripcion: z.string().optional(),
   pesoKg: z.coerce.number().min(0).optional(),
   
@@ -49,14 +30,12 @@ const productSchema = z.object({
   }).optional(),
 
   ubicacion: z.object({
-    calle: z.string().optional(),
-    codigoPostal: z.string().optional(),
-    ciudad: z.string().optional(),
-    provincia: z.string().optional(),
-    pais: z.string().optional(),
+    almacenId: z.string().optional(),
+    pasillo: z.string().optional(),
+    estante: z.string().optional(),
   }).optional(),
 
-  categoryIds: z.array(z.coerce.number()).optional(),
+  categorias: z.array(z.coerce.number()).optional(),
 });
 
 export function EditProductModal({ 
@@ -67,7 +46,6 @@ export function EditProductModal({
   availableCategories = [] 
 }: EditProductModalProps) {
 
-  // 3. USE FORM
   const { 
     register, 
     handleSubmit, 
@@ -77,7 +55,7 @@ export function EditProductModal({
     resolver: zodResolver(productSchema),
   });
 
-  // 4. EFECTO DE CARGA (Mapeo directo desde tu JSON)
+  // ✅ Efecto de carga corregido
   useEffect(() => {
     if (productToEdit) {
       const p = productToEdit as any;
@@ -87,7 +65,7 @@ export function EditProductModal({
       reset({
         nombre: p.nombre,
         precio: Number(p.precio), 
-        stockDisponible: Number(p.stockDisponible),
+        stock: Number(p.stockDisponible || p.stock_disponible || p.stock || 0), // ✅ Mapear a 'stock'
         descripcion: p.descripcion || "",
         pesoKg: Number(p.pesoKg) || 0, 
         
@@ -98,14 +76,12 @@ export function EditProductModal({
         },
         
         ubicacion: {
-          calle: loc.calle || "",
-          codigoPostal: loc.codigoPostal || "",
-          ciudad: loc.ciudad || "",
-          provincia: loc.provincia || "",
-          pais: loc.pais || "",
+          almacenId: loc.almacenId || "",
+          pasillo: loc.pasillo || "",
+          estante: loc.estante || "",
         },
         
-        categoryIds: p.categorias?.map((c: any) => c.id) || [],
+        categorias: p.categorias?.map((c: any) => c.id) || [],
       });
     }
   }, [productToEdit, reset]);
@@ -149,13 +125,13 @@ export function EditProductModal({
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Stock Disponible</label>
-                {/* Ojo: aquí registramos 'stockDisponible' */}
-                <input {...register("stockDisponible")} type="number" className="w-full border p-2 rounded-lg" />
+                {/* ✅ Cambiado a 'stock' */}
+                <input {...register("stock")} type="number" className="w-full border p-2 rounded-lg" />
               </div>
               
               <div className="col-span-2">
                   <label className="block text-sm font-medium text-gray-700 mb-1">Categoría Principal</label>
-                  <select {...register("categoryIds.0")} className="w-full border p-2 rounded-lg bg-white">
+                  <select {...register("categorias.0")} className="w-full border p-2 rounded-lg bg-white">
                       <option value="">Sin categoría</option>
                       {availableCategories.map(cat => (
                           <option key={cat.id} value={cat.id}>{cat.nombre}</option>
@@ -171,7 +147,7 @@ export function EditProductModal({
             
             <hr className="border-gray-100" />
             
-            {/* LOGISTICA (USANDO NOMBRES DE TU JSON: altoCm, pesoKg) */}
+            {/* LOGISTICA */}
             <div>
                <h3 className="text-md font-semibold text-gray-900 mb-3">Dimensiones y Peso</h3>
                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
@@ -194,18 +170,22 @@ export function EditProductModal({
                </div>
             </div>
 
-             {/* UBICACION (USANDO NOMBRES DE TU JSON: calle, ciudad) */}
+             {/* UBICACION */}
             <div>
                <h3 className="text-md font-semibold text-gray-900 mb-3">Ubicación en Almacén</h3>
-               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="col-span-2">
-                    <label className="text-xs text-gray-500">Calle y Altura</label>
-                    <input {...register("ubicacion.calle")} placeholder="Ej: Av. Principal 123" className="w-full border p-2 rounded-lg" />
+               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div>
+                    <label className="text-xs text-gray-500">Almacén ID</label>
+                    <input {...register("ubicacion.almacenId")} placeholder="Ej: ALM-001" className="w-full border p-2 rounded-lg" />
                   </div>
-                  <div><label className="text-xs text-gray-500">Ciudad</label><input {...register("ubicacion.ciudad")} className="w-full border p-2 rounded-lg" /></div>
-                  <div><label className="text-xs text-gray-500">Provincia</label><input {...register("ubicacion.provincia")} className="w-full border p-2 rounded-lg" /></div>
-                  <div><label className="text-xs text-gray-500">CP</label><input {...register("ubicacion.codigoPostal")} className="w-full border p-2 rounded-lg" /></div>
-                  <div><label className="text-xs text-gray-500">País</label><input {...register("ubicacion.pais")} className="w-full border p-2 rounded-lg" /></div>
+                  <div>
+                    <label className="text-xs text-gray-500">Pasillo</label>
+                    <input {...register("ubicacion.pasillo")} placeholder="Ej: A-12" className="w-full border p-2 rounded-lg" />
+                  </div>
+                  <div>
+                    <label className="text-xs text-gray-500">Estante</label>
+                    <input {...register("ubicacion.estante")} placeholder="Ej: E-3" className="w-full border p-2 rounded-lg" />
+                  </div>
                </div>
             </div>
 

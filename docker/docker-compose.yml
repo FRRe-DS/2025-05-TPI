@@ -68,22 +68,6 @@ services:
       - tpi_network
     restart: unless-stopped
 
-  stock_frontend:
-    build:
-      context: ../TPI-FRONT-STOCK
-      dockerfile: Dockerfile
-    container_name: stock_frontend
-    ports:
-      - "5173:5173"
-    environment:
-      - VITE_API_URL=http://localhost:8000/v1
-    depends_on:
-      - stock_backend_api
-      - keycloak
-    networks:
-      - tpi_network
-    restart: unless-stopped
-
 volumes:
   keycloak_db_data:
     driver: local
