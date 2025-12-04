@@ -69,31 +69,37 @@ export const ReservationTableRow = memo(function ReservationTableRow({
       className: "text-right",
       render: (r: IReservation) => (
         <div className="flex justify-end items-center gap-2">
-            <button
-                onClick={(e) => {
-                    e.stopPropagation();
-                    onViewDetails(r);
-                }}
-                className="inline-flex items-center gap-2 px-3 py-2 bg-gray-900 hover:bg-gray-800 text-white text-sm font-medium rounded-lg transition-colors duration-150 shadow-sm hover:shadow-md cursor-pointer"
-            >
-                Ver detalles
-            </button>
-            {r.estado === 'PENDIENTE' && (
-                <button
-                    onClick={(e) => {
-                        e.stopPropagation();
-                        onCancel(r);
-                    }}
-                    className="inline-flex items-center gap-2 px-3 py-2 bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 text-sm font-medium rounded-lg transition-colors shadow-sm cursor-pointer"
-                    title="Cancelar reserva"
-                >
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                    Cancelar
-                </button>
-            )}
-
+          <button
+              onClick={(e) => {
+                  e.stopPropagation();
+                  onViewDetails(r);
+              }}
+              className="inline-flex items-center gap-2 px-3 py-2 bg-gray-900 hover:bg-gray-800 text-white text-sm font-medium rounded-lg transition-colors duration-150 shadow-sm hover:shadow-md cursor-pointer"
+          >
+              Ver detalles
+          </button>
+          <button
+            disabled={r.estado !== "PENDIENTE"}
+            onClick={(e) => {
+              e.stopPropagation();
+              onCancel(r);
+            }}
+            className={`inline-flex items-center gap-2 px-3 py-2 
+              text-sm font-medium rounded-lg transition-colors shadow-sm cursor-pointer
+              border 
+              ${
+                r.estado !== "PENDIENTE"
+                  ? "bg-gray-200 text-gray-400 border-gray-300 cursor-not-allowed"
+                  : "bg-red-50 hover:bg-red-100 text-red-600 border-red-200"
+              }
+            `}
+            title="Cancelar reserva"
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+            Cancelar
+          </button>
         </div>
       )
     }
