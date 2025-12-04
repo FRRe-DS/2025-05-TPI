@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-# docker-compose.yml
-=======
->>>>>>> develop
 services:
   keycloak_db:
     image: postgres:16.2
@@ -54,10 +50,6 @@ services:
       DB_HOST: aws-1-us-east-2.pooler.supabase.com
       DB_PORT: 5432
       DB_NAME: postgres
-<<<<<<< HEAD
-      DB_USER: postgres.vzabfnzrcynffhdjdddv
-      DB_PASSWORD: ${SUPABASE_DB_PASSWORD}  # 7[454ATMEpV5
-=======
       DB_USER: ${SUPABASE_DB_USER}
       DB_PASSWORD: ${SUPABASE_DB_PASSWORD}
       DB_OPTIONS: ${SUPABASE_DB_OPTIONS}
@@ -65,7 +57,6 @@ services:
       KEYCLOAK_TOKEN_URL: ${KEYCLOAK_TOKEN_URL}
       KEYCLOAK_CLIENT_ID: ${KEYCLOAK_CLIENT_ID}  
       KEYCLOAK_CLIENT_SECRET: ${KEYCLOAK_CLIENT_SECRET}
->>>>>>> develop
       
       # Configuración para Keycloak:
       KEYCLOAK_ISSUER_URL: http://keycloak:8080/realms/ds-2025-05-realm
