@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { X, Box, Calendar, Users, Menu, User } from "lucide-react"
+import { X, Box, Calendar, Users, Menu, User, Tags } from "lucide-react"
 import { Link, useLocation } from "react-router-dom"
 
 export default function SidePanelMobile() {
@@ -11,6 +11,7 @@ export default function SidePanelMobile() {
 
   const navItems = [
     { name: "Productos", icon: Box, path: "/admin/productos" },
+    { name: "Categorías", icon: Tags, path: "/admin/categorias" },
     { name: "Reservas", icon: Calendar, path: "/admin/reservas" },
     { name: "Clientes", icon: Users, path: "/admin/clientes" },
   ]

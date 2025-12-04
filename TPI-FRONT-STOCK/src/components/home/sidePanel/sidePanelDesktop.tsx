@@ -1,4 +1,4 @@
-import { Box, Calendar, Users } from "lucide-react"
+import { Box, Calendar, Tags, Users } from "lucide-react"
 import { Link, useLocation } from "react-router-dom"
 import { useNotification } from "../../../context/notifications/notificactions"
 
@@ -8,6 +8,7 @@ export default function SidePanelDesktop() {
 
   const navItems = [
     { name: "Productos", icon: Box, path: "/admin/productos" },
+    { name: "Categorías", icon: Tags, path: "/admin/categorias" },
     { name: "Reservas", icon: Calendar, path: "/admin/reservas" },
     { name: "Clientes", icon: Users, path: "/admin/clientes" },
   ]

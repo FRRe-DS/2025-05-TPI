@@ -5,7 +5,7 @@ import { api } from "../client"
 
 export async function getAllCategories(): Promise<ICategory[]> {
   try{
-    const result = await api.get<ICategory[]>("/categories")
+    const result = await api.get<ICategory[]>("/categorias")
 
     if(!result){
       throw new Error('Categories not found')
@@ -27,7 +27,7 @@ export async function getAllCategories(): Promise<ICategory[]> {
 
 export async function getCategoryById(id:number):Promise<ICategory>{
   try{
-    const result = await api.get(`/categories/${id}`)
+    const result = await api.get(`/categorias/${id}`)
     if (!result){
       throw new Error ('Category not found')
     }
@@ -41,6 +41,30 @@ export async function getCategoryById(id:number):Promise<ICategory>{
       }
     }
 
+    throw error;
+  }
+}
+
+export async function createCategory(data: { nombre: string; descripcion?: string | null }) {
+  try {
+    const payload = { nombre: data.nombre, descripcion: data.descripcion ?? null };
+    const result = await api.post<ICategory>("/categorias", payload);
+    return result.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.error("Error creando categoria:", error.response?.data || error.message);
+    }
+    throw error;
+  }
+}
+
+export async function deleteCategory(id: number) {
+  try {
+    await api.delete(`/categorias/${id}`);
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.error("Error eliminando categoria:", error.response?.data || error.message);
+    }
     throw error;
   }
 }
