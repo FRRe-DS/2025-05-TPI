@@ -1,5 +1,3 @@
-import React from 'react';
-
 // --- CONSTANTES DE CONFIGURACIÓN ---
 const LIMITE_STOCK_BAJO = 10;
 const LIMITE_STOCK_CRITICO = 3;

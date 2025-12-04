@@ -5,7 +5,8 @@ import { requireAnyRole } from "../middleware/requireRole";
 export const reservationRouter = Router();
 const reservationController = container.reservationyController;
 
-// GET /v1/reservas - Listar reservas de un usuario
+// GET /v1/reservas - Obtener todas las reservas o filtrar por usuarioId
+// Fusionamos: Usamos la seguridad de tus compañeros + tu método del controlador
 reservationRouter.get("/", 
     requireAnyRole(["stock-be", "compras-be", "logistica-be"]),
     reservationController.getReservations

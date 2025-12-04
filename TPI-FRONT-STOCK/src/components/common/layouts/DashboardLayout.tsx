@@ -1,4 +1,3 @@
-import React from "react";
 import SidePanel from "../../home/sidePanel/sidePanel"; // Ajusta esta ruta si es necesario
 import { Outlet } from "react-router-dom";
 
