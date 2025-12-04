@@ -3,7 +3,9 @@ import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { keycloakConfig, type KeycloakState } from "../../client";
 import Keycloak from "keycloak-js";
 import { KeycloakAuthContext } from "./auth.context";
+import { setKeycloakInstance } from "./keycloak.instance";
 import axios from "axios";
+
 
 interface KeycloakAuthProviderProps{
   children: ReactNode;
@@ -25,6 +27,7 @@ export default function KeycloakAuthProvider({ children }: KeycloakAuthProviderP
   // Lógica de inicialización (el corazón del Contexto)
   useEffect(() => {
       const keycloakInstance = new Keycloak(keycloakConfig);
+      setKeycloakInstance(keycloakInstance);
 
       keycloakInstance
       .init({

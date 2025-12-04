@@ -1,15 +1,16 @@
 
 export interface IDimension {
-    lengthCm: number;
-    widthCm: number;
-    heightCm: number;
+    largoCm: number;
+    anchoCm: number;
+    altoCm: number;
 }
 
 export interface IWarehouseLocation {
-    warehouseId: number;
-    aisle: string;
-    shelf: string;
-    level: number;
+    calle: string;
+    ciudad: string;
+    provincia: string;
+    codigoPostal: string;
+    pais: string;
 }
 
 export interface IErrorResponse {

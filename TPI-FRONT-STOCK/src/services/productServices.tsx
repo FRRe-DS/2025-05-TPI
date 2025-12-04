@@ -52,28 +52,26 @@ export async function getProductByName(name: string): Promise<IProduct[]> {
 
 // --- CREATE (Crear) ---
 
-export async function createProduct(productData: any): Promise<IProduct> {
+export async function createProduct(productData: IProductInput): Promise<IProduct> {
   try {
-    const categoriaId = productData.categoryIds?.[0] ? Number(productData.categoryIds[0]) : null;
+    const categoriaId = productData.categorias?.[0] ? Number(productData.categorias[0]) : null;
 
     const payload = {
       nombre: productData.nombre,
       precio: Number(productData.precio),
       stockDisponible: Number(productData.stock),
       descripcion: productData.descripcion,
-      pesoKg: Number(productData.weightKg),
+      pesoKg: Number(productData.pesoKg),
       
       dimensiones: {
-        altoCm: Number(productData.dimensions?.heightCm),
-        anchoCm: Number(productData.dimensions?.widthCm),
-        largoCm: Number(productData.dimensions?.lengthCm),
+        altoCm: Number(productData.dimensiones?.altoCm),
+        anchoCm: Number(productData.dimensiones?.anchoCm),
+        largoCm: Number(productData.dimensiones?.largoCm),
       },
-      
-      ubicacion: productData.location,
-      
-      // Enviamos el objeto con ID para crear la relación
+  
+      ubicacion: productData.ubicacion,
+
       categorias: categoriaId ? [{ id: categoriaId }] : [],
-      // Enviamos también el campo simple por compatibilidad
       categoria_id: categoriaId
     };
 
@@ -92,14 +90,14 @@ export async function createProduct(productData: any): Promise<IProduct> {
 
 // --- UPDATE (Actualizar) ---
 
-export async function updateProduct(id: number, productData: any): Promise<IProduct> {
+export async function updateProduct(id: number, productData: IProductInput): Promise<IProduct> {
   try {
     // 1. Sanitización de datos
-    const pesoFinal = productData.pesoKg ?? productData.weightKg;
-    const stockFinal = productData.stockDisponible ?? productData.stock;
+    const pesoFinal = productData.pesoKg;
+    const stockFinal = productData.stock;
     
     // 2. ID de Categoría
-    const categoriaId = productData.categoryIds?.[0] ? Number(productData.categoryIds[0]) : null;
+    const categoriaId = productData.categorias?.[0] ? Number(productData.categorias[0]) : null;
 
     // 3. Payload
     const payload = {
@@ -110,17 +108,17 @@ export async function updateProduct(id: number, productData: any): Promise<IProd
       pesoKg: pesoFinal ? Number(pesoFinal) : 0, 
       
       dimensiones: {
-        altoCm: Number(productData.dimensiones?.altoCm || productData.dimensions?.heightCm || 0),
-        anchoCm: Number(productData.dimensiones?.anchoCm || productData.dimensions?.widthCm || 0),
-        largoCm: Number(productData.dimensiones?.largoCm || productData.dimensions?.lengthCm || 0),
+        altoCm: Number(productData.dimensiones?.altoCm || 0),
+        anchoCm: Number(productData.dimensiones?.anchoCm || 0),
+        largoCm: Number(productData.dimensiones?.largoCm || 0),
       },
       
       ubicacion: {
-          calle: productData.ubicacion?.calle || productData.location?.calle || "",
-          ciudad: productData.ubicacion?.ciudad || productData.location?.ciudad || "",
-          provincia: productData.ubicacion?.provincia || productData.location?.provincia || "",
-          codigoPostal: productData.ubicacion?.codigoPostal || productData.location?.codigoPostal || "",
-          pais: productData.ubicacion?.pais || productData.location?.pais || ""
+          calle: productData.ubicacion?.calle || "",
+          ciudad: productData.ubicacion?.ciudad || "",
+          provincia: productData.ubicacion?.provincia || "",
+          codigoPostal: productData.ubicacion?.codigoPostal || "",
+          pais: productData.ubicacion?.pais || ""
       },
       
       // --- SOLUCIÓN DE CATEGORÍAS ---
