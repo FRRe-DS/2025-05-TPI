@@ -3,6 +3,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { CategoryService } from '../services/category.service'; 
 import { CategoriaInput } from '../types/categories'; 
+import { AppError } from '../utils/AppError'; // <--- 1. Importamos esto
 
 export class CategoryController {
   private categoryService: CategoryService;
@@ -16,8 +17,8 @@ export class CategoryController {
       const input: CategoriaInput = req.body; 
       
       if (!input.nombre) {
-        res.status(400).json({ message: "El campo 'nombre' es requerido." });
-        return;
+        // 2. Reemplazamos el res.status(400) por AppError
+        return next(new AppError("El campo 'nombre' es requerido.", 400, "INVALID_DATA", "Debes enviar un nombre para la categoría"));
       }
       
       const newCategory = await this.categoryService.createCategory(input);
@@ -32,6 +33,7 @@ export class CategoryController {
     try {
       const categories = await this.categoryService.listCategories();
       res.status(200).json(categories);
+      
     } catch (error) {
       next(error); 
     }
@@ -42,14 +44,18 @@ export class CategoryController {
       const id = parseInt(req.params.id, 10); 
       
       if (isNaN(id)) {
-        res.status(400).json({ message: "El ID de la categoría debe ser numérico." });
-        return;
+         // 3. Validación de ID inválido
+         return next(new AppError("El ID de la categoría debe ser numérico.", 400, "INVALID_ID"));
       }
 
       await this.categoryService.deleteCategory(id);
       
       res.status(204).send();
-    } catch (error) {
+    } catch (error: any) {
+      // 4. Pequeña mejora: si el error dice "not found", devolvemos 404
+      if (error.message && error.message.includes("not found")) {
+         return next(new AppError(error.message, 404, 'CATEGORY_NOT_FOUND'));
+      }
       next(error);
     }
   }

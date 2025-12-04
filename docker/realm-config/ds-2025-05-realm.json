@@ -1,0 +1,207 @@
+{
+  "realm": "ds-2025-05-realm",
+  "enabled": true,
+  "displayName": "Grupo 05 - Realm Dedicado para Stock",
+  "id": "ds-2025-05-realm",
+
+  "defaultDefaultClientScopes": [
+   "web-origins",
+   "acr",
+   "profile",
+   "email",
+   "custom-roles"
+  ],
+
+  "clientScopes": [
+   {
+    "name": "custom-roles",
+    "description": "Adds realm roles as 'roles' array in the token",
+    "protocol": "openid-connect",
+    "attributes": {
+     "include.in.token.scope": "true",
+     "display.on.consent.screen": "false"
+    },
+    "protocolMappers": [
+     {
+       "name": "realm-roles-to-roles",
+       "protocol": "openid-connect",
+       "protocolMapper": "oidc-usermodel-realm-role-mapper",
+       "consentRequired": false,
+       "config": {
+        "claim.name": "roles",
+        "multivalued": "true",
+        "userinfo.token.claim": "true",
+        "id.token.claim": "true",
+        "access.token.claim": "true",
+        "jsonType.label": "String"
+       }
+     }
+    ]
+   }
+  ],
+
+  "roles": {
+   "realm": [
+    {
+     "name": "stock-be",
+     "description": "Rol de acceso completo a las funciones de stock para el grupo 05"
+    },
+    {
+     "name": "default-roles-ds-2025-05-realm",
+     "description": "${bundle.role.defaultRoles}",
+     "composite": true
+    }
+   ]
+  },
+
+  "clients": [
+   {
+    "clientId": "grupo-05",
+    "name": "Cliente API Stock",
+    "rootUrl": "http://localhost:5173",
+    "enabled": true,
+    "publicClient": true,
+    "protocol": "openid-connect",
+    "redirectUris": [
+     "http://localhost:5173/*",
+     "http://localhost:5173",
+     "http://localhost:5173/admin/*",
+     "http://localhost:5173/admin/productos",
+     "http://localhost:5173/silent-check-sso.html"
+    ],
+    "webOrigins": ["*"],
+    "authorizationServicesEnabled": false,
+    "serviceAccountsEnabled": true,
+    "standardFlowEnabled": true,
+    "implicitFlowEnabled": false,
+    "directAccessGrantsEnabled": false,
+    "secret": "va7b8t0Kz8-9ah9giNiHB-cgyCkdpulE",
+    "attributes": {
+     "post.logout.redirect.uris": "http://localhost:5173/"
+    }
+   }
+  ],
+
+  "users": [
+    {
+      "username": "valentino_stock",
+      "enabled": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "pass1234",
+          "temporary": false
+        }
+      ],
+      "realmRoles": ["stock-be"]
+    },
+    {
+      "username": "agustin_stock",
+      "enabled": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "pass1234",
+          "temporary": false
+        }
+      ],
+      "realmRoles": ["stock-be"]
+    },
+    {
+      "username": "ivo_stock",
+      "enabled": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "pass1234",
+          "temporary": false
+        }
+      ],
+      "realmRoles": ["stock-be"]
+    },
+    {
+      "username": "elias_stock",
+      "enabled": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "pass1234",
+          "temporary": false
+        }
+      ],
+      "realmRoles": ["stock-be"]
+    },
+    {
+      "username": "facu_stock",
+      "enabled": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "pass1234",
+          "temporary": false
+        }
+      ],
+      "realmRoles": ["stock-be"]
+    },
+    {
+      "username": "gaston_stock",
+      "enabled": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "pass1234",
+          "temporary": false
+        }
+      ],
+      "realmRoles": ["stock-be"]
+    },
+    {
+      "username": "ian_stock",
+      "enabled": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "pass1234",
+          "temporary": false
+        }
+      ],
+      "realmRoles": ["stock-be"]
+    },
+    {
+      "username": "juan_stock",
+      "enabled": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "pass1234",
+          "temporary": false
+        }
+      ],
+      "realmRoles": ["stock-be"]
+    },
+    {
+      "username": "lautaro_stock",
+      "enabled": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "pass1234",
+          "temporary": false
+        }
+      ],
+      "realmRoles": ["stock-be"]
+    },
+    {
+      "username": "nahuel_stock",
+      "enabled": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "pass1234",
+          "temporary": false
+        }
+      ],
+      "realmRoles": ["stock-be"]
+    }
+  ]
+}

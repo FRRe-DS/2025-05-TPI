@@ -1,21 +1,50 @@
-import { useQuery } from "@tanstack/react-query";
-import type { IProduct } from "../types";
-import { getAllProducts, getProductByName } from "../services/productServices";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import type { IProduct, IProductInput } from "../types";
+import { getAllProducts, getProductByName, createProduct, updateProduct } from "../services/productServices";
 
-// Obtener todas las reservas
-export const useProduct = () => 
-  useQuery<IProduct[], Error>({
+export const useProduct = () => {
+  const queryClient = useQueryClient();
+
+  // 1. GET
+  const query = useQuery<IProduct[], Error>({
     queryKey: ["products"],
     queryFn: getAllProducts,
   });
 
-// Obtener productos por nombre
+  // 2. CREATE
+  const createMutation = useMutation({
+    mutationFn: createProduct,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["products"] });
+    },
+  });
+
+  // 3. UPDATE (Asegúrate de tener este bloque)
+  const updateMutation = useMutation({
+    mutationFn: (vars: { id: number; data: IProductInput }) => updateProduct(vars.id, vars.data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["products"] });
+    },
+  });
+
+  return {
+    data: query.data,
+    isLoading: query.isLoading,
+    isError: query.isError,
+    
+    createProduct: createMutation.mutateAsync,
+    isCreating: createMutation.isPending,
+    
+    // TIENES QUE EXPORTAR ESTO PARA QUE FUNCIONE:
+    updateProduct: updateMutation.mutateAsync,
+    isUpdating: updateMutation.isPending,
+  };
+};
+
 export const useProductByName = (name: string) => 
   useQuery<IProduct[], Error>({
     queryKey: ["products", "byName", name], 
-    
     queryFn: () => getProductByName(name), 
     staleTime: 1000 * 60 * 5,
     enabled: !!name, 
   });
-

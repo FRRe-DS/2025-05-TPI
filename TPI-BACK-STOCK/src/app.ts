@@ -4,29 +4,46 @@ import "reflect-metadata";
 import express, { json } from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+dotenv.config(); // Configuración de variables de entorno (se hace una sola vez al principio)
+
 import { AppDataSource } from "./config/appDataSource";
 import { categoryRouter, productRouter, reservationRouter } from "./routes";
 
-dotenv.config();
+// Imports de tus compañeros (Keycloak y Session)
+import session from "express-session";
+import { keycloak, memoryStore } from "./config/keycloak";
+import { initAuthM2M } from "./services/keykcloak.service";
+
+// Import de tu tarea (Error Handler)
+import { errorHandler } from "./middlewares/errorHandler";
 
 const app = express();
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }))
+app.use(express.urlencoded({ extended: true }));
+
+// Configuración de la session (Agregado por tus compañeros)
+app.use(
+  session({
+    secret: "MiclaveDeDesarrollo",   // completar si es necesario
+    resave: false,
+    saveUninitialized: true,
+    store: memoryStore,
+  })
+);
+
+// Esto engancha Keycloak a todas las requests (Agregado por tus compañeros)
+app.use(keycloak.middleware());
 
 /*
-  Configuracion para orgigenes y permisos 
-  (Acepta cualquier peticion que venga las urls establecidas y con el header de credenciales)
+  Configuracion para origenes y permisos 
 */
 const corsOptions = {
-  origin: [
-    'http://localhost:3000',
-    'http://localhost:5173'
-  ],
+  origin: true,
   optionsSuccessStatus: 200 
 }
 
 app.use(cors(corsOptions));
-app.use(json());
+// app.use(json()); // Ya tienes app.use(express.json()) arriba, pero lo dejo por si acaso lo usan así.
 
 const PORT = process.env.PORT || 8080;
 
@@ -40,17 +57,20 @@ AppDataSource.initialize()
 
 const initApp = async () => {
   try {
+    console.log("🔄 ENTRO AL TRY...");
 
     // Conexion a base de datos
     await AppDataSource.initialize();
-    console.log("✅ Conexion establecida a la Base de Datos");
-    
+    console.log("✅ Conexion establecida");
+
     // Rutas
     app.get('/', (req, res) => res.send('Prueba api node'));
     app.use("/v1/categorias", categoryRouter);
     app.use("/v1/productos", productRouter);
     app.use("/v1/reservas", reservationRouter);
     
+    // 👇 TU MANEJADOR DE ERRORES (Aquí está perfecto)
+    app.use(errorHandler);
 
     // Iniciar servidor
     const PORT = process.env.PORT || 8080;
@@ -60,13 +80,15 @@ const initApp = async () => {
       console.log(`📍 Reservas: http://localhost:${PORT}/v1/reservas`);
       console.log(`📍 Categorias: http://localhost:${PORT}/v1/categorias`);
     });
+<<<<<<< HEAD
 
     
+=======
+>>>>>>> develop
   } catch (error) {
     console.error("❌ Error initializing app:", error);
     process.exit(1);
   }
 };
-
 
 initApp();

@@ -1,7 +1,7 @@
 import { useState, useCallback } from "react";
-import { ReservationFilterProvider } from "../context/reservation/reservationFilterProvider";
-import { useReservationFilter } from "../context/reservation/reservationFilterContext";
-import Pagination from "../components/common/ui/pagination";
+import { ReservationFilterProvider } from "../../context/reservation/reservationFilterProvider";
+import { useReservationFilter } from "../../context/reservation/reservationFilterContext";
+import Pagination from "../../components/common/ui/pagination";
 
 import {
  ReservationModal,
@@ -9,8 +9,9 @@ import {
  ReservationTableRow,
  LoadingState,
  EmptyState,
-} from "../components/reservations";
-import type { IReservation } from "../types/reservation.interface";
+} from "../../components/reservations";
+import type { IReservation } from "../../types/reservation.interface";
+import { useCancelReservation } from "../../hooks";
 
 function ReservationsContent() {
  // Desestructuramos las props del Contexto
@@ -27,6 +28,8 @@ function ReservationsContent() {
  const [selectedReservation, setSelectedReservation] = useState<IReservation | null>(null);
  const [isModalOpen, setIsModalOpen] = useState(false);
 
+ const { mutate: cancelReservation } = useCancelReservation();
+
  const handleOpenModal = useCallback((reservation: IReservation) => {
   setSelectedReservation(reservation);
   setIsModalOpen(true);
@@ -36,7 +39,6 @@ function ReservationsContent() {
   setIsModalOpen(false);
   setSelectedReservation(null);
  }, []);
-
 
  return (
   <div className="min-h-screen bg-gray-50 py-8">
@@ -82,10 +84,10 @@ function ReservationsContent() {
        <tbody className="bg-white divide-y divide-gray-200">
         {displayData.map((reservation) => (
          <ReservationTableRow
-          key={reservation.idReserva}
-          reservation={reservation}
-          onViewDetails={handleOpenModal}
-         />
+            key={reservation.idReserva}
+            reservation={reservation}
+            onViewDetails={handleOpenModal} 
+            onCancel={() => cancelReservation({ id: reservation.idReserva })} />
         ))}
        </tbody>
       </table>

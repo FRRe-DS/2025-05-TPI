@@ -489,7 +489,18 @@
       ],
       "directAccessGrantsEnabled": true,
       "serviceAccountsEnabled": true,
-      "protocol": "openid-connect"
+      "protocol": "openid-connect",
+      "defaultClientScopes": [
+        "usuarios:read",
+        "productos:read",
+        "productos:write",
+        "reservas:read",
+        "reservas:write",
+        "stock:read",
+        "stock:write",
+        "categorias:read",
+        "categorias:write"
+      ]
     },
     {
       "clientId": "grupo-06",

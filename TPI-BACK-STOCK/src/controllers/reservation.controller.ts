@@ -2,10 +2,8 @@
 
 import { Request, Response, NextFunction } from 'express';
 import { ReservationService } from '../services';
-import { EstadoReserva, ReservaInput, ActualizarReservaInput, CancelacionReservaInput } from '../types/reservation'; // Cambiado a español
-
-// --- Definición de Errores ---
-class ResourceNotFoundError extends Error {} 
+import { ReservaInput, ActualizarReservaInput, CancelacionReservaInput } from '../types/reservation'; 
+import { AppError } from '../utils/AppError'; // <--- Importante
 
 export class ReservationController {
   private reservationService: ReservationService;
@@ -21,8 +19,7 @@ export class ReservationController {
       // Si viene usuarioId, filtrar por usuario
       if (usuarioId !== undefined) {
         if (isNaN(usuarioId)) {
-          res.status(400).json({ message: "El parámetro 'usuarioId' debe ser un número válido." });
-          return;
+          return next(new AppError("El parámetro 'usuarioId' debe ser un número válido.", 400, "INVALID_ID"));
         }
         const userReservations = await this.reservationService.getReservationsByUserId(usuarioId);
         res.status(200).json(userReservations);
@@ -37,24 +34,28 @@ export class ReservationController {
     }
   }
 
-// Método para obtener reserva por ID (sin cambios)
+  // Método para obtener reserva por ID
   getReservationById = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const idReserva = Number(req.params.idReserva);
 
       if (isNaN(idReserva)) {
-        res.status(400).json({ message: "El ID de reserva debe ser un número válido." });
-        return;
+        return next(new AppError("El ID de reserva debe ser un número válido.", 400, "INVALID_ID"));
       }
 
       const reservation = await this.reservationService.getReservationById(idReserva);
-      res.status(200).json(reservation);
-    } catch (error) {
-      if (error instanceof ResourceNotFoundError) {
-        res.status(404).json({ message: error.message });
-      } else {
-        next(error); 
+      
+      if (!reservation) {
+        return next(new AppError("Reserva no encontrada", 404, "RESERVATION_NOT_FOUND", `No existe reserva con ID ${idReserva}`));
       }
+
+      res.status(200).json(reservation);
+    } catch (error: any) {
+      // Si el servicio lanza un error específico de no encontrado
+      if (error.message && (error.message.includes("not found") || error.name === 'ResourceNotFoundError')) {
+         return next(new AppError(error.message, 404, 'RESERVATION_NOT_FOUND'));
+      }
+      next(error); 
     }
   }
 
@@ -64,8 +65,11 @@ export class ReservationController {
       const input: ActualizarReservaInput = req.body; 
 
       if (!input.estado) {
-        res.status(400).json({ message: "Los campos 'usuarioId' y 'estado' son requeridos." });
-        return;
+         return next(new AppError("Los campos 'usuarioId' y 'estado' son requeridos.", 400, "INVALID_DATA"));
+      }
+      
+      if (isNaN(idReserva)) {
+        return next(new AppError("ID de reserva inválido", 400, "INVALID_ID"));
       }
 
       const updatedReservation = await this.reservationService.updateReservationStatus(
@@ -74,12 +78,11 @@ export class ReservationController {
       );
 
       res.status(200).json(updatedReservation);
-    } catch (error) {
-      if (error instanceof ResourceNotFoundError) {
-        res.status(404).json({ message: error.message });
-      } else {
-        next(error);
-      }
+    } catch (error: any) {
+      if (error.message && (error.message.includes("not found") || error.name === 'ResourceNotFoundError')) {
+        return next(new AppError(error.message, 404, 'RESERVATION_NOT_FOUND'));
+     }
+      next(error);
     }
   }
 
@@ -89,16 +92,20 @@ export class ReservationController {
       const input: CancelacionReservaInput = req.body; 
 
       if (!input.motivo) {
-        res.status(400).json({ message: "El campo 'motivo' es requerido." });
-        return;
+        return next(new AppError("El campo 'motivo' es requerido.", 400, "INVALID_DATA"));
+      }
+      
+      if (isNaN(idReserva)) {
+        return next(new AppError("ID de reserva inválido", 400, "INVALID_ID"));
       }
 
       const result: boolean = await this.reservationService.cancelReservation(idReserva);
 
       if (result) {
-        res.status(204).send(); // Cambiado a 204 según contrato
+        res.status(204).send(); 
       } else {
-        res.status(409).json({ message: `No se pudo cancelar la reserva ${idReserva}.` });
+        // Transformamos el 409 original a AppError
+        return next(new AppError(`No se pudo cancelar la reserva ${idReserva}.`, 409, "CONFLICT_ERROR"));
       }
     } catch (error) {
       next(error); 
@@ -111,34 +118,30 @@ export class ReservationController {
 
       // Validar campos requeridos según contrato
       if (!input.idCompra || !input.usuarioId || !input.productos) {
-        res.status(400).json({ 
-          message: "Los campos 'idCompra', 'usuarioId' y 'productos' son requeridos." 
-        });
-        return;
+        return next(new AppError(
+            "Los campos 'idCompra', 'usuarioId' y 'productos' son requeridos.",
+            400,
+            "INVALID_DATA"
+        ));
       }
 
       // Validar que productos sea un array no vacío
       if (!Array.isArray(input.productos) || input.productos.length === 0) {
-        res.status(400).json({ 
-          message: "El campo 'productos' debe ser un array con al menos un producto." 
-        });
-        return;
+        return next(new AppError(
+            "El campo 'productos' debe ser un array con al menos un producto.",
+            400,
+            "INVALID_DATA"
+        ));
       }
 
       // Validar estructura de cada producto
       for (const producto of input.productos) {
         if (!producto.productoId || producto.cantidad === undefined) {
-          res.status(400).json({ 
-            message: "Cada producto debe tener 'productoId' y 'cantidad'." 
-          });
-          return;
+          return next(new AppError("Cada producto debe tener 'productoId' y 'cantidad'.", 400, "INVALID_DATA"));
         }
 
         if (producto.cantidad <= 0) {
-          res.status(400).json({ 
-            message: "La cantidad debe ser mayor a 0." 
-          });
-          return;
+          return next(new AppError("La cantidad debe ser mayor a 0.", 400, "INVALID_DATA"));
         }
       }
 

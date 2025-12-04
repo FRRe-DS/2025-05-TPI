@@ -2,22 +2,30 @@
 
 import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { X, Box, Calendar, Users, Menu, User } from "lucide-react"
+import { X, Box, Calendar, Users, Menu, Tags, LogOut } from "lucide-react"
 import { Link, useLocation } from "react-router-dom"
+import { useKeycloak } from "../../../hooks/keycloak.hook"
 
 export default function SidePanelMobile() {
   const [stockPanelOpen, setStockPanelOpen] = useState(false)
   const location = useLocation()
+  const { logout, user } = useKeycloak()
 
   const navItems = [
-    { name: "Productos", icon: Box, path: "/productos" },
-    { name: "Reservas", icon: Calendar, path: "/reservas" },
-    { name: "Clientes", icon: Users, path: "/clientes" },
+    { name: "Productos", icon: Box, path: "/admin/productos" },
+    { name: "Categorías", icon: Tags, path: "/admin/categorias" },
+    { name: "Reservas", icon: Calendar, path: "/admin/reservas" },
+    { name: "Clientes", icon: Users, path: "/admin/clientes" },
   ]
+
+  const handleLogout = () => {
+    setStockPanelOpen(false)
+    logout()
+  }
 
   return (
     <div className="relative z-50">
-      {/* Barra superior cuando no se muestra la barra lateral en celulares */}
+      {/* Barra superior */}
       <div className="w-full p-3 h-auto flex justify-between items-center bg-gradient-to-r from-gray-900 to-gray-950 border-b border-gray-800">
         <button
           onClick={() => setStockPanelOpen(true)}
@@ -26,9 +34,11 @@ export default function SidePanelMobile() {
           <Menu className="h-6 w-6 text-gray-400" />
         </button>
 
-        <button className="p-2 border border-gray-700 rounded-lg shadow hover:cursor-pointer transition hover:border-gray-600 hover:bg-gray-800 flex items-center">
-          <User className="h-6 w-6 text-gray-400" />
-        </button>
+        {user && (
+          <div className="text-xs text-gray-400 max-w-[150px] truncate">
+            {user.username || user.email}
+          </div>
+        )}
       </div>
 
       <AnimatePresence>
@@ -50,7 +60,7 @@ export default function SidePanelMobile() {
                     <button
                       onClick={() => setStockPanelOpen(false)}
                       className="p-2 rounded-full hover:bg-gray-800 transition"
-                      aria-label="Cerrar panel de stock"
+                      aria-label="Cerrar panel"
                     >
                       <X className="h-6 w-6 text-gray-400" />
                     </button>
@@ -63,15 +73,11 @@ export default function SidePanelMobile() {
                   {navItems.map((item) => {
                     const isActive = location.pathname === item.path
                     return (
-                      <motion.div
-                        key={item.name}
-                        whileHover={{ scale: 1.02 }}
-                        whileTap={{ scale: 0.98 }}
-                        className="rounded-lg"
-                      >
+                      <motion.div key={item.name} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
                         <Link
                           to={item.path}
-                          className={`flex items-center w-full px-4 py-3 rounded-lg transition-all duration-100 ${
+                          onClick={() => setStockPanelOpen(false)}
+                          className={`flex items-center w-full px-4 py-3 rounded-lg transition-all ${
                             isActive
                               ? "bg-gray-800 text-gray-100 border-l-4 border-gray-700"
                               : "text-gray-400 hover:bg-gray-800/60 hover:text-gray-200"
@@ -85,9 +91,29 @@ export default function SidePanelMobile() {
                   })}
                 </div>
 
-                {/* Footer */}
-                <div className="border-t border-gray-800 p-4 bg-gray-900/50 text-xs text-center text-gray-600">
-                  Sistema de Gestión de Stock v1.0
+                {/* Sesión + Logout - SIEMPRE VISIBLE */}
+                <div className="border-t border-gray-800 p-4 space-y-3">
+                  {user && (
+                    <div className="px-3 py-2 bg-gray-800/50 rounded-lg border border-gray-700">
+                      <p className="text-xs text-gray-500 mb-1">Sesión activa</p>
+                      <p className="text-sm text-gray-200 font-medium truncate">
+                        {user.username || user.email || 'Usuario'}
+                      </p>
+                    </div>
+                  )}
+
+                  <motion.button
+                    whileTap={{ scale: 0.95 }}
+                    onClick={handleLogout}
+                    className="flex items-center cursor-pointer justify-center w-full px-4 py-3 rounded-lg bg-red-600/10 border border-red-500/30 text-red-400 hover:bg-red-600/20 transition-all"
+                  >
+                    <LogOut className="h-5 w-5 mr-2" />
+                    <span className="font-medium">Cerrar Sesión</span>
+                  </motion.button>
+
+                  <p className="text-xs text-center text-gray-600 pt-2">
+                    Sistema de Gestión de Stock v1.0
+                  </p>
                 </div>
               </div>
             </motion.div>

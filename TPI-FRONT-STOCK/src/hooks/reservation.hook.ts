@@ -1,5 +1,6 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import {
+  cancelReservation,
   getAllReservations,
   getReservationById,
   getReservationsByUser,
@@ -28,3 +29,14 @@ export const useReservationsByUser = (userId: number, enabled = true) =>
     queryFn: () => getReservationsByUser(userId),
     enabled: enabled && userId > 0,
   });
+
+// Cancelar reserva
+export const useCancelReservation = () => {
+  return useMutation<void, Error, { id: number }>({
+    mutationFn: ({ id }) => cancelReservation(id),
+
+    onError: (error, variables) => {
+      console.error(`Falló la cancelación de la reserva ${variables.id}:`, error);
+    },
+  });
+};

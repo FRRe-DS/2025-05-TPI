@@ -8,6 +8,10 @@ import { Category, Product, ProductImage, Reservation, ReservationItem } from ".
 dns.setDefaultResultOrder("ipv4first");
 dotenv.config();
 
+const isProduction = process.env.NODE_ENV === "production"
+const dbOptions = process.env.DB_OPTIONS;
+const extraOptions = dbOptions ? { options: dbOptions } : {};
+
 export const AppDataSource = new DataSource({
   type: "postgres", 
   host: process.env.DB_HOST,

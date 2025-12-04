@@ -40,3 +40,16 @@ export const getReservationsByUser = async (
     throw error;
   }
 };
+
+export const cancelReservation = async (
+  reservationId: number
+): Promise<void> => {
+  try {
+    await api.delete<IReservation[]>("/reservas", {
+      params: { usuarioId: reservationId }
+    });
+  } catch (error) {
+    console.error(`Error to cancel reservation for  ${reservationId}:`, error);
+    throw error;
+  }
+};

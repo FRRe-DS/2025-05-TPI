@@ -7,14 +7,15 @@ import { formatDate, getStatusColor, getTotalItems } from "../../utils/reservati
 interface ReservationTableRowProps {
   reservation: IReservation;
   onViewDetails: (reservation: IReservation) => void;
+  onCancel: (reservation: IReservation) => void; 
 }
 
 export const ReservationTableRow = memo(function ReservationTableRow({ 
   reservation, 
-  onViewDetails 
+  onViewDetails,
+  onCancel
 }: ReservationTableRowProps) {
 
-  // Aquí definimos las "secciones" (columnas) de la tabla
   const columns: TableColumn<IReservation>[] = useMemo(() => [
     {
       header: "ID Reserva",
@@ -65,22 +66,45 @@ export const ReservationTableRow = memo(function ReservationTableRow({
     },
     {
       header: "Acciones",
-      className: "text-center",
+      className: "text-right",
       render: (r: IReservation) => (
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            onViewDetails(r);
-          }}
-          className="inline-flex items-center gap-2 px-4 py-2 bg-gray-900 hover:bg-gray-800 text-white text-sm font-medium rounded-lg transition-colors duration-150 shadow-sm hover:shadow-md cursor-pointer"
-        >
-          Ver detalles
-        </button>
+        <div className="flex justify-end items-center gap-2">
+          <button
+              onClick={(e) => {
+                  e.stopPropagation();
+                  onViewDetails(r);
+              }}
+              className="inline-flex items-center gap-2 px-3 py-2 bg-gray-900 hover:bg-gray-800 text-white text-sm font-medium rounded-lg transition-colors duration-150 shadow-sm hover:shadow-md cursor-pointer"
+          >
+              Ver detalles
+          </button>
+          <button
+            disabled={r.estado !== "PENDIENTE"}
+            onClick={(e) => {
+              e.stopPropagation();
+              onCancel(r);
+            }}
+            className={`inline-flex items-center gap-2 px-3 py-2 
+              text-sm font-medium rounded-lg transition-colors shadow-sm cursor-pointer
+              border 
+              ${
+                r.estado !== "PENDIENTE"
+                  ? "bg-gray-200 text-gray-400 border-gray-300 cursor-not-allowed"
+                  : "bg-red-50 hover:bg-red-100 text-red-600 border-red-200"
+              }
+            `}
+            title="Cancelar reserva"
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+            Cancelar
+          </button>
+        </div>
       )
     }
-  ], [onViewDetails]);
+  ], [onViewDetails, onCancel]);
 
-  // Pasamos 'reservation' como 'showData' y las columnas definidas
   return (
     <GenericTableRow 
       showData={reservation} 

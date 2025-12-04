@@ -18,15 +18,15 @@ export interface IProduct {
 }
 
 export interface IProductInput {
-    nombre: string;
-    precio: number;
-    stock: number; 
-    descripcion?: string;
-    weightKg?: number;
-    dimensions?: IDimension;
-    location?: IWarehouseLocation;
-    images?: Omit<IImageProduct, 'id'>[]; 
-    categoryIds?: number[];
+  nombre: string;
+  precio: number;
+  stock: number; 
+  descripcion?: string;
+  pesoKg?: number;
+  dimensiones?: IDimension;
+  ubicacion?: IWarehouseLocation;
+  imagenes?: Omit<IImageProduct, 'id'>[]; 
+  categorias?: number[];
 }
 
 export type IProductUpdate = Partial<IProductInput>;

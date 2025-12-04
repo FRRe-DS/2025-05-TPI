@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 # docker-compose.yml
+=======
+>>>>>>> develop
 services:
   keycloak_db:
     image: postgres:16.2
@@ -15,8 +18,7 @@ services:
     image: quay.io/keycloak/keycloak:23.0.6
     command: start --import-realm
     environment:
-      KC_HOSTNAME: localhost
-      KC_HOSTNAME_PORT: 8080
+      KC_HOSTNAME_URL: http://localhost:8080
       KC_HOSTNAME_STRICT_BACKCHANNEL: false
       KC_HTTP_ENABLED: true
       KC_HOSTNAME_STRICT_HTTPS: false
@@ -52,12 +54,22 @@ services:
       DB_HOST: aws-1-us-east-2.pooler.supabase.com
       DB_PORT: 5432
       DB_NAME: postgres
+<<<<<<< HEAD
       DB_USER: postgres.vzabfnzrcynffhdjdddv
       DB_PASSWORD: ${SUPABASE_DB_PASSWORD}  # 7[454ATMEpV5
+=======
+      DB_USER: ${SUPABASE_DB_USER}
+      DB_PASSWORD: ${SUPABASE_DB_PASSWORD}
+      DB_OPTIONS: ${SUPABASE_DB_OPTIONS}
+      # Keycloac config
+      KEYCLOAK_TOKEN_URL: ${KEYCLOAK_TOKEN_URL}
+      KEYCLOAK_CLIENT_ID: ${KEYCLOAK_CLIENT_ID}  
+      KEYCLOAK_CLIENT_SECRET: ${KEYCLOAK_CLIENT_SECRET}
+>>>>>>> develop
       
       # Configuración para Keycloak:
-      KEYCLOAK_ISSUER_URL: http://keycloak:8080/realms/ds-2025-realm
-      KEYCLOAK_AUDIENCE: grupo-02
+      KEYCLOAK_ISSUER_URL: http://keycloak:8080/realms/ds-2025-05-realm
+      KEYCLOAK_AUDIENCE: grupo-05
     depends_on:
       keycloak:
         condition: service_started
